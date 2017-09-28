@@ -1,0 +1,25 @@
+from django import forms
+
+
+class SignUpForm (forms.Form):
+<<<<<<< HEAD
+    email = forms.EmailField(label='email', required=True, widget=forms.EmailInput(attrs={'class': 'blop'}))
+    username = forms.CharField(label='username', required=True)
+    password = forms.CharField(label='password', widget=forms.PasswordInput, required=True)
+
+
+class CodeForm (forms.Form):
+    ia = forms.CharField(label='ia')
+=======
+    email = forms.EmailField(label='Email', required=True, widget=forms.TextInput(attrs={'class':'validate'}))
+    username = forms.CharField(label='Pseudo', required=True, widget=forms.TextInput(attrs={'class':'validate'}))
+    password = forms.CharField(label='Password', required=True, widget=forms.PasswordInput)
+
+class ChangeDataForm(forms.Form):
+    email = forms.EmailField(label='Email', required=True, disabled=True, widget=forms.TextInput(attrs={'class':'validate'}))
+    username = forms.CharField(label='Pseudo', required=True, disabled=True, widget=forms.TextInput(attrs={'class':'validate'}))
+    password = forms.CharField(label='Password', required=True, widget=forms.PasswordInput)
+
+class CodeForm (forms.Form):
+    ia = forms.CharField(label='ia')
+>>>>>>> dd5347dcf048e3a2b95cf9439bd7ad05964ed5c7

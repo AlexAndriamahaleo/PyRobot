@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUp</title>
+</head>
+<body>
+    {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    {% if next %}
+        <p>Please sign up to see the {{ next }}.</p>
+    {% endif %}
+
+    <form action="{% url 'backend:signUp' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>

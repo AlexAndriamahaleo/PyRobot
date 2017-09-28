@@ -1,0 +1,34 @@
+{% load static %}
+<header class="navbar-fixed">
+      <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" style="cursor:pointer" onclick="window.location.href='/'" class="brand-logo"><img class="img-logo" src="{% static "img/svg_tank/tank.svg" %}">  WebPyRobot</a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#">Combat<span class="new badge">2</span></a></li>
+            <li><a href="#"><i class="material-icons left">attach_money</i>{{ moneyIn }}</a></li>
+            <li><a href="#"><i class="material-icons left">account_box</i>{{ user }}</a></li>
+            <li><a style="cursor:pointer" onclick="window.location.href='/parameter'"><i class="material-icons">settings</i></a></li>
+            <li><a style="cursor:pointer" onclick="window.location.href='/logout'"><i class="material-icons">power_settings_new</i></a></li>
+          </ul>
+
+          <ul id="nav-mobile" class="side-nav">
+            <li>
+              <div class="userView">
+                <img class="background" src="{% static 'img/galaxy.jpg' %}">
+                <a href="#!name"><span class="white-text name">{{ user }}</span></a>
+                <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
+              </div>
+            </li>
+            <li><a class="waves-effect" href="#">Combat<span class="new badge">2</span></a></li>
+            <li><a class="waves-effect" href="#"><i class="material-icons left">attach_money</i>{{ moneyIn }}</a></li>
+            <li><a class="waves-effect" onclick="window.location.href='/parameter'"><i class="material-icons left">settings</i>Paramêtre</a></li>
+            <li><a class="waves-effect" onclick="window.location.href='/logout'"><i class="material-icons left">power_settings_new</i>Déconecter</a></li>
+
+              <li><div class="divider"></div></li>
+
+            {% include 'backend/mobilNav_Link.html' %}
+
+          </ul>
+          <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+      </nav>
+    </header>

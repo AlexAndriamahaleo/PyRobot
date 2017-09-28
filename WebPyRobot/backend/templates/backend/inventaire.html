@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>WebPyRobot - Inventaire</title>
+
+    {% include 'backend/head.html' %}
+
+  </head>
+  <body>
+
+    {% include 'backend/header.html' with moneyIn=money user=username%}
+    <main class="container">
+      <div class="section">
+        <div class="row">
+          {% include 'backend/sideNav.html' with page=pageIn %}
+
+          <div class="col s12 m9 l10 pad">
+            <div class="row z-depth-1 section padding-section">
+              <div class="pad row col s12 m6 l6">
+
+                  <div class="card col s12 m12 l12">
+                  <div class="card-image">
+                    <img class="responsive-img" src="{% static 'img/tank.png' %}">
+                  </div>
+                  <div class="card-content">
+                    <h5>Statistiques</h5>
+                    <p>Atk = {{ tank.weapon.attackValue }}</p>
+                    <p>Def = {{ tank.armor.armorValue }}</p>
+                    <p>Vie = 100</p>
+                    <p>PM  = {{ tank.caterpillar.moveValue }} </p>
+                    <p>PA  = {{ tank.navSystem.actionValue}} </p>
+                  </div>
+                </div>
+
+                  <div class="col row s12 m12 l12">
+                      <div class="card-panel mar col s3 grey lighten-5 ">
+                        <div class="row">
+                          <div class="col s12 center-align"><span class="black-text">Canon</span></div>
+                          <div class="col s12 center-align"><img src="/static/img/canon_svg/{{ tank.weapon.pathIcon }}" class="pad equipement-icon activator responsive-img"></div>
+                          <div class="col s12 center-align"><span class="black-text">{{ tank.weapon.name }}</span></div>
+                        </div>
+                      </div>
+                      <div class="card-panel mar col s3 grey lighten-5 ">
+                        <div class="row">
+                          <div class="col s12 center-align"><span class="black-text">Blindage</span></div>
+                          <div class="col s12 center-align"><img src="/static/img/shield_svg/{{ tank.armor.pathIcon }}" class="pad equipement-icon activator responsive-img"></div>
+                          <div class="col s12 center-align"><span class="black-text">{{ tank.armor.name }}</span></div>
+                        </div>
+                      </div>
+                      <div class="card-panel mar col s3 grey lighten-5 ">
+                        <div class="row">
+                          <div class="col s12 center-align"><span class="black-text">Chenille</span></div>
+                          <div class="col s12 center-align"><img src="/static/img/caterpillar_svg/{{ tank.caterpillar.pathIcon }}" class="pad equipement-icon activator responsive-img"></div>
+                          <div class="col s12 center-align"><span class="black-text">{{ tank.caterpillar.name }}</span></div>
+                        </div>
+                      </div>
+                      <div class="card-panel mar col s3 grey lighten-5 ">
+                        <div class="row">
+                          <div class="col s12 center-align"><span class="black-text">Syst E</span></div>
+                          <div class="col s12 center-align"><img src="/static/img/circuit_svg/{{ tank.navSystem.pathIcon }}" class="pad equipement-icon activator responsive-img"></div>
+                          <div class="col s12 center-align"><span class="black-text">{{ tank.navSystem.name }}</span></div>
+                        </div>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="pad row col s12 m6 l6 ">
+                <div class="col s12" style="margin-bottom: 50px">
+                  <ul class="tabs">
+                    <li class="tab col s4"><a href="#Canon" class="active">Canons</a></li>
+                    <li class="tab col s4"><a href="#Blindage">Blindages</a></li>
+                    <li class="tab col s4"><a href="#Chenille">Chenilles</a></li>
+                    <li class="tab col s4"><a href="#NavSys">Système</a></li>
+                  </ul>
+                </div>
+                  <div id="Canon" class="col s12 row">
+                    {% for weapon in weaponInv %}
+                      <div class="fixed-action-btn col s6 m4 l4" style="position:static">
+                        <div class="card-panel hoverable grey lighten-5">
+                            <div class="row">
+                              <div class="col s12 center-align"><img src="/static/img/canon_svg/{{ weapon.pathIcon }}" class="equipement-icon responsive-img"></div>
+                              <div class="col s12 center-align"><span class="black-text">{{ weapon.name }}</span></div>
+                            </div>
+                        </div>
+                        <ul style="position:static;">
+                            <li>
+                                <a href="#" class="btn-floating mobile-fab-tip">{{ weapon.attackValue }}</a>
+                                <a class="btn-floating red"><img style="width: 70%; height: auto;margin-right: 5%;margin-top:15% " src="{% static "fonts/svg_tank/sword.svg" %}"/></a>
+                            </li>
+                            <li>
+                                <form method="post" action="{% url 'backend:changeStuff' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item" value="{{ weapon.pk }}">
+                                    <input type="hidden" name="typeItem" value="1">
+                                    <button type="submit" class="btn-floating mobile-fab-tip"><span>Equiper</span></button>
+                                    <a class="btn-floating green"><i class="material-icons">launch</i></a>
+                                </form>
+                            </li>
+                        </ul>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div id="Blindage" class="col s12 row">
+
+                      {% for armor in armorInv %}
+                      <div class="fixed-action-btn col s6 m4 l4" style="position:static">
+                        <div class="card-panel hoverable grey lighten-5">
+                            <div class="row">
+                              <div class="col s12 center-align"><img src="/static/img/shield_svg/{{ armor.pathIcon }}" class="equipement-icon responsive-img"></div>
+                              <div class="col s12 center-align"><span class="black-text">{{ armor.name }}</span></div>
+                            </div>
+                        </div>
+                        <ul style="position:static;">
+                            <li>
+                                <a href="#" class="btn-floating mobile-fab-tip">{{ armor.armorValue }}</a>
+                                <a class="btn-floating blue"><img style="width: 70%; height: auto;margin-right: 5%;margin-top:15% " src="{% static "fonts/svg_tank/shield.svg" %}"/></a>
+                            </li>
+                            <li>
+                                <form method="post" action="{% url 'backend:changeStuff' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item" value="{{ armor.pk }}">
+                                    <input type="hidden" name="typeItem" value="2">
+                                    <button type="submit" class="btn-floating mobile-fab-tip"><span>Equiper</span></button>
+                                    <a class="btn-floating green"><i class="material-icons">launch</i></a>
+                                </form>
+                            </li>
+                        </ul>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div id="Chenille" class="col s12 row">
+
+                      {% for cater in caterInv %}
+                      <div class="fixed-action-btn col s6 m4 l4" style="position:static">
+                        <div class="card-panel hoverable grey lighten-5">
+                            <div class="row">
+                              <div class="col s12 center-align"><img src="/static/img/caterpillar_svg/{{ cater.pathIcon }}" class="equipement-icon responsive-img"></div>
+                              <div class="col s12 center-align"><span class="black-text">{{ cater.name }}</span></div>
+                            </div>
+                        </div>
+                        <ul style="position:static;">
+                            <li>
+                                <a href="#" class="btn-floating mobile-fab-tip">{{ cater.moveValue }}</a>
+                                <a class="btn-floating yellow"><img style="width: 70%; height: auto;margin-left: 5%;margin-top:15% " src="{% static "fonts/svg_tank/boot.svg" %}"/></a>
+                            </li>
+                            <li>
+                                <form method="post" action="{% url 'backend:changeStuff' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item" value="{{ cater.pk }}">
+                                    <input type="hidden" name="typeItem" value="3">
+                                    <button type="submit" class="btn-floating mobile-fab-tip"><span>Equiper</span></button>
+                                    <a class="btn-floating green"><i class="material-icons">launch</i></a>
+                                </form>
+                            </li>
+                        </ul>
+                      </div>
+                    {% endfor %}
+
+                  </div>
+                  <div id="NavSys" class="col s12 row">
+
+                      {% for navSys in navInv %}
+                      <div class="fixed-action-btn col s6 m4 l4" style="position:static">
+                        <div class="card-panel hoverable grey lighten-5">
+                            <div class="row">
+                              <div class="col s12 center-align"><img src="/static/img/circuit_svg/{{ navSys.pathIcon }}" class="equipement-icon responsive-img"></div>
+                              <div class="col s12 center-align"><span class="black-text">{{ navSys.name }}</span></div>
+                            </div>
+                        </div>
+                        <ul style="position:static;">
+                            <li>
+                                <a href="#" class="btn-floating mobile-fab-tip">{{ navSys.actionValue }}</a>
+                                <a class="btn-floating orange"><img style="width: 70%; height: auto;margin-left: 5%;margin-top:15% " src="{% static "fonts/svg_tank/circuit.svg" %}"/></a>
+                            </li>
+                            <li>
+                                <form method="post" action="{% url 'backend:changeStuff' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item" value="{{ navSys.pk }}">
+                                    <input type="hidden" name="typeItem" value="4">
+                                    <button type="submit" class="btn-floating mobile-fab-tip"><span>Equiper</span></button>
+                                    <a class="btn-floating green"><i class="material-icons">launch</i></a>
+                                </form>
+                            </li>
+                        </ul>
+                      </div>
+                    {% endfor %}
+
+                  </div>
+
+
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+    {% include 'backend/footer.html' %}
+
+    </body>
+</html>

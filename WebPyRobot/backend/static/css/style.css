@@ -1,0 +1,77 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+.padding-section {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+.pad {
+	padding: 5px;
+}
+
+.equipement-icon {
+	max-height: 100px;
+	max-width: 100px;
+}
+
+.margTop {
+	margin-top: 10px;
+}
+#containerHelp {
+	height: 300px;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+.mobile-fab-tip {
+	position: relative;
+	right: 15px;
+	padding:0px 0.5rem;
+	text-align: left;
+	background-color: #323232;
+	border-radius: 2px;
+	color: #FFF;
+	width:auto;
+}
+
+.market_img_card {
+	width: 70%;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto
+}
+.mini-img {
+	width: 30px;
+	height: auto;
+}
+
+.img-logo{
+	width: 70px;
+	height: auto;
+}
+
+.loader {
+	margin: 30% auto;
+}

@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>WebPyRobot - Aide</title>
+
+    {% include 'backend/head.html' %}
+
+  </head>
+  <body>
+    {% include 'backend/header.html' with moneyIn=money user=username%}
+    <main class="container" id="containerHelp">
+      <div class="section">
+        <div class="row">
+
+            {% include 'backend/sideNav.html' %}
+
+
+          <div class="col s12 m9 l10 pad">
+              <form action="{% url 'backend:password_change' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit" />
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </main>
+    {% include 'backend/footer.html' %}
+  </body>
+</html>

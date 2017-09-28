@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>WebPyRobot - Aide</title>
+
+  {% include 'backend/head.html' %}
+
+</head>
+<body>
+  {% include 'backend/header.html' with moneyIn=money user=username%}
+  <main class="container">
+    <div class="section">
+      <div class="row">
+
+        {% include 'backend/sideNav.html' with page=pageIn %}
+
+
+        <div class="col s12 m9 l10 pad">
+          <div class="row z-depth-1 section padding-section" >
+            <h2>Documentation</h2>
+            <ul class="collapsible" data-collapsible="accordion">
+              <li>
+                <div class="collapsible-header">getTankId()</div>
+                <div class="collapsible-body "><p>Renvoie votre id.</p></div>
+              </li>
+              <li>
+                <div class="collapsible-header">getEnemyTankId()</div>
+                <div class="collapsible-body"><p>Renvoie l’id du tank ennemie</p></div>
+              </li>
+              <li>
+                <div class="collapsible-header">getCellDistance(NumCell1, NumCell2)</div>
+                <div class="collapsible-body"><p>Renvoie la distance entre la cellule NumCell1 et la cellule NumCell2.</p></div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">getCellFromXY(X, Y)</div>
+                <div class="collapsible-body ">
+                  <p>Renvoie le numéro de la cellule de coordonné x y.</p>
+                </div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">getCellPosX(NumCell)</div>
+                <div class="collapsible-body"><p>Renvoie la position x de la cellule de numéro NumCell</p></div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">
+                  getCellPosY(NumCell) 
+                </div>
+                <div class="collapsible-body">
+                  <p>Renvoie la position y de la cellule de numéro NumCell.</p>
+                </div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">
+                  getPosition(TankID) 
+                </div>
+                <div class="collapsible-body ">
+                  <p>Renvoie le numéro de la cellule ou se situe le tank d’id TankID</p>
+                </div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">
+                  getLife(TankID)
+                </div>
+                <div class="collapsible-body">
+                  <p>Renvoie la vie restante du tank d’id TankID </p>
+                </div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">
+                  getPM(TankID)
+                </div>
+                <div class="collapsible-body">
+                  <p>Renvoie le nombre de point restant </p>
+                </div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">
+                  getPA(TankID)
+                </div>
+                <div class="collapsible-body ">
+                  <p>Renvoie le nombre de point d’action restant </p>
+                </div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">
+                  getRange(TankId) 
+                </div>
+                <div class="collapsible-body">
+                  <p>Retourne la portée de du tank d’id TankId </p>
+                </div>
+              </li>
+              
+              <li>
+                <div class="collapsible-header">moveTank(NumCell)</div>
+                <div class="collapsible-body">
+                  <p>Déplace le tank jusqu'à la cellule NumCell si la cellule n’est pas atteignable déplace le tank au plus proche de la cellule désigner</p>
+                </div>
+              </li>
+
+              <li>
+                <div class="collapsible-header">
+                  shoot(NumCell)
+                </div>
+                <div class="collapsible-body">
+                  <p>Déplace le tank jusqu'à la cellule NumCell si la cellule n’est pas atteignable déplace le tank au plus proche de la cellule désigner</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  {% include 'backend/footer.html' %}
+</body>
+</html>
