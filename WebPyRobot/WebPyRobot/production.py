@@ -1,4 +1,4 @@
-from settings import *
+from WebPyRobot.settings import *
 
 DATABASES = {
     'default': {
