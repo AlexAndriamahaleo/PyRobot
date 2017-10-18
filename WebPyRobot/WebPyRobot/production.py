@@ -1,4 +1,8 @@
-from WebPyRobot.settings import *
+"""
+Setting file for deployment
+"""
+
+from .settings import *
 
 ALLOWED_HOSTS = ['maturepyrobot.com']
 DEBUG = False
