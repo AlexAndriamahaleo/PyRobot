@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 PYTHON_CMD="python"
 
 PYTHON_VERSION=$($PYTHON_CMD --version | cut -d\  -f 2 | cut -d. -f 1)

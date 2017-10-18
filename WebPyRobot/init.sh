@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 PYTHON_CMD="python"
 PIP_CMD="pip"
 
@@ -28,8 +30,7 @@ fi
 echo "Install dependencies"
 
 # install on pip only
-sudo $PIP_CMD install Django
-sudo $PIP_CMD install Pillow
+sudo $PIP_CMD install -r requirements.txt
 # init data base
 $PYTHON_CMD ./manage.py makemigrations
 $PYTHON_CMD ./manage.py migrate

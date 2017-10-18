@@ -2,6 +2,8 @@
 
 - Python 3 (recommended 3.6.2)
 - PostgreSQL (9.6.5)
+- Pillow: https://pillow.readthedocs.io/en/4.3.x/installation.html
+Make sure you got some external libraries like zlib, libjpeg ... installed before you install Python3 if you plan to build your Python3 from source
 
 
 ## Development
@@ -14,9 +16,17 @@ $ docker pull postgres
 $ docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=yourpassword  --name postgres postgres
 ~~~~~
 
-#### Install Django and dependencies
+#### Install dependencies and initiate data
+Automate:
+~~~~~
+$./init.sh
+~~~~~
+OR manually:
 ~~~~~
 $ pip3 install -r requirements.txt
+$ python3 manage.py makemigrations
+$ python3 manage.py migrate
+$ python3 manage.py loaddata backend/fixtures/database.json
 ~~~~~
 
 #### Configure database
@@ -29,14 +39,18 @@ DATABASES = {
         'NAME': 'database_name',
         'USER': 'username',
         'PASSWORD': 'yourpostgrepassword',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'db host',
+        'PORT': 'db port',
     }
 }
 ~~~~~
 
 #### Run
 
+~~~~
+$ ./run.sh
+~~~~
+OR
 ~~~~~
 $ python3 manage.py runserver
 ~~~~~
@@ -51,7 +65,7 @@ The server will be available at http://127.0.0.1:8000/
 - uWsgi (lastest version)
 
 #### Deploy
-Install Python3 and PostgreSQL on your server, don't forget to install Python development library (python-dev or python-devel)
+Install Python3 and PostgreSQL on your server, don't forget to install Python development library (python-dev or python-devel) if you don't build Python from source
 
 Install lastest Nginx: https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/. Check `Installing From NGINX Repository
 ` section.
@@ -69,6 +83,10 @@ $ sudo pip3 install uwsgi
 
 Push your code to the server
 
+Install dependencies and initiate data:
+~~~~
+$ ./init.sh
+~~~~
 Edit configuration files in conf/ to match your server settings:
 
 - `webpyrobot.ini` is the configuration file of the project in `uwsgi`
