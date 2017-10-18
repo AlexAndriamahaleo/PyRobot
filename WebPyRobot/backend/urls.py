@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib.auth import views as auth_views
 
+from . import api_views
 from . import views
 
 app_name = 'backend'
@@ -22,5 +23,7 @@ urlpatterns = [
     url(r'^changeStuff/$', views.changeStuff, name='changeStuff'),
     url(r'^buyStuff/$', views.buyStuff, name='buyStuff'),
     url(r'^documentation/$', views.documentation, name='documentation'),
+
+    url(r'^dragonball-chars/$', api_views.angular_ajax_test, name="test_api")
 
 ]
