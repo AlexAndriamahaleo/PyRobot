@@ -39,4 +39,8 @@ def angular_ajax_test(request):
             "title": '[AJAX] Yamcha - A very talented martial artist and one of the most powerful humans on Earth, a close friend of Goku',
             "image": 'http://vignette3.wikia.nocookie.net/deathbattlefanon/images/5/54/Yamcha.png/revision/latest?cb=20150317171234'
         }]
-    return JsonResponse({'items': data})
+    response = JsonResponse({'items': data})
+    response['Access-Control-Allow-Origin'] = '*'
+    response['Access-Control-Allow-Methods'] = 'GET'
+    response['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
+    return response
