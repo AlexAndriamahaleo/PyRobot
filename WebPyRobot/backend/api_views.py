@@ -42,5 +42,5 @@ def angular_ajax_test(request):
     response = JsonResponse({'items': data})
     response['Access-Control-Allow-Origin'] = '*'
     response['Access-Control-Allow-Methods'] = 'GET'
-    response['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
+    response['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token, X-Requested-With'
     return response
