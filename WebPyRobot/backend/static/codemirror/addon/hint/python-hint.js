@@ -52,9 +52,7 @@
     };
 
     var pythonKeywords = "and del from not while as elif global or with assert else if pass yield"
-        + "break except import print class exec in raise continue finally is return def for lambda try"
-        + "self getEnemyTankId getTankId getCellDistance getCellFromXY getCellPosX getCellPosY getPosition"
-        + "getLife getPM getPA getRange moveTank shoot";
+        + "break except import print class exec in raise continue finally is return def for lambda try";
     var pythonKeywordsL = pythonKeywords.split(" ");
     var pythonKeywordsU = pythonKeywords.toUpperCase().split(" ");
 
@@ -65,7 +63,9 @@
         + "chr frozenset long reload vars classmethod getattr map repr xrange"
         + "cmp globals max reversed zip compile hasattr memoryview round __import__"
         + "complex hash min set apply delattr help next setattr buffer"
-        + "dict hex object slice coerce dir id oct sorted intern ";
+        + "dict hex object slice coerce dir id oct sorted intern "
+        + "self getEnemyTankId getTankId getCellDistance getCellFromXY getCellPosX getCellPosY getPosition"
+        + "getLife getPM getPA getRange moveTank shoot";
     var pythonBuiltinsL = pythonBuiltins.split(" ").join("() ").split(" ");
     var pythonBuiltinsU = pythonBuiltins.toUpperCase().split(" ").join("() ").split(" ");
 
