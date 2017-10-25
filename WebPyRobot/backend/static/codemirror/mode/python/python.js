@@ -35,6 +35,7 @@
         "Ellipsis", "__debug__",
         "self.", "getEnemyTankId()", "getTankId()", "getCellDistance('''NumCell1''','''NumCell2''')", "getCellFromXY('''X''','''Y''')", "getCellPosX('''NumCell''')", "getCellPosY('''NumCell''')", "getPosition('''TankID''')",
         "getLife('''TankID''')", "getPM('''TankID''')", "getPA('''TankID''')", "getRange('''TankID''')", "moveTank('''NumCell''')", "shoot()"];
+
     CodeMirror.registerHelper("hintWords", "python", commonKeywords.concat(commonBuiltins));
 
     function top(state) {
