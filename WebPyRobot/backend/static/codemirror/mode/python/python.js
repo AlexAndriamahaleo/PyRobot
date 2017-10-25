@@ -25,16 +25,24 @@
     var commonBuiltins = ["abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr",
         "classmethod", "compile", "complex", "delattr", "dict", "dir", "divmod",
         "enumerate", "eval", "filter", "float", "format", "frozenset",
-        "getattr", "globals", "hasattr", "hash", "help", "hex", "id",
+        "getattr", "globals",
+        "getEnemyTankId()", "getTankId()", "getCellDistance('''NumCell1''','''NumCell2''')",
+        "getCellFromXY('''X''','''Y''')", "getCellPosX('''NumCell''')", "getCellPosY('''NumCell''')", "getPosition('''TankID''')",
+        "getLife('''TankID''')", "getPM('''TankID''')", "getPA('''TankID''')", "getRange('''TankID''')",
+        "hasattr", "hash", "help", "hex", "id",
         "input", "int", "isinstance", "issubclass", "iter", "len",
-        "list", "locals", "map", "max", "memoryview", "min", "next",
+        "list", "locals", "map", "max", "memoryview", "min",
+        "moveTank('''NumCell''')",
+        "next",
         "object", "oct", "open", "ord", "pow", "property", "range",
-        "repr", "reversed", "round", "set", "setattr", "slice",
+        "repr", "reversed", "round",
+        "self",
+        "set", "setattr",
+        "shoot()",
+        "slice",
         "sorted", "staticmethod", "str", "sum", "super", "tuple",
         "type", "vars", "zip", "__import__", "NotImplemented",
-        "Ellipsis", "__debug__",
-        "self.", "getEnemyTankId()", "getTankId()", "getCellDistance('''NumCell1''','''NumCell2''')", "getCellFromXY('''X''','''Y''')", "getCellPosX('''NumCell''')", "getCellPosY('''NumCell''')", "getPosition('''TankID''')",
-        "getLife('''TankID''')", "getPM('''TankID''')", "getPA('''TankID''')", "getRange('''TankID''')", "moveTank('''NumCell''')", "shoot()"];
+        "Ellipsis", "__debug__"];
 
     CodeMirror.registerHelper("hintWords", "python", commonKeywords.concat(commonBuiltins));
 
