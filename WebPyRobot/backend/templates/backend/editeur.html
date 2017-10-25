@@ -61,7 +61,8 @@
                             <form id="code" action="{% url 'backend:editor' %}" method="post">
                                 {% csrf_token %}
                                 <textarea name="ia" id="ia" cols="40" rows="10">{{ code }}</textarea>
-                                <p><strong>Hint :</strong> Press ' <i>Ctrl + Space</i> ' to use autocompletion at any time.</p>
+                                <p><strong>Note :</strong> Appuyez ' <i>Ctrl + Space</i> ' pour utliser l'autocomplétion à tout moment.</p>
+                                <p><strong>Attention :</strong> Remplacez ce qu'il y a entre trois quotes par une valeur/variable qui correspond.</p>
                             </form>
                         </div>
                     </div>
