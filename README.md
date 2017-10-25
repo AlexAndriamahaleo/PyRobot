@@ -4,6 +4,7 @@
 
 - Python 3 (recommended 3.6.2)
 - PostgreSQL (9.6.5)
+- Django (1.11.5+ recommended 1.11.6)
 - Pillow: https://pillow.readthedocs.io/en/4.3.x/installation.html
 Make sure you got some external libraries like zlib, libjpeg ... installed before you install Python3 if you plan to build your Python3 from source
 
