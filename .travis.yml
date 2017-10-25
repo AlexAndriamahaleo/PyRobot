@@ -1,0 +1,15 @@
+    language: python
+
+    python:
+      - "3.5"
+      - "3.6"
+
+    env:
+      -DJANGO=1.11.5 DB=sqlite
+
+    install:
+      - pip install -r WebPyRobot/requirements.txt
+
+    script:
+      - python WebPyRobot/manage.py test backend.tests.SimpleTest.test_details
+

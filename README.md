@@ -1,39 +1,107 @@
-## Synopsis
+## MaturePyRobot 2017 [![Build Status](https://travis-ci.org/Petrole/MaturePyRobots.svg?branch=master)](https://travis-ci.org/Petrole/MaturePyRobots)
 
-Les jeux probots, crobots, etc, sont une manière ludique d'apprendre un langage de
-programmation. Les joueurs y programme dans ledit langage, le comportement d'un tank.
-Les différents tanks sont placés dans une arène où ce livre un combat sans merci.
-Le joueur qui a programmé le tank survivant gagne la partie et le respect de son adversaire.
+## Pre-requirements
 
-Le langage Python s'impose de plus en plus dans le monde l'éducation; pour
-apprendre au novices les rudiments de la programmation.
-
-Que le meilleur programmeur gagne dans cette version web/python.
+- Python 3 (recommended 3.6.2)
+- PostgreSQL (9.6.5)
+- Django (1.11.5+ recommended 1.11.6)
+- Pillow: https://pillow.readthedocs.io/en/4.3.x/installation.html
+Make sure you got some external libraries like zlib, libjpeg ... installed before you install Python3 if you plan to build your Python3 from source
 
 
-## Installation
+## Development
 
-```
-    cd WebPyRobot
-	./init.sh
-```
+#### Install PostgreSQL
 
-## Run Server
+Recommend install PostgreSQL via docker: https://hub.docker.com/_/postgres/
+~~~~
+$ docker pull postgres
+$ docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=yourpassword  --name postgres postgres
+~~~~~
 
-```
-	./run.sh
-```
+#### Install dependencies and initiate data
+Automate:
+~~~~~
+$./init.sh
+~~~~~
+OR manually:
+~~~~~
+$ pip3 install -r requirements.txt
+$ python3 manage.py makemigrations
+$ python3 manage.py migrate
+$ python3 manage.py loaddata backend/fixtures/database.json
+~~~~~
 
-##### Create SuperUser
+#### Configure database
+- Edit  `WebPyRobot/development.py` file. Add:
 
-```
-	./manage.py createsuperuser
-```
+~~~~
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'database_name',
+        'USER': 'username',
+        'PASSWORD': 'yourpostgrepassword',
+        'HOST': 'db host',
+        'PORT': 'db port',
+    }
+}
+~~~~~
 
-## Contributors
+#### Run
 
-Gileta Michaël, Bernardini Mickaël, DeBarros Sylvain and Roux Yohan
+~~~~
+$ ./run.sh
+~~~~
+OR
+~~~~~
+$ python3 manage.py runserver
+~~~~~
+The server will be available at http://127.0.0.1:8000/
 
-## License
 
-[Django](https://www.djangoproject.com/), [Python](https://www.python.org/)
+## Deployment
+
+#### Pre-requirements
+- Nginx (lastest version)
+- Supervisor (lastest version)
+- uWsgi (lastest version)
+
+#### Deploy
+Install Python3 and PostgreSQL on your server, don't forget to install Python development library (python-dev or python-devel) if you don't build Python from source
+
+Install lastest Nginx: https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/. Check `Installing From NGINX Repository
+` section.
+
+Install Supervisor:
+~~~~
+$ sudo apt-get install supervisor
+~~~~
+Install uWsgi
+~~~~
+$ sudo apt-get install uwsgi
+OR
+$ sudo pip3 install uwsgi
+~~~~
+
+Push your code to the server
+
+Install dependencies and initiate data:
+~~~~
+$ ./init.sh
+~~~~
+Edit configuration files in conf/ to match your server settings:
+
+- `webpyrobot.ini` is the configuration file of the project in `uwsgi`
+- `webpyrobot_nginx.conf` is the  configuration file of the project in `nginx`
+- `webpyrobot_uwsgi_supervisord.conf` is the configuration file to keep the project running with `uwsgi` under the management of `supervisord`
+
+Start `supervisord` and `nginx`
+
+~~~~
+$ sudo systemctl service start supervisord
+$ sudo systemctl service start nginx
+~~~~
+
+Enjoy your production!
+
