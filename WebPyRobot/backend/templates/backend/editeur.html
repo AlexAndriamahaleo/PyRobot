@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <title>WebPyRobot - Editeur</title>
@@ -10,51 +10,67 @@
 
     <!-- Editeur Python CSS -->
     <link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}"/>
-    <link rel="stylesheet" href="{% static 'codemirror/theme/elegant.css' %}"/>
+    <link rel="stylesheet" href="{% static 'codemirror/theme/cobalt.css' %}"/>
     <script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+
+
     <script src="{% static 'codemirror/mode/python/python.js' %}"></script>
+
     <script src="{% static 'codemirror/addon/edit/closebrackets.js' %}"></script>
     <script src="{% static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
-  </head>
-  <body>
-    {% include 'backend/header.html' with moneyIn=money user=username%}
-    <main class="container">
-      <div class="section">
+
+    <!-- CodeMirror Autocomplete-->
+
+    <link rel="stylesheet" href="{% static 'codemirror/addon/hint/simple-hint.css' %}"/>
+    <link rel="stylesheet" href="{% static 'codemirror/addon/hint/show-hint.css' %}"/>
+    <script src="{% static 'codemirror/addon/hint/simple-hint.js' %}"></script>
+    <script src="{% static 'codemirror/addon/hint/show-hint.js' %}"></script>
+    <script src="{% static 'codemirror/addon/hint/python-hint.js' %}"></script>
+
+</head>
+<body>
+{% include 'backend/header.html' with moneyIn=money user=username%}
+<main class="container">
+    <div class="section">
         <div class="row">
 
             {% include 'backend/sideNav.html' with page=pageIn %}
 
-          <div class="col s12 m9 l10 pad">
-            <div class="row z-depth-1 section padding-section">
-              <div class="pad row col s12 m12 l12 ">
-                <div class="pad col s12 m12 l12 ">
-                  <nav>
-                    <div class="nav-wrapper">
-                      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-                      <ul class="left hide-on-med-and-down">
-                        <li class="save"><a href="#">Sauvgarder</a></li>
-                        <li><a href="{% url 'backend:fight' %}">Tester</a></li>
-                      </ul>
-                      <ul class="side-nav" id="mobile-demo">
-                        <li class="save"><a class="waves-effect" href="#"><i class="material-icons left">save</i>Sauvgarder</a></li>
-                        <li><a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a></li>
-                      </ul>
+            <div class="col s12 m9 l10 pad">
+                <div class="row z-depth-1 section padding-section">
+                    <div class="pad row col s12 m12 l12 ">
+                        <div class="pad col s12 m12 l12 ">
+                            <nav>
+                                <div class="nav-wrapper">
+                                    <a href="#" data-activates="mobile-demo" class="button-collapse"><i
+                                            class="material-icons">menu</i></a>
+                                    <ul class="left hide-on-med-and-down">
+                                        <li class="save"><a href="#">Sauvgarder</a></li>
+                                        <li><a href="{% url 'backend:fight' %}">Tester</a></li>
+                                    </ul>
+                                    <ul class="side-nav" id="mobile-demo">
+                                        <li class="save"><a class="waves-effect" href="#"><i
+                                                class="material-icons left">save</i>Sauvgarder</a></li>
+                                        <li><a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="pad col s12 m12 l12">
+                            <form id="code" action="{% url 'backend:editor' %}" method="post">
+                                {% csrf_token %}
+                                <textarea name="ia" id="ia" cols="40" rows="10">{{ code }}</textarea>
+                            </form>
+                        </div>
                     </div>
-                  </nav>
                 </div>
-                <div class="pad col s12 m12 l12">
-                    <form id="code" action="{% url 'backend:editor' %}" method="post">
-                        {% csrf_token %}
-                        <textarea name="ia" id="ia" cols="40" rows="10">{{ code }}</textarea>
-                    </form>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </main>
-    {% include 'backend/footer.html' %}
-    <script src="{% static 'js/editor.js' %}"></script>
-    </body>
+    </div>
+</main>
+{% include 'backend/footer.html' %}
+<script src="{% static 'js/editor.js' %}"></script>
+
+</body>
 </html>
