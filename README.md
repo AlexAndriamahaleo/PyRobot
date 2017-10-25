@@ -37,3 +37,4 @@ Gileta Michaël, Bernardini Mickaël, DeBarros Sylvain and Roux Yohan
 ## License
 
 [Django](https://www.djangoproject.com/), [Python](https://www.python.org/)
+
