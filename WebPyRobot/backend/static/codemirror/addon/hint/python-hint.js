@@ -63,9 +63,7 @@
         + "chr frozenset long reload vars classmethod getattr map repr xrange"
         + "cmp globals max reversed zip compile hasattr memoryview round __import__"
         + "complex hash min set apply delattr help next setattr buffer"
-        + "dict hex object slice coerce dir id oct sorted intern "
-        + "self getEnemyTankId getTankId getCellDistance getCellFromXY getCellPosX getCellPosY getPosition"
-        + "getLife getPM getPA getRange moveTank shoot";
+        + "dict hex object slice coerce dir id oct sorted intern ";
     var pythonBuiltinsL = pythonBuiltins.split(" ").join("() ").split(" ");
     var pythonBuiltinsU = pythonBuiltins.toUpperCase().split(" ").join("() ").split(" ");
 
