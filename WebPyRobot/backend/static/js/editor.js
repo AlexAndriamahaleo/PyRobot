@@ -9,6 +9,7 @@
             fixedGutter: true,
             matchBrackets: true,
             dragDrop: true,
+            allowDropFileTypes : ["text/x-python","text/plain"],
             extraKeys: {"Ctrl-Space": "autocomplete"},
             globalVars: true
         });
