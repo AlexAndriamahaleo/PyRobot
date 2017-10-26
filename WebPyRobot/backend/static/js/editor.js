@@ -8,6 +8,7 @@
             lineNumbers: true,
             fixedGutter: true,
             matchBrackets: true,
+            dragDrop: true,
             extraKeys: {"Ctrl-Space": "autocomplete"},
             globalVars: true
         });
