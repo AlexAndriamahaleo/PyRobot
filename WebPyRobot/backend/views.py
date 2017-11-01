@@ -57,7 +57,7 @@ def login(request):
             context = {
                 'form': form,
                 'next': request.GET.get('next'),
-                'error': 'Your username and password didn\'t match. Please try again.'
+                'error': 'Votre Pseudo et/ou votre mot de passe ne corresponde pas, veuillez réessayer. Merci'
             }
             return render(request, 'backend/index.html', context)
     return render(request, 'backend/index.html',  {'next': request.GET.get('next')})
@@ -76,7 +76,9 @@ class SignUp (FormView):
     form_class = SignUpForm
 
     def get_success_url(self):
+
         self.success_url = reverse('backend:signUpThanks')
+
         return super().get_success_url()
 
     def get(self, request, *args, **kwargs):
@@ -92,28 +94,42 @@ class SignUp (FormView):
             User.objects.get(username=username)
         except ObjectDoesNotExist:
             user = User.objects.create_user(username, email, password)
+
             #create User
             UserProfile(user=user, money=0).save()
+
             #create ia file default
             userProfile = UserProfile.objects.get(user=user)
             i = Ia.objects.create(owner=userProfile, name=username+"\'s Ia", text=DefaultIa.objects.get(pk=1).text)
+
             #default Inventory
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=1))
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=2))
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=3))
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=4))
+
             #init tank
             w = getItemByType(1,TypeItem(pk=1))
             a = getItemByType(1,TypeItem(pk=2))
             c = getItemByType(1,TypeItem(pk=3))
             n = getItemByType(1,TypeItem(pk=4))
             Tank.objects.create(owner=userProfile, ia=i,weapon=w,armor=a,caterpillar=c,navSystem=n)
+
+
+            from django.contrib.auth import authenticate
+            user = authenticate(username=username, password=password)
+
+            from django.contrib.auth import login
+            login(self.request, user)
+
             return super(SignUp, self).form_valid(form)
+
         return super(SignUp, self).form_invalid(form)
 
 
 def thanks(request):
-    return render(request,"backend/thanks.html")
+    return index(request)
+
 
 @login_required
 def fight(request):
