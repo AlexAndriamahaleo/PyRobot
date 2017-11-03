@@ -1,17 +1,19 @@
 # from dbus.service import Object
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
-from backend.models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
-from .models import UserProfile, Tank, Ia
+from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
+from .models import UserProfile, Tank, Ia, BattleHistory
  #from .game.Game import Game, Robot
 
 from .forms import SignUpForm
@@ -338,3 +340,8 @@ def buyStuff (request):
 @login_required
 def documentation (request):
   return render (request,"backend/documentation.html")
+
+
+class HistoriesView(LoginRequiredMixin, ListView):
+    template_name = "backend/histories.html"
+    model = BattleHistory

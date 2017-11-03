@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Opponent</th>
+                <th>Is Victorious</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for history in object_list %}
+                <tr>
+                    <td>{{ history.timestamp }}</td>
+                    <td>{{ history.opponent.username }}</td>
+                    <td>
+                        {% if history.is_victorious %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
