@@ -1,4 +1,8 @@
+from ..models import BattleHistory
+
+
 class Robot(object):
+
     def __init__(self, tank, id):
         self.__tank = tank
         self.__life = 100
@@ -9,30 +13,43 @@ class Robot(object):
 
     def getTank(self):
         return self.__tank
+
     def getTankId(self):
         return self.__tank.id
+
     def getLife(self):
         return self.__life
+
     def getPM(self):
         return self.__cpm
+
     def getPointAction(self):
         return self.__cpa
+
     def setLife(self, life):
         self.__life = life
+
     def setPM(self, pm):
         self.__cpm = pm
+
     def setPA(self, pa):
         self.__cpa = pa
+
     def gettankpa(self):
         return self.__pa
+
     def gettankpm(self):
         return self.__pm
+
     def getWeaponDamage(self):
         return self.__tank.weapon.attackValue
+
     def getRange(self):
         return self.__tank.weapon.range
+
     def getWPa(self):
         return self.__tank.weapon.attackCost
+
 
 class Game(object):
     def __init__(self, r1, r2, ia1, ia2):
@@ -166,14 +183,39 @@ class Game(object):
                 self.__robots[self.getEnemyTankId()].setLife(self.__robots[self.getEnemyTankId()].getLife()-dWe)
             self.__robots[self.__current].setPA(pa-paWe)
 
+    def set_history(self):
+        """
+        Save history of a battle
+        :return:
+        """
+        robot1 = self.__robots[0]
+        robot2 = self.__robots[1]
+        tank1 = robot1.getTank()
+        tank2 = robot2.getTank()
+        player = tank1.owner.user
+        opponent = tank2.owner.user
+        is_victorious = False
+        for i in self.__result:
+            if i[1] == "dead":
+                if i[0] == 1:
+                    is_victorious = True
+                    break
+        BattleHistory.objects.create(
+            user = player,
+            opponent = opponent,
+            is_victorious = is_victorious
+        )
+
     def run(self, i):
         # for i in range(0, 64):
         if i >= 100: return self.__result
         if self.__robots[0].getLife() <= 0:
             self.__result.append([0, "dead", 0, 0])
+            self.set_history()
             return self.__result
         if self.__robots[1].getLife() <= 0:
             self.__result.append([1, "dead", 0, 0])
+            self.set_history()
             return self.__result
 
         def exit():

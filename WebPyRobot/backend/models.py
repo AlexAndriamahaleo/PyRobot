@@ -143,3 +143,11 @@ def getItemByType(itemIn,type):
         return Caterpillar.objects.get(pk=itemIn)
     elif type == TypeItem(pk=4) :
         return NavSystem.objects.get(pk=itemIn)
+
+
+class BattleHistory(models.Model):
+    user = models.ForeignKey(User, related_name="battlehistories")
+    opponent = models.ForeignKey(User, related_name="opponents")
+    is_victorious = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    difficult_level = models.CharField(max_length=10, default="normal")
