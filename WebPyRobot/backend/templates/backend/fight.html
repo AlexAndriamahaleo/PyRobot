@@ -5,9 +5,13 @@
 {% block title %} Battle {% endblock %}
 
 {% block content %}
-<h3 id="win" class="col l12"></h3>
-<canvas class="col l8 offset-l2" id="canvas"></canvas>
-<a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)" class="brand-logo"><img class="img-logo" src="{% static "img/skip.png" %}"></a>
+<div class="col s12 m9 l10 pad">
+    <div class="row z-depth-1 section padding-section">
+        <h3 id="win" class="col l12"></h3>
+        <canvas class="col l8 offset-l2" id="canvas"></canvas>
+        <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)" class="brand-logo"><img class="img-logo" src="{% static "img/skip.png" %}"></a>
+    </div>
+</div>
 {% endblock %}
 
 {% block custom_js %}

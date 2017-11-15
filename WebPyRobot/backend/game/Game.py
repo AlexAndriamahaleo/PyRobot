@@ -185,7 +185,6 @@ class Game(object):
 
     def is_victorious(self):
         for i in self.__result:
-            print (i)
             if i[1] == "dead":
                 if i[0] == 1:
                     return True

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'backend',
+    'pure_pagination',
 ]
 
 MIDDLEWARE = [

@@ -20,22 +20,40 @@ WebPyRobot - Historique
             </tr>
         </thead>
         <tbody>
-            {% for history in items %}
+            {% for history in page_obj.object_list %}
                 <tr>
                     <td>{{ history.timestamp }}</td>
-                    <td>{{ history.opponent }}</td>
-                    <td>{{ history.used_script }}</td>
-                    <td>
-                        {% if history.is_victorious %}
-                            Gagné
-                        {% else %}
-                            Perdu
-                        {% endif %}
-                    </td>
+                    {% if  history.opponent.username == request.user.username %}
+                        <td>{{ history.opponent.username }}</td>
+                        <td>{{ history.used_script.name }}</td>
+                        <td>
+                            {% if history.is_victorious %}
+                                Gagné
+                            {% else %}
+                                Perdu
+                            {% endif %}
+                        </td>
+                    {% else %}
+                        <td>{{ history.user.username }}</td>
+                        <td>{{ history.opp_used_script.name }}</td>
+                        <td>
+                            {% if history.is_victorious %}
+                                Perdu
+                            {% else %}
+                                Gagné
+                            {% endif %}
+                        </td>
+                    {% endif %}
+
+
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+<hr />
+<div id="pagination">
+    {{ page_obj.render }}
+</div>
 </div>
 {% endblock %}
 

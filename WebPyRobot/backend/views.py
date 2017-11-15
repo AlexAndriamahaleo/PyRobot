@@ -18,6 +18,8 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from channels import Group
+from pure_pagination.mixins import PaginationMixin
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .constants import NotificationMessage
 from .forms import SignUpForm, ChangeDataForm, CodeForm
@@ -380,9 +382,11 @@ def documentation (request):
 def tutoriel (request):
     return render(request,"backend/aide.html")
 
-class HistoriesView(LoginRequiredMixin, ListView):
+
+class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     template_name = "backend/histories.html"
     model = BattleHistory
+    paginate_by = 10
 
     def get_queryset(self):
         """
@@ -395,47 +399,9 @@ class HistoriesView(LoginRequiredMixin, ListView):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
         return queryset
 
-    def get_context_data(self, **kwargs):
-
-        context = super(HistoriesView, self).get_context_data(**kwargs)
-        objects = []
-        for i in self.get_queryset():
-            data = {}
-            data['timestamp'] = i.timestamp
-            data['used_script'] = 'N/A'
-            if i.user == self.request.user:
-                data['opponent'] = i.opponent.username
-                data['is_victorious'] = self.pretty_victory(i.is_victorious)
-                if i.used_script:
-                    data['used_script'] = i.used_script.name
-
-            else:
-                data['opponent'] = i.user.username
-                data['is_victorious'] = self.pretty_victory(i.is_victorious, True)
-                if i.opp_used_script:
-                    data['used_script'] = i.opp_used_script.name
-
-            objects.append(data)
-
-        context['items'] = objects
-        return context
-
-    def pretty_victory(self, is_victorious, rev=False):
-        if is_victorious:
-            if rev:
-                return 'No'
-            else:
-                return 'Yes'
-        else:
-            if rev:
-                return 'Yes'
-            else:
-                return 'No'
-
-
 
 class AIScriptView(LoginRequiredMixin, TemplateView):
-    template_name = "backend/ai_view.html"
+    template_name = "backend/editeur.html"
 
     def get_context_data(self, **kwargs):
         context = super(AIScriptView, self).get_context_data(**kwargs)

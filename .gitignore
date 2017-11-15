@@ -13,6 +13,7 @@ media
 .idea
 WebPyRobot/.idea/*
 WebPyRobot/run.sh.save
+WebPyRobot/development.py
 
 
 ### Python ###
