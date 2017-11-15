@@ -1,15 +1,37 @@
-(function($){
-  $(function(){
+(function ($) {
+    $(function () {
 
-    $('.button-collapse').sideNav();
-	$('.carousel').carousel();
-	$('.modal-trigger').leanModal();
-	$('.scrollspy').scrollSpy();
+        $('.button-collapse').sideNav();
 
-	$('.toc-wrapper').pushpin({
-		offset: 100
-		});
+        $('.carousel').carousel();
+
+        $('.carousel.carousel-slider').carousel();
+        //$('.modal-trigger').leanModal();
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+
+        $('.scrollspy').scrollSpy();
+
+        $(document).ready(function () {
+            $('.parallax').parallax();
+        });
+        $(document).ready(function () {
+            $('.materialboxed').materialbox();
+        });
+        $('.toc-wrapper').pushpin({
+            offset: 100
+        });
 
 
-  }); // end of document ready
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
+
+        $(document).ready(function () {
+            $('.carousel').carousel();
+        });
+
+
+    }); // end of document ready
 })(jQuery); // end of jQuery name space

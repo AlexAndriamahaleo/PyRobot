@@ -1,13 +1,12 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>WebPyRobot - Editeur</title>
+{% extends "base.html" %}
 
-    {% include 'backend/head.html' %}
+{% load staticfiles %}
 
+{% block title %}
+    WebPyRobot - Editeur
+{% endblock %}
+
+{% block custom_css %}
     <!-- Editeur Python CSS -->
     <link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}"/>
     <link rel="stylesheet" href="{% static 'codemirror/theme/cobalt.css' %}"/>
@@ -18,81 +17,100 @@
 
     <script src="{% static 'codemirror/addon/edit/closebrackets.js' %}"></script>
     <script src="{% static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
-
     <!-- CodeMirror Autocomplete-->
-
     <link rel="stylesheet" href="{% static 'codemirror/addon/hint/simple-hint.css' %}"/>
     <link rel="stylesheet" href="{% static 'codemirror/addon/hint/show-hint.css' %}"/>
     <script src="{% static 'codemirror/addon/hint/simple-hint.js' %}"></script>
     <script src="{% static 'codemirror/addon/hint/show-hint.js' %}"></script>
     <script src="{% static 'codemirror/addon/hint/python-hint.js' %}"></script>
+    <style>
+        .btn:hover {
+            background-color: #388e3c;
+        }
+    </style>
+{% endblock %}
 
-</head>
-<body>
-{% include 'backend/header.html' with moneyIn=money user=username%}
-<main class="container">
-    <div class="section">
-        <div class="row">
+{% block content %}
+    <div class="col s12 m9 l10 pad">
+        <div class="row z-depth-1 section padding-section">
+            <div class="pad row col s12 m12 l12 ">
 
-            {% include 'backend/sideNav.html' with page=pageIn %}
+                <div class="pad col s12 m3 l3 ">
+                    <ul class="collection with-header">
+                        <li class="collection-header"><h4>Vos Scripts</h4></li>
+                        <li class="collection-item">
+                            <div>
+                                {{ name }} n°1
+                                <a href="#" class="script-1 secondary-content"><i
+                                        class="material-icons">send</i></a>
+                            </div>
+                        </li>
+                        <li class="collection-item">
+                            <div>
+                                {{ name }} n°2
+                                <a href="#" class="script-2 secondary-content"><i
+                                        class="material-icons">send</i></a>
+                            </div>
+                        </li>
+                        <li class="collection-item">
+                            <div>
+                                {{ name }} n°3
+                                <a href="#" class="script-3 secondary-content"><i
+                                        class="material-icons">send</i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="col s12 m9 l10 pad">
-                <div class="row z-depth-1 section padding-section">
-                    <div class="pad row col s12 m12 l12 ">
 
-                        <div class="pad col s12 m3 l3 ">
-                            <ul class="collection with-header">
-                                <li class="collection-header"><h4>Vos Scripts</h4></li>
-                                <li class="collection-item">
-                                    <div>Code n°1<a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
-                                    </div>
-                                </li>
-                                <li class="collection-item">
-                                    <div>Code n°2<a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
-                                    </div>
-                                </li>
-                                <li class="collection-item">
-                                    <div>Code n°3<a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
-                                    </div>
+                <div class="pad col s12 m9 l9 ">
+                    <nav>
+                        <div class="nav-wrapper yellow lighten-2">
+                            <a href="#" data-activates="mobile-demo" class="button-collapse"><i
+                                    class="material-icons">menu</i></a>
+                            <ul class="left hide-on-med-and-down">
+                                <li class="save"><a class="indigo-text darken-4" href="#">Sauvgarder</a></li>
+                                <li><a class="indigo-text darken-4" href="{% url 'backend:fight' %}">Tester</a></li>
+                            </ul>
+                            <ul class="side-nav" id="mobile-demo">
+                                <li class="save"><a class="waves-effect" href="#"><i
+                                        class="material-icons left">save</i>Sauvgarder</a></li>
+                                <li><a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
                                 </li>
                             </ul>
                         </div>
+                    </nav>
+                    <form id="code" action="{% url 'backend:editor' %}" method="post">
+                        {% csrf_token %}
+                        <textarea name="ia" id="ia" cols="40" rows="10">{{ code }}</textarea>
+                        <p><strong>Note :</strong> Appuyez ' <i>Ctrl + Space</i> ' pour utliser l'autocomplétion
+                            à tout moment.</p>
+                        <p><strong>Attention :</strong> Remplacez ce qu'il y a entre trois quotes par une
+                            valeur/variable qui correspond.</p>
+                    </form>
 
+                    <form action="{% url 'backend:editor' %}">
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Charger un script</span>
+                                <input type="file" name="script" accept="text/plain, text/x-python">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
 
-                        <div class="pad col s12 m9 l9 ">
-                            <nav>
-                                <div class="nav-wrapper">
-                                    <a href="#" data-activates="mobile-demo" class="button-collapse"><i
-                                            class="material-icons">menu</i></a>
-                                    <ul class="left hide-on-med-and-down">
-                                        <li class="save"><a href="#">Sauvgarder</a></li>
-                                        <li><a href="{% url 'backend:fight' %}">Tester</a></li>
-                                    </ul>
-                                    <ul class="side-nav" id="mobile-demo">
-                                        <li class="save"><a class="waves-effect" href="#"><i
-                                                class="material-icons left">save</i>Sauvgarder</a></li>
-                                        <li><a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </nav>
-                            <form id="code" action="{% url 'backend:editor' %}" method="post">
-                                {% csrf_token %}
-                                <textarea name="ia" id="ia" cols="40" rows="10">{{ code }}</textarea>
-                                <p><strong>Note :</strong> Appuyez ' <i>Ctrl + Space</i> ' pour utliser l'autocomplétion
-                                    à tout moment.</p>
-                                <p><strong>Attention :</strong> Remplacez ce qu'il y a entre trois quotes par une
-                                    valeur/variable qui correspond.</p>
-                            </form>
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Envoyer
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+
                 </div>
             </div>
         </div>
     </div>
-</main>
-{% include 'backend/footer.html' %}
-<script src="{% static 'js/editor.js' %}"></script>
+{% endblock %}
 
-</body>
-</html>
+{% block custom_js %}
+    <script src="{% static 'js/editor.js' %}"></script>
+{% endblock %}
