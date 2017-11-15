@@ -11,6 +11,18 @@
     <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <style>
+        body {
+            font-family: "Raleway", sans-serif
+        }
+
+        p {
+            font-size: large
+        }
+    </style>
+
     {% block custom_css %} {% endblock %}
 
 </head>
@@ -25,25 +37,61 @@
                 {% block sidenav %}
                     {% include 'backend/sideNav.html' with page=pageIn %}
                 {% endblock %}
-            <div class="col s12 m9 l10 pad">
-                <div class="row z-depth-1 section padding-section">
-                    {% block content %} {% endblock %}
-                </div>
-            </div>
+
+                {% block content %} {% endblock %}
             </div>
         </div>
     </main>
 
-    <footer class="page-footer grey">
-        <div class="footer-copyright">
-            <div class="container">
-              <div class="row">
-                <a class="grey-text text-lighten-4 left-align col s4 m4 l4 " href="#!">Condition d'utilisation</a>
-                <i class="small material-icons col center-align s4 m4 l4">insert_chart</i>
-                <a class="grey-text text-lighten-4 right-align col s4 m4 l4" href="#!">Mention Légale</a>
-              </div>
+     <footer class="section" style="background-color: #1a237e">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m3 l3">
+                <h4 class="yellow-text">Sites utiles</h4>
+                <ul>
+                    <li><a class="white-text" href="https://openclassrooms.com" target="_blank"><i class="fa fa-pencil"
+                                                                                                   aria-hidden="true"></i>
+                        Openclassrooms</a></li>
+                    <li><a href="https://www.w3schools.com/" class="white-text" target="_blank"><i
+                            class="fa fa-graduation-cap" aria-hidden="true"></i>
+                        w3schools</a></li>
+                    <li><a href="https://github.com/"
+                                                                              class="white-text" target="_blank">
+                       <i class="fa fa-github" style="font-size:24px"></i> Github</a></li>
+                </ul>
+            </div>
+            <div class="col s12 m3 l3">
+                <h4 class="yellow-text">News</h4>
+            </div>
+            <div class="col s12 m3 l3">
+                <h4 class="yellow-text">À venir</h4>
+
+                <div class="chip green darken-2 white-text">Système d'expérience</div>
+                <div class="chip green darken-2 white-text">Niveaux</div>
+                <div class="chip green darken-2 white-text">Trophés</div>
+                <div class="chip green darken-2 white-text">Bonus</div>
+            </div>
+            <div class="col s12 m3 l3">
+                <h4 class="yellow-text">Autres</h4>
+                <ul>
+                    <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fa fa-google"
+                                                                                               aria-hidden="true"></i>
+                        Google</a></li>
+                    <li><a href="https://stackoverflow.com/" class="white-text" target="_blank"><i
+                            class="fa fa-stack-overflow" aria-hidden="true"></i>
+                        Stackoverflow</a></li>
+                    <li><a href="https://www.tutorialspoint.com/" class="white-text" target="_blank"> <i
+                            class="fa fa-magic" aria-hidden="true"></i>
+                        Tutorialspoint</a></li>
+                </ul>
             </div>
         </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container white-text">
+            Copyright 2017 design par ©BananiaStyleProd.
+        </div>
+    </div>
     </footer>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

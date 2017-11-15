@@ -1,120 +1,135 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr" xmlns="http://www.w3.org/1999/html">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Bienvenue sur WebPyRobot</title>
 
-  {% include 'backend/head.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Bienvenue Sur MatureWebPyRobot</title>
+
+    {% include 'backend/head.html' %}
+
 
 </head>
 <body>
-  <header>
-    <nav class="light-blue lighten-1" role="navigation">
-      <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo"><img class="img-logo" src="{% static "img/svg_tank/tank.svg" %}">  WebPyRobot</a>
+
+<nav class="indigo darken-4" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo green-text darken-3">MPR</a>
         <ul class="right hide-on-med-and-down">
-          <li><a class="modal-trigger" href="#modalConnexion">Connexion</a></li>
-          <li><a class="modal-trigger" href="#modalInscription">Inscription</a></li>
+            <li><a class="modal-trigger green-text darken-3" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+ Connexion</a></li>
+            <li><a class="modal-trigger green-text darken-3" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+ Inscription</a></li>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-          <li><a class="modal-trigger" href="#modalConnexion">Connexion</a></li>
-          <li><a class="modal-trigger" href="#modalInscription">Inscription</a></li>
+            <li><a class="modal-trigger green-text darken-3" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+ Connexion</a></li>
+            <li><a class="modal-trigger green-text darken-3" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+ Inscription</a></li>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-      </div>
-    </nav>
-  </header>
-  {% if error %}
-  <p>{{ error }}</p>
-  {% endif %}
+    </div>
+</nav>
 
-  <!-- MODAL  -->
-  <div id="modalConnexion" class="modal">
+
+<!-- MODAL  -->
+<div id="modalConnexion" class="modal">
     <div class="modal-content">
-      <h4>Connexion</h4>
-      <form method="post" action="{% url 'backend:login' %}">
-        <div class="row">
-          {% csrf_token %}
-          <div class="input-field col s12">
-            <input placeholder="Placeholder" id="username" name="username" type="text" class="validate">
-            <label for="first_name">Pseudo</label>
-          </div>
-          <div class="input-field col s12">
-            <input id="password" name="password" type="password" class="validate">
-            <label for="password">Password</label>
-          </div>
-          <div class="modal-footer">
-           <input type="submit" value="Se Connecter" class=" modal-action waves-effect waves-green btn">
-         </div>
-       </div>
-     </form>
+        <h4>Connexion</h4>
+        <form method="post" action="{% url 'backend:login' %}">
+            <div class="row">
+                {% csrf_token %}
+                <div class="input-field col s12">
+                    <input placeholder="BananiaStyle" id="username" name="username" type="text" class="validate">
+                    <label for="first_name">Pseudo</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="password" name="password" type="password" class="validate">
+                    <label for="password">Mot de Passe</label>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Se Connecter" class=" modal-action waves-effect indigo darken-4 btn">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+      <p> </p>
+    </div>
+</div>
+<div id="modalInscription" class="modal">
+    <div class="modal-content">
+        <form action="{% url 'backend:signUp' %}" method="post">
+            {% csrf_token %}
+            <h4>Inscription</h4>
+            <div class="row">
 
-   </div>
- </div>
- <div id="modalInscription" class="modal">
-  <div class="modal-content">
-    <form action="{% url 'backend:signUp' %}" method="post">
-      {% csrf_token %}
-      <h4>Inscription</h4>
-      <div class="row">
+                <div class="input-field col s12">
+                    {{ form.username }}
+                    <label for="{{ form.username.label }}">{{ form.username.label }}</label>
+                </div>
+                <div class="input-field col s12">
+                    {{ form.email }}
+                    <label for="{{ form.email.label }}">{{ form.email.label }}</label>
+                </div>
+                <div class="input-field col s12">
+                    {{ form.password }}
+                    <label for="{{ form.password.label }}">{{ form.password.label }}</label>
+                </div>
+            </div>
 
-        <div class="input-field col s12">
-          {{ form.username }}
-          <label for="{{ form.username.label }}">{{ form.username.label }}</label>
-        </div>
-        <div class="input-field col s12">
-          {{ form.email }}
-          <label for="{{ form.email.label }}">{{ form.email.label }}</label>
-        </div>
-        <div class="input-field col s12">
-          {{ form.password }}
-          <label for="{{ form.password.label }}">{{ form.password.label }}</label>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <input type="submit" value="S'inscrire" class=" modal-action waves-effect waves-green btn">
-      </div>
-    </form>
-  </div>
+            <div class="modal-footer">
+                <input type="submit" value="S'inscrire" class=" modal-action waves-effect indigo darken-4 btn">
+            </div>
+        </form>
+    </div>
 </div>
 
-<main class="container">
-  <div class="section">
+<div id="index-banner" class="parallax-container" style="height: 1000px; width: 100%;">
+    <div class="section no-pad-bot">
+        <div class="container">
 
-    <!--   Icon Section   -->
-    <div class="row">
-      <div class="col s12">
-        <div class="icon-block">
-          <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-          <h5 class="center">WebPyRobot</h5>
+            <h1 class="header center indigo-text darken-4 bienvenue">Bienvenue sur MaturePyRobot</h1>
+            <br><br>
+            <div class="section">
+                <div class="row white-text lighten-5">
+                    <div class="col s12 m12 l12">
+                        <h5>
+                            Envie d'apprendre un langage de programmation ? S'initier à la programmation ?
+                            Vous êtes au bon endroit ! Pour vous, nous avons choisis la méthode d'apprentissage
+                            par le jeu. Les jeux probots, crobots, etc, sont une manière ludique d'apprendre
+                            un langage de programmation. Le langagege Python s'impose de plus en plus dans le
+                            monde de l'éducation; pour apprendre aux novices les rudiments de la programmation.
+                        </h5>
+                        <br><br>
+                        <h5>
+                            Sur notre site nous vous proposons de programmer, dans ce langage,
+                            le comportement d'un tank. Pour pimenter votre expérience, mesurez vous aux autres
+                            utilisateurs de notre site et voyez le fruit de votre travail par le biais d'un
+                            combat. Vos tanks seront placés dans une arène où se livrera un combat sans merci.
+                        </h5>
+                        <br><br>
+                        <h5>
+                            Le joueur qui aura programmé le meilleur tank gagnera la partie et
+                            se verra octroyer certains bonus pour le développement de son tank.
+                            Un système de "Test" est disponible, si vous souhaitez vous mesurer à l'ordinateur
+                            dont le niveau sera équivalent au vôtre.<br><br>
 
-          <div class="flow-text justify"><p>WebPyrobot est un projet réalisé par des étudiants.<br>
-            Notre site à pour but d'apprendre à coder en un langage très répandu et pratique pour débuter.<br/>
-            Sur WebPyRobot créez la plus puissante intelligence artificielle qui contrôlera votre tank et détruisez vos ennemies.
-              Simple et gratuit notre site vous permettra de montrer vos talents de développeur. <br/>
-              Rejoignez vite notre communauté.
-            </p>
-          </div>
+                            La bataille est déjà lancée !!
+                            <br><br>Que le meilleur programmeur gagne !!
+                        </h5>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="parallax">
+            <img src="{% static 'img/black_wall.jpg' %}" alt="Unsplashed background img 1">
+        </div>
     </div>
+</div>
 
-  </div>
-  <!-- Gallery Section -->
-  <div class="section">
-    <div class="carousel">
-      <a class="carousel-item" href="#two!"><img src="{% static 'img/python_logo.png' %}"></a>
-      <a class="carousel-item" href="#three!"><img src="{% static 'img/tank.png' %}"></a>
-      <a class="carousel-item" href="#four!"><img src="{% static 'img/équipement.png' %}"></a>
-       <a class="carousel-item" href="#five!"><img src="{% static 'img/intelligence-artificielle.jpg' %}"></a>
-      <a class="carousel-item" href="#one!"><img src="{% static 'img/game.png' %}"></a>
-    </div>
-  </div>
-</main>
 {% include 'backend/footer.html' %}
-
 </body>
 </html>

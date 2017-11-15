@@ -203,10 +203,41 @@ def editor(request):
         'money': UserProfile.objects.get(user=request.user).money,
         'username': request.user,
         'pageIn': 'editor',
-        'code': ia.text
+        'code': ia.text,
+        'name': request.user
     }
     return render(request, 'backend/editeur.html', context)
 
+@login_required
+def createscript(request):
+
+    #create ia file default
+    #userProfile = UserProfile.objects.get(user=user)
+    #i = Ia.objects.create(owner=userProfile, name=username + "\'s Ia", text=DefaultIa.objects.get(pk=1).text)
+
+    #from .forms import CodeForm
+    #userprofile = UserProfile.objects.get(user=request.user)
+
+    # create ia file default
+    userProfile = UserProfile.objects.get(user=request.user)
+
+    ia = Ia.objects.create(owner=userProfile, name=request.user+ "\'s Ia", text=DefaultIa.objects.get(pk=1).text)
+    ia.save()
+
+    #ia = Ia.objects.get(owner=userProfile)
+
+    #ia.text = DefaultIa.objects.all()
+    #ia.save()
+
+    context = {
+        'money': UserProfile.objects.get(user=request.user).money,
+        'username': request.user,
+        'pageIn': 'editor',
+        'code': ia.text,
+        'name': request.user
+    }
+
+    return render(request, 'backend/editeur.html', context)
 
 @login_required
 def editorDetail(request, pk):
@@ -345,6 +376,9 @@ def buyStuff (request):
 def documentation (request):
   return render (request,"backend/documentation.html")
 
+@login_required
+def tutoriel (request):
+    return render(request,"backend/aide.html")
 
 class HistoriesView(LoginRequiredMixin, ListView):
     template_name = "backend/histories.html"

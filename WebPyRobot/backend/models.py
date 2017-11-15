@@ -9,6 +9,12 @@ class UserProfile(models.Model):
     avatar = models.ImageField(blank=True)
     agression = models.BooleanField(default=False)
 
+    #Exp - R&D
+    exp = models.PositiveIntegerField(default=0)
+    srch = models.PositiveIntegerField(default=0)
+    dev = models.PositiveIntegerField(default=0)
+    level = models.PositiveIntegerField(default=1)
+
     def __str__(self):
         return self.user.username
 
