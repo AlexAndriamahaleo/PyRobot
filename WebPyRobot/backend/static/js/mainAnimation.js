@@ -85,10 +85,22 @@ var moveRigth = function(player,x,y){
 var deadPlayer = function(player){
 	player.dead();
 	if (player == player1)
-		document.getElementById("win").innerHTML = "Le joueur 2 a gagné.";
+		document.getElementById("win").innerHTML = "You are defeated by " + opponent;
 	else 
-		document.getElementById("win").innerHTML = "Le joueur 1 a gagné.";
-};	
+		document.getElementById("win").innerHTML = "You defeated " + opponent;
+
+	var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+	var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/" + opponent + "-notifications/");
+	socket.onopen = function() {
+    	var message = {
+			msg_content: "The battle against user " + playername + " has ended",
+			msg_type: "notification",
+			msg_class: "success"
+		};
+		socket.send(JSON.stringify(message));
+	};
+	if (socket.readyState == WebSocket.OPEN) socket.onopen();
+};
 
 var shoot = function(player,x,y){
 	var ctx = canvas.getContext('2d');

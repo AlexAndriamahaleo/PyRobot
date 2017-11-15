@@ -6,14 +6,16 @@
             <tr>
                 <th>Timestamp</th>
                 <th>Opponent</th>
+                <th>Used Script</th>
                 <th>Is Victorious</th>
             </tr>
         </thead>
         <tbody>
-            {% for history in object_list %}
+            {% for history in items %}
                 <tr>
                     <td>{{ history.timestamp }}</td>
-                    <td>{{ history.opponent.username }}</td>
+                    <td>{{ history.opponent }}</td>
+                    <td>{{ history.used_script }}</td>
                     <td>
                         {% if history.is_victorious %}
                             Yes

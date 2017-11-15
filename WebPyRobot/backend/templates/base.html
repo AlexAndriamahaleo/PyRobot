@@ -46,9 +46,18 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="{% static 'js/materialize.js' %}"></script>
-    <script src="{% static 'js/init.js' %}"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+{#    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>#}
+    <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+    {% if request.user.is_authenticated %}
+        <script type="text/javascript">
+            var username = "{{ request.user.username }}";
+        </script>
+        <script src="{% static 'js/notify.min.js' %}"></script>
+        <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+        <script type="text/javascript" src="{% static 'js/notifications.js' %}"></script>
+    {% endif %}
+    <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
 
     {% block custom_js %} {% endblock %}
 

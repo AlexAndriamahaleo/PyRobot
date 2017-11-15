@@ -1,29 +1,32 @@
-# from dbus.service import Object
+import json
+import random
+
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import logout as system_logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.decorators.cache import never_cache
+from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-from django.urls import reverse
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
-from .models import UserProfile, Tank, Ia, BattleHistory
- #from .game.Game import Game, Robot
+from channels import Group
 
-from .forms import SignUpForm
-from .forms import ChangeDataForm
-
+from .constants import NotificationMessage
+from .forms import SignUpForm, ChangeDataForm, CodeForm
 from .funct.funct import getItemByType,getBoolInventory
-import json
+from .game.Game import Game
+from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
+from .models import UserProfile, Tank, Ia, BattleHistory, Notification
 
 
-# Create your views here.
 
 
 def index(request):
@@ -67,13 +70,11 @@ def login(request):
 
 @never_cache
 def logout(request):
-    from django.contrib.auth import logout
-    logout(request)
+    system_logout(request)
     return redirect(reverse('backend:index'))
 
 
 class SignUp (FormView):
-    from .forms import SignUpForm
     template_name = 'backend/index.html'
     form_class = SignUpForm
 
@@ -135,19 +136,21 @@ def thanks(request):
 
 @login_required
 def fight(request):
-    import random
-    from .game.Game import Game
+    print ("Start ....")
     user1 = UserProfile.objects.get(user=request.user)
-    nbuser = UserProfile.objects.all().count()
-    user2 = UserProfile.objects.get(user=request.user)
-    while True :
-        alea = random.randrange(0, nbuser)
-        try:
-            user2 = UserProfile.objects.get(pk=alea)
-        except UserProfile.DoesNotExist:
-            pass
-        if user1 != user2: break
+    users = UserProfile.objects.exclude(pk=user1.pk)
+    user2 = random.choice(list(users))
 
+    notify = NotificationMessage()
+    notify.msg_content = "The user %s has just started a battle against you" % user1.user.username
+    print (notify.dumps())
+    Group(user2.user.username + '-notifications').send(
+        {'text': notify.dumps()})
+
+    Notification.objects.create(user=user1.user, content="You have just started a battle against %s" % user2.user.username,
+                                is_read=True)
+    Notification.objects.create(user=user2.user,
+                                content="The user %s has just started a battle against you" % user1.user.username)
     tank1 = Tank.objects.get(owner=user1)
     tank2 = Tank.objects.get(owner=user2)
     ia1 = Ia.objects.get(owner=user1)
@@ -159,9 +162,11 @@ def fight(request):
     user2.money = user2.money + 100
     user2.save()
     context = {
-        'result': res
+        'result': res,
+        'component': user2.user.username
     }
     return render(request, "backend/fight.html", context)
+
 
 @login_required
 def password_change(request):
@@ -185,7 +190,6 @@ def password_change(request):
 
 @login_required
 def editor(request):
-    from .forms import CodeForm
     userprofile = UserProfile.objects.get(user=request.user)
     ia = Ia.objects.get(owner=userprofile)
     if request.method == 'POST':
@@ -345,3 +349,62 @@ def documentation (request):
 class HistoriesView(LoginRequiredMixin, ListView):
     template_name = "backend/histories.html"
     model = BattleHistory
+
+    def get_queryset(self):
+        """
+        Return the list of items for this view.
+
+        The return value must be an iterable and may be an instance of
+        `QuerySet` in which case `QuerySet` specific behavior will be enabled.
+        """
+
+        queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
+        return queryset
+
+    def get_context_data(self, **kwargs):
+
+        context = super(HistoriesView, self).get_context_data(**kwargs)
+        objects = []
+        for i in self.get_queryset():
+            data = {}
+            data['timestamp'] = i.timestamp
+            data['used_script'] = 'N/A'
+            if i.user == self.request.user:
+                data['opponent'] = i.opponent.username
+                data['is_victorious'] = self.pretty_victory(i.is_victorious)
+                if i.used_script:
+                    data['used_script'] = i.used_script.name
+
+            else:
+                data['opponent'] = i.user.username
+                data['is_victorious'] = self.pretty_victory(i.is_victorious, True)
+                if i.opp_used_script:
+                    data['used_script'] = i.opp_used_script.name
+
+            objects.append(data)
+
+        context['items'] = objects
+        return context
+
+    def pretty_victory(self, is_victorious, rev=False):
+        if is_victorious:
+            if rev:
+                return 'No'
+            else:
+                return 'Yes'
+        else:
+            if rev:
+                return 'Yes'
+            else:
+                return 'No'
+
+
+
+class AIScriptView(LoginRequiredMixin, TemplateView):
+    template_name = "backend/ai_view.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(AIScriptView, self).get_context_data(**kwargs)
+        context['scripts'] = self.request.user.userprofile.ia_set.all()
+
+        return context

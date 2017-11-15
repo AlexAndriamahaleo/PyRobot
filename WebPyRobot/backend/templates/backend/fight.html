@@ -1,35 +1,20 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>WebPyRobot - Accueil</title>
+{% extends 'base.html' %}
 
-    {% include 'backend/head.html' %}
+{% load static %}
+
+{% block title %} Battle {% endblock %}
+
+{% block content %}
+<h3 id="win" class="col l12"></h3>
+<canvas class="col l8 offset-l2" id="canvas"></canvas>
+<a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)" class="brand-logo"><img class="img-logo" src="{% static "img/skip.png" %}"></a>
+{% endblock %}
+
+{% block custom_js %}
     <script type="text/javascript">
         var a = "{{ result }}".replace(/&#39;/g, "\"");
+        var opponent = "{{ component }}";
+        var playername = "{{ request.user.username }}";
     </script>
     {% include 'backend/headAnimation.html' %}
-
-
-
-  </head>
-  <body>
-  {% include 'backend/header.html' with moneyIn=money user=username%}
-    <main class="container">
-        <div class="section">
-        <div class="row">
-            {% include 'backend/sideNav.html' with page=pageIn %}
-
-            <div class="col s12 m9 l10 pad">
-              <h3 id="win" class="col l12"></h3>
-              <canvas class="col l8 offset-l2" id="canvas"></canvas>
-	      <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)" class="brand-logo"><img class="img-logo" src="{% static "img/skip.png" %}"></a>
-            </div>
-	    
-        </div>
-    </main>
-    {% include 'backend/footer.html' %}
-  </body>
-</html>
+{% endblock %}

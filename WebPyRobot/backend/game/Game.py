@@ -1,4 +1,4 @@
-from ..models import BattleHistory
+from ..models import BattleHistory, Notification
 
 
 class Robot(object):
@@ -112,7 +112,7 @@ class Game(object):
         yp = self.getCellPosY(NumCell)
         x = self.getCellPosX(pos)
         y = self.getCellPosY(pos)
-        cpt = 0;
+        cpt = 0
         while pm > 0 and pos != NumCell:
             if x > xp:
                 # gauche
@@ -183,6 +183,14 @@ class Game(object):
                 self.__robots[self.getEnemyTankId()].setLife(self.__robots[self.getEnemyTankId()].getLife()-dWe)
             self.__robots[self.__current].setPA(pa-paWe)
 
+    def is_victorious(self):
+        for i in self.__result:
+            print (i)
+            if i[1] == "dead":
+                if i[0] == 1:
+                    return True
+        return False
+
     def set_history(self):
         """
         Save history of a battle
@@ -194,17 +202,27 @@ class Game(object):
         tank2 = robot2.getTank()
         player = tank1.owner.user
         opponent = tank2.owner.user
-        is_victorious = False
-        for i in self.__result:
-            if i[1] == "dead":
-                if i[0] == 1:
-                    is_victorious = True
-                    break
         BattleHistory.objects.create(
             user = player,
+            used_script = tank1.owner.get_active_ai_script(),
+            opp_used_script = tank2.owner.get_active_ai_script(),
             opponent = opponent,
-            is_victorious = is_victorious
+            is_victorious = self.is_victorious()
         )
+
+    def notify_endgame(self):
+        robot1 = self.__robots[0]
+        robot2 = self.__robots[1]
+        tank1 = robot1.getTank()
+        tank2 = robot2.getTank()
+        user1 = tank1.owner.user
+        user2 = tank2.owner.user
+        # Group(user2.user.username + '-notifications').send(
+        #     {'text': "The battle against user %s ended" % user1.user.username})
+        Notification.objects.create(user=user1.user, content="Your battle against %s has ended" % user2.user.username,
+                                    is_read=True)
+        Notification.objects.create(user=user2.user,
+                                    content="The battle against user %s has ended" % user1.user.username)
 
     def run(self, i):
         # for i in range(0, 64):
@@ -212,10 +230,12 @@ class Game(object):
         if self.__robots[0].getLife() <= 0:
             self.__result.append([0, "dead", 0, 0])
             self.set_history()
+            # self.notify_endgame()
             return self.__result
         if self.__robots[1].getLife() <= 0:
             self.__result.append([1, "dead", 0, 0])
             self.set_history()
+            # self.notify_endgame()
             return self.__result
 
         def exit():

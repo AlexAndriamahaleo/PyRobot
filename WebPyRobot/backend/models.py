@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_delete, post_save
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -29,15 +31,36 @@ class UserProfile(models.Model):
             sOut.append(getItemByType(s.item, TypeItem(pk=4)))
         return [wOut, aOut, cOut, sOut]
 
+    def get_active_ai_script(self):
+        ai_scripts = self.ia_set.filter(active=True)
+        if ai_scripts:
+            return list(ai_scripts)[0]
+        return None
+
+
 class Ia(models.Model):
     owner = models.ForeignKey(UserProfile)
     name = models.CharField(max_length=50, default='')
     text = models.TextField()
+    active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+    # def save(self, *args, **kwargs):
+    #     if self.name == '':
+    #         self.name = 'AI Script %s' % self.pk
+    #     super(Ia, self).save(*args, **kwargs)
+
     def getIaByOwner(user):
         return Ia.objects.get(owner=user)
+
+def create_ia_name(sender, instance, raw, created, **kwargs):
+    if instance.name == '':
+        instance.name = "AI Script %s" % instance.pk
+        instance.save()
+
+post_save.connect(create_ia_name, sender=Ia)
 
 
 class Weapon(models.Model):
@@ -97,6 +120,7 @@ class NavSystem(models.Model):
 
     def __str__(self):
         return self.name
+
     def isInInventory(self,user):
         inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=4), item=self.pk)
         if inv.count() > 0 :
@@ -115,6 +139,7 @@ class Tank(models.Model):
 
     def __str__(self):
         return self.owner.__str__()
+
 
 class TypeItem (models.Model):
     name = models.CharField(max_length=200)
@@ -149,5 +174,14 @@ class BattleHistory(models.Model):
     user = models.ForeignKey(User, related_name="battlehistories")
     opponent = models.ForeignKey(User, related_name="opponents")
     is_victorious = models.BooleanField(default=False)
+    used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
+    opp_used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
     timestamp = models.DateTimeField(auto_now_add=True)
     difficult_level = models.CharField(max_length=10, default="normal")
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, related_name="notifications")
+    content = models.CharField(max_length=200)
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
