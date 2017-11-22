@@ -380,7 +380,7 @@ def documentation (request):
 
 @login_required
 def tutoriel (request):
-    return render(request,"backend/aide.html")
+    return render(request,"backend/tutorial.html")
 
 
 class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):

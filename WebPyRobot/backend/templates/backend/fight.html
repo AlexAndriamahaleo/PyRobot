@@ -7,18 +7,20 @@
 {% block content %}
 <div class="col s12 m9 l10 pad">
     <div class="row z-depth-1 section padding-section">
-        <h3 id="win" class="col l12"></h3>
+        <p id="win" class="col l12"></p>
         <canvas class="col l8 offset-l2" id="canvas"></canvas>
-        <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)" class="brand-logo"><img class="img-logo" src="{% static "img/skip.png" %}"></a>
+        <div class="col l3 offset-l4">
+            <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)" class="waves-effect waves-light btn">Passer le combat</a>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block custom_js %}
-    <script type="text/javascript">
-        var a = "{{ result }}".replace(/&#39;/g, "\"");
-        var opponent = "{{ component }}";
-        var playername = "{{ request.user.username }}";
-    </script>
-    {% include 'backend/headAnimation.html' %}
+<script type="text/javascript">
+    var a = "{{ result }}".replace(/&#39;/g, "\"");
+    var opponent = "{{ component }}";
+    var playername = "{{ request.user.username }}";
+</script>
+{% include 'backend/headAnimation.html' %}
 {% endblock %}

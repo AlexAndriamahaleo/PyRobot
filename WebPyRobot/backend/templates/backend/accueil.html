@@ -3,8 +3,13 @@
 {% load staticfiles %}
 
 {% block title %}
-    WebPyRobot - Historique
+    MaturePyRobot - Historique
 {% endblock %}
+
+{% block custom_css %}
+
+{% endblock %}
+
 
 
 {% block content %}
@@ -17,11 +22,11 @@
                 <h1 class="card-title black-text">Tableau de bord</h1>
                 <p>Niveau</p>
                 <div class="progress">
-                    <div class="determinate" style="width: 50%"></div>
+                    <div class="determinate" style="width: {% if user %}{{ user.userprofile.level }}{% endif %}%"></div>
                 </div>
                 <p>Expérience</p>
                 <div class="progress">
-                    <div class="determinate" style="width: {{ user.exp }}+10%"></div>
+                    <div class="determinate" style="width: {% if user %}{{ user.userprofile.exp }}{% endif %}%"></div>
                 </div>
 
 
@@ -72,11 +77,11 @@
 
                 <p>Recherche</p>
                 <div class="progress">
-                    <div class="determinate" style="width: 0%"></div>
+                    <div class="determinate" style="width: {% if user %}{{ user.userprofile.srch }}{% endif %}%"></div>
                 </div>
                 <p>Développement</p>
                 <div class="progress">
-                    <div class="determinate" style="width: 0%"></div>
+                    <div class="determinate" style="width: {% if user %}{{ user.userprofile.dev }}{% endif %}%"></div>
                 </div>
             </div>
         </div>
