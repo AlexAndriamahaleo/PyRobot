@@ -43,6 +43,21 @@ class UserProfile(models.Model):
             return list(ai_scripts)[0]
         return None
 
+    def change_active_ai(self, new_ai):
+        old_ai = self.get_active_ai_script()
+        if old_ai:
+            old_ai.active = False
+            old_ai.save()
+        new_ai.active = True
+        new_ai.save()
+
+    @property
+    def get_ai_name(self):
+        ai = self.get_active_ai_script()
+        if ai:
+            return ai.name
+        return "No Active Script"
+
 
 class Ia(models.Model):
     owner = models.ForeignKey(UserProfile)
@@ -52,11 +67,6 @@ class Ia(models.Model):
 
     def __str__(self):
         return self.name
-
-    # def save(self, *args, **kwargs):
-    #     if self.name == '':
-    #         self.name = 'AI Script %s' % self.pk
-    #     super(Ia, self).save(*args, **kwargs)
 
     def getIaByOwner(user):
         return Ia.objects.get(owner=user)
