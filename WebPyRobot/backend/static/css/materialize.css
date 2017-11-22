@@ -7664,6 +7664,11 @@ input[type=range]:focus::-ms-fill-upper {
   border-color: #0f9d58;
 }
 
+.spinner-indigo,
+.spinner-indigo-only {
+  border-color: #1a237e;
+}
+
 /**
  * IMPORTANT NOTE ABOUT CSS ANIMATION PROPERTIES (keanulee):
  *

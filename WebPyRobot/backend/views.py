@@ -159,10 +159,25 @@ def fight(request):
     ia2 = Ia.objects.get(owner=user2)
     game = Game(tank1, tank2, ia1, ia2)
     res = game.run(0)
-    user1.money = user1.money + 100
-    user1.save()
-    user2.money = user2.money + 100
-    user2.save()
+
+    if game.is_victorious():
+        user1.money = user1.money + 500
+        user1.exp = user1.exp + 5
+        user1.srch = user1.srch + 10
+        user1.save()
+        user2.money = user2.money + 100
+        user2.exp = user2.exp + 1
+        user2.save()
+    else:
+        user2.money = user2.money + 500
+        user2.exp = user2.exp + 5
+        user2.srch = user2.srch + 10
+        user2.save()
+        user1.money = user1.money + 100
+        user1.exp = user1.exp + 1
+        user1.save()
+
+
     context = {
         'result': res,
         'pageIn': 'accueil',
