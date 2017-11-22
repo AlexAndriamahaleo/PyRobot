@@ -165,6 +165,7 @@ def fight(request):
     user2.save()
     context = {
         'result': res,
+        'pageIn': 'accueil',
         'component': user2.user.username
     }
     return render(request, "backend/fight.html", context)
@@ -376,11 +377,17 @@ def buyStuff (request):
 
 @login_required
 def documentation (request):
-  return render (request,"backend/documentation.html")
+    context = {
+        'pageIn': 'documentation',
+    }
+    return render (request,"backend/documentation.html", context)
 
 @login_required
 def tutoriel (request):
-    return render(request,"backend/tutorial.html")
+    context = {
+        'pageIn': 'tutoriels',
+    }
+    return render(request,"backend/tutorial.html", context)
 
 
 class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
@@ -389,22 +396,25 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        """
-        Return the list of items for this view.
-
-        The return value must be an iterable and may be an instance of
-        `QuerySet` in which case `QuerySet` specific behavior will be enabled.
-        """
-
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super(HistoriesView, self).get_context_data(**kwargs)
+        context['pageIn'] = 'battle_histories'
+        return context
 
-class AIScriptView(LoginRequiredMixin, TemplateView):
+
+class AIScriptView(LoginRequiredMixin, ListView):
     template_name = "backend/editeur.html"
+    model = Ia
 
     def get_context_data(self, **kwargs):
         context = super(AIScriptView, self).get_context_data(**kwargs)
         context['scripts'] = self.request.user.userprofile.ia_set.all()
+        context['pageIn'] = 'editor'
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
