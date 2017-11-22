@@ -389,6 +389,20 @@ def tutoriel (request):
     }
     return render(request,"backend/tutorial.html", context)
 
+@login_required
+def recherche(request):
+    context = {
+        'pageIn': 'recherche',
+    }
+    return render(request,"backend/research.html", context)
+
+@login_required
+def developpement (request):
+    context = {
+        'pageIn': 'developpement',
+    }
+    return render(request,"backend/developpement.html", context)
+
 
 class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     template_name = "backend/histories.html"
