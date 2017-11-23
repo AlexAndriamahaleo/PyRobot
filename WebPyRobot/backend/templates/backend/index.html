@@ -15,18 +15,18 @@
 <body>
 
 <nav class="indigo darken-4" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo green-text darken-3">MPR</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo yellow-text">MPR</a>
         <ul class="right hide-on-med-and-down">
-            <li><a class="modal-trigger green-text darken-3" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+            <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
  Connexion</a></li>
-            <li><a class="modal-trigger green-text darken-3" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
  Inscription</a></li>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-            <li><a class="modal-trigger green-text darken-3" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+            <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
  Connexion</a></li>
-            <li><a class="modal-trigger green-text darken-3" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
  Inscription</a></li>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -91,11 +91,14 @@
     <div class="section no-pad-bot">
         <div class="container">
 
-            <h1 class="header center indigo-text darken-4 bienvenue">Bienvenue sur MaturePyRobot</h1>
+            <h1 class="header center yellow-text bienvenue">Bienvenue sur MaturePyRobot</h1>
             <br><br>
             <div class="section">
                 <div class="row white-text lighten-5">
                     <div class="col s12 m12 l12">
+                         {% if error %}
+                          <h5>{{ error }}</h5>
+                          {% endif %}
                         <h5>
                             Envie d'apprendre un langage de programmation ? S'initier à la programmation ?
                             Vous êtes au bon endroit ! Pour vous, nous avons choisis la méthode d'apprentissage
