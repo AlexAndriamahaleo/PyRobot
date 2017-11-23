@@ -22,9 +22,11 @@ urlpatterns = [
     url(r'^agression/$', views.agression, name='agression'),
     url(r'^changeStuff/$', views.changeStuff, name='changeStuff'),
     url(r'^buyStuff/$', views.buyStuff, name='buyStuff'),
-    #url(r'^documentation/$', views.documentation, name='documentation'),
     url(r'^documentation/$', views.documentation, name='documentation'),
     url(r'^tutoriels/$', views.tutoriel, name='tutoriels'),
+
+    url(r'^recherche/$', views.recherche, name='recherche'),
+    url(r'^developpement/$', views.developpement, name='developpement'),
 
     url(r'^dragonball-chars/$', api_views.angular_ajax_test, name="test_api"),
 

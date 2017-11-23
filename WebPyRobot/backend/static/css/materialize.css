@@ -3081,7 +3081,7 @@ td, th {
 }
 
 .collection .collection-item.active {
-  background-color: #2e7d32 ;
+  background-color: #fff176 ;
   color: #1a237e;
 }
 
@@ -7662,6 +7662,11 @@ input[type=range]:focus::-ms-fill-upper {
 .spinner-green,
 .spinner-green-only {
   border-color: #0f9d58;
+}
+
+.spinner-indigo,
+.spinner-indigo-only {
+  border-color: #1a237e;
 }
 
 /**

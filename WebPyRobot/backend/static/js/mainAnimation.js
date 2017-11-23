@@ -84,7 +84,7 @@ var moveRigth = function(player,x,y){
 
 var deadPlayer = function(player){
 	player.dead();
-	if (player == player1)
+	if (player == playername)
 		document.getElementById("win").innerHTML = "You are defeated by " + opponent;
 	else 
 		document.getElementById("win").innerHTML = "You defeated " + opponent;
