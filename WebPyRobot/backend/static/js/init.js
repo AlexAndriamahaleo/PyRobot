@@ -6,7 +6,7 @@
         $('.carousel').carousel();
 
         $('.carousel.carousel-slider').carousel();
-        //$('.modal-trigger').leanModal();
+
         $(document).ready(function () {
             $('.modal').modal();
         });

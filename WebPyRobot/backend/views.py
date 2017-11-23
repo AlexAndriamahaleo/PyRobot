@@ -158,6 +158,7 @@ def fight(request):
     ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
     ia2 = user2.get_active_ai_script() #Ia.objects.get(owner=user2)
     game = Game(tank1, tank2, ia1, ia2)
+
     res = game.run(0)
 
     if game.is_victorious():
@@ -398,6 +399,13 @@ def documentation (request):
         'pageIn': 'documentation',
     }
     return render (request,"backend/documentation.html", context)
+
+@login_required
+def faq (request):
+    context = {
+        'pageIn': 'faq',
+    }
+    return render (request,"backend/faq.html", context)
 
 @login_required
 def tutoriel (request):

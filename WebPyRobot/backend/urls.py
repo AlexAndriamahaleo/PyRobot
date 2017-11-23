@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^changeStuff/$', views.changeStuff, name='changeStuff'),
     url(r'^buyStuff/$', views.buyStuff, name='buyStuff'),
     url(r'^documentation/$', views.documentation, name='documentation'),
+    url(r'^faq/$', views.faq, name='faq'),
     url(r'^tutoriels/$', views.tutoriel, name='tutoriels'),
 
     url(r'^recherche/$', views.recherche, name='recherche'),

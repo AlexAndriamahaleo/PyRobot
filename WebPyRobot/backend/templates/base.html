@@ -28,37 +28,37 @@
 </head>
 
 <body>
-    {% block header %}
-        {% include 'backend/header.html' with moneyIn=request.user.userprofile.money user=request.user.username%}
-    {% endblock %}
-    <main class="container">
-        <div class="section">
-            {% for message in messages %}
-                <div id="alert_box" class="card {% if message.tags %}{{ message.tags }}{% endif %}">
-                  <div class="card-content white-text">
-                        <p>{{ message }}</p>
-                  </div>
-                  <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close" id="alert_close">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-            {% endfor %}
-
-            <div class="row">
-                {% block sidenav %}
-                    {% include 'backend/sideNav.html' with page=pageIn %}
-                {% endblock %}
-
-                {% block content %} {% endblock %}
+{% block header %}
+{% include 'backend/header.html' with moneyIn=request.user.userprofile.money user=request.user.username%}
+{% endblock %}
+<main class="container">
+    <div class="section">
+        {% for message in messages %}
+        <div id="alert_box" class="card {% if message.tags %}{{ message.tags }}{% endif %}">
+            <div class="card-content white-text">
+                <p>{{ message }}</p>
             </div>
+            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close" id="alert_close">
+                <span aria-hidden="true">×</span>
+            </button>
         </div>
-    </main>
+        {% endfor %}
 
-     <footer class="section" style="background-color: #1a237e">
+        <div class="row">
+            {% block sidenav %}
+            {% include 'backend/sideNav.html' with page=pageIn %}
+            {% endblock %}
+
+            {% block content %} {% endblock %}
+        </div>
+    </div>
+</main>
+
+<footer class="section" style="background-color: #1a237e">
     <div class="container">
         <div class="row">
-            <div class="col s12 m3 l3">
-                <h4 class="yellow-text">Sites utiles</h4>
+            <div class="col s12 m6 l6">
+                <h4 class="yellow-text">Liens utiles</h4>
                 <ul>
                     <li><a class="white-text" href="https://openclassrooms.com" target="_blank"><i class="fa fa-pencil"
                                                                                                    aria-hidden="true"></i>
@@ -67,22 +67,11 @@
                             class="fa fa-graduation-cap" aria-hidden="true"></i>
                         w3schools</a></li>
                     <li><a href="https://github.com/"
-                                                                              class="white-text" target="_blank">
-                       <i class="fa fa-github" style="font-size:24px"></i> Github</a></li>
+                           class="white-text" target="_blank">
+                        <i class="fa fa-github" style="font-size:24px"></i> Github</a></li>
                 </ul>
             </div>
-            <div class="col s12 m3 l3">
-                <h4 class="yellow-text">News</h4>
-            </div>
-            <div class="col s12 m3 l3">
-                <h4 class="yellow-text">À venir</h4>
-
-                <div class="chip green darken-2 white-text">Système d'expérience</div>
-                <div class="chip green darken-2 white-text">Niveaux</div>
-                <div class="chip green darken-2 white-text">Trophés</div>
-                <div class="chip green darken-2 white-text">Bonus</div>
-            </div>
-            <div class="col s12 m3 l3">
+            <div class="col s12 m6 l6">
                 <h4 class="yellow-text">Autres</h4>
                 <ul>
                     <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fa fa-google"
@@ -100,25 +89,25 @@
     </div>
     <div class="footer-copyright">
         <div class="container white-text">
-            Copyright 2017 design par ©BananiaStyleProd.
+            © 2017 design par <a class="white-text" href="https://github.com/AlexAndriamahaleo">BananiaStyle</a>.
         </div>
     </div>
-    </footer>
+</footer>
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-{#    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>#}
-    <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
-    {% if request.user.is_authenticated %}
-        <script type="text/javascript">
-            var username = "{{ request.user.username }}";
-        </script>
-        <script src="{% static 'js/notify.min.js' %}"></script>
-        <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
-        <script type="text/javascript" src="{% static 'js/notifications.js' %}"></script>
-    {% endif %}
-    <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+{#<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>#}
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+{% if request.user.is_authenticated %}
+<script type="text/javascript">
+    var username = "{{ request.user.username }}";
+</script>
+<script src="{% static 'js/notify.min.js' %}"></script>
+<script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/notifications.js' %}"></script>
+{% endif %}
+<script type="text/javascript" src="{% static 'js/init.js' %}"></script>
 
-    {% block custom_js %} {% endblock %}
+{% block custom_js %} {% endblock %}
 
 </body>
 </html>

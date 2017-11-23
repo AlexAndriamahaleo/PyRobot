@@ -1,12 +1,17 @@
 {% extends "base.html" %}
-{% load static %}
+
+{% load staticfiles %}
 
 {% block title %}MaturePyRobot - Boutique{% endblock %}
 
+{% block custom_css %}
+
+{% endblock %}
+
 {% block content %}
-<div class="col s12 m9 l10 pad">
+<div class="col s12 m9 l10">
     <div class="row z-depth-1 section padding-section">
-        <div class="pad col s12 m8 l8 ">
+        <div class="col s12 m8 l8 ">
             {{ return }}
             <div class="col s12">
                 <ul class="tabs">
@@ -70,8 +75,11 @@
                 {% endfor %}
 
             </div>
-        </div>-->
-        <!--<div class="pad col s12 m4 l4 ">
+        </div>
+
+
+
+        <div class="pad col s12 m4 l4 ">
 
             {% for weapon in weapons %}
               <div class="card" id="cardweapon{{ weapon.pk }}">
@@ -162,7 +170,7 @@
               </div>
             {% endfor %}
 
-        </div>-->
+        </div>
     </div>
 </div>
 {% endblock %}
