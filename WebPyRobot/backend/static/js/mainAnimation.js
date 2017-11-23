@@ -85,9 +85,9 @@ var moveRigth = function(player,x,y){
 var deadPlayer = function(player){
 	player.dead();
 	if (player == playername)
-		document.getElementById("win").innerHTML = "You are defeated by " + opponent;
+		document.getElementById("win").innerHTML = "You are defeated by " + opponent; // LOSE
 	else 
-		document.getElementById("win").innerHTML = "You defeated " + opponent;
+		document.getElementById("win").innerHTML = "You defeated " + opponent; // WIN
 
 	var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 	var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/" + opponent + "-notifications/");

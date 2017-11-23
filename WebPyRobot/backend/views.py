@@ -144,15 +144,15 @@ def fight(request):
     user2 = random.choice(list(users))
 
     notify = NotificationMessage()
-    notify.msg_content = "The user %s has just started a battle against you" % user1.user.username
+    notify.msg_content = "%s vient de démarrer un combat contre toi" % user1.user.username
     print (notify.dumps())
     Group(user2.user.username + '-notifications').send(
         {'text': notify.dumps()})
 
-    Notification.objects.create(user=user1.user, content="You have just started a battle against %s" % user2.user.username,
+    Notification.objects.create(user=user1.user, content="Vous démarrer un combat face à %s" % user2.user.username,
                                 is_read=True)
     Notification.objects.create(user=user2.user,
-                                content="The user %s has just started a battle against you" % user1.user.username)
+                                content="%s vient de démarrer un combat contre toi" % user1.user.username)
     tank1 = Tank.objects.get(owner=user1)
     tank2 = Tank.objects.get(owner=user2)
     ia1 = Ia.objects.get(owner=user1)
@@ -162,19 +162,19 @@ def fight(request):
 
     if game.is_victorious():
         user1.money = user1.money + 500
-        user1.exp = user1.exp + 5
-        user1.srch = user1.srch + 10
+        user1.exp = 0 #user1.exp + 5
+        user1.srch = 0 #user1.srch + 10
         user1.save()
         user2.money = user2.money + 100
-        user2.exp = user2.exp + 1
+        user2.exp = 0 #user2.exp + 1
         user2.save()
     else:
         user2.money = user2.money + 500
-        user2.exp = user2.exp + 5
-        user2.srch = user2.srch + 10
+        user2.exp = 0 #user2.exp + 5
+        user2.srch = 0 # user2.srch + 10
         user2.save()
         user1.money = user1.money + 100
-        user1.exp = user1.exp + 1
+        user1.exp = 0 #user1.exp + 1
         user1.save()
 
 
