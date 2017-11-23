@@ -21,3 +21,14 @@ class NotificationMessage(object):
 
     def dumps(self):
         return json.dumps(self.as_dict())
+
+
+DEBUG = 10
+INFO = 20
+SUCCESS = 25
+WARNING = 30
+ERROR = 40
+
+MESSAGE_LEVEL_CLASSES = {
+
+}

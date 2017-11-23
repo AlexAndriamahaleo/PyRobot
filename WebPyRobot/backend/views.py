@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import logout as system_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import HttpResponse
@@ -19,7 +20,6 @@ from django.views.generic.list import ListView
 
 from channels import Group
 from pure_pagination.mixins import PaginationMixin
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .constants import NotificationMessage
 from .forms import SignUpForm, ChangeDataForm, CodeForm
@@ -413,8 +413,64 @@ class AIScriptView(LoginRequiredMixin, ListView):
         context = super(AIScriptView, self).get_context_data(**kwargs)
         context['scripts'] = self.request.user.userprofile.ia_set.all()
         context['pageIn'] = 'editor'
+        context['scripts'] = self.request.user.userprofile.ia_set.all()
+        context['active_script'] = self.request.user.userprofile.get_active_ai_script()
+        context['scripts_count'] = self.request.user.userprofile.ia_set.count()
 
+        selected_script_id = self.request.GET.get('script')
+        try:
+            selected = Ia.objects.get(pk=selected_script_id)
+        except:
+            selected = context['active_script']
+
+        addnew = self.request.GET.get("addnew")
+        if addnew == "yes":
+            selected = None
+            context['addnew'] = "active"
+
+        context['selected'] = selected
         return context
 
+    def get(self, request, *args, **kwargs):
+        return super(AIScriptView, self).get(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
+        action = self.request.POST.get("action")
+        if action == "Sauvgarder":
+            addnew = self.request.POST.get("addnew_flag")
+            selected_pk = self.request.POST.get("selected_pk")
+            ia_name = request.POST.get('ai_name', '')
+            text = request.POST.get('ia', '')
+            if addnew == "yes":
+                if request.user.userprofile.ia_set.count() < 5:
+                    if text.strip() == '':
+                        messages.error(request, "You must enter AI code")
+                    else:
+                        Ia.objects.create(
+                            owner = request.user.userprofile,
+                            name = ia_name,
+                            text = text
+                        )
+                        messages.success(request, "The AI %s is added successfully" % ia_name)
+                else:
+                    messages.error(request, "You exceed the maximum number of AI (5)")
+            else:
+                try:
+                    selected = Ia.objects.get(pk=selected_pk)
+                    selected.name = ia_name
+                    selected.text = text
+                    selected.save()
+                    messages.success(request, "The AI %s has been updated successfully" % ia_name)
+                except:
+                    messages.error(request, "Invalid AI")
+        elif action == "Activer":
+            selected_pk = self.request.POST.get("selected_pk")
+            try:
+                selected = Ia.objects.get(pk=selected_pk)
+                request.user.userprofile.change_active_ai(selected)
+                messages.success(request, "The AI %s has been activated successfully" % selected.name)
+            except:
+                messages.error(request, "Invalid AI")
+        else:
+            pass
         return self.get(request, *args, **kwargs)

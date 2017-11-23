@@ -5,6 +5,7 @@ Settings for development or deployment are in specific files
 """
 
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -131,4 +132,13 @@ CHANNEL_LAYERS = {
         "BACKEND": "asgiref.inmemory.ChannelLayer",
         "ROUTING": "backend.routing.channel_routing",
     },
+}
+
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'deep-purple',
+    messages.INFO: 'blue',
+    messages.SUCCESS: 'green',
+    messages.WARNING: 'orange',
+    messages.ERROR: 'red',
 }
