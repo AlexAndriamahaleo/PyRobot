@@ -155,8 +155,8 @@ def fight(request):
                                 content="The user %s has just started a battle against you" % user1.user.username)
     tank1 = Tank.objects.get(owner=user1)
     tank2 = Tank.objects.get(owner=user2)
-    ia1 = Ia.objects.get(owner=user1)
-    ia2 = Ia.objects.get(owner=user2)
+    ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
+    ia2 = user2.get_active_ai_script() #Ia.objects.get(owner=user2)
     game = Game(tank1, tank2, ia1, ia2)
     res = game.run(0)
 
@@ -168,6 +168,7 @@ def fight(request):
         user2.money = user2.money + 100
         user2.exp = user2.exp + 1
         user2.save()
+        is_victorious = "yes"
     else:
         user2.money = user2.money + 500
         user2.exp = user2.exp + 5
@@ -176,12 +177,13 @@ def fight(request):
         user1.money = user1.money + 100
         user1.exp = user1.exp + 1
         user1.save()
-
+        is_victorious = "no"
 
     context = {
         'result': res,
         'pageIn': 'accueil',
-        'component': user2.user.username
+        'component': user2.user.username,
+        'is_victorious':is_victorious,
     }
     return render(request, "backend/fight.html", context)
 
@@ -426,7 +428,7 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
 
     def get_queryset(self):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
-        return queryset
+        return queryset.order_by('-timestamp')
 
     def get_context_data(self, **kwargs):
         context = super(HistoriesView, self).get_context_data(**kwargs)

@@ -23,7 +23,7 @@ MaturePyRobot - Historique
             {% for history in page_obj.object_list %}
                 <tr>
                     <td>{{ history.timestamp }}</td>
-                    {% if  history.opponent.username == request.user.username %}
+                    {% if  history.opponent.username != request.user.username %}
                         <td>{{ history.opponent.username }}</td>
                         <td>{{ history.used_script.name }}</td>
                         <td>

@@ -39,6 +39,7 @@
     var a = "{{ result }}".replace(/&#39;/g, "\"");
     var opponent = "{{ component }}";
     var playername = "{{ request.user.username }}";
+    var is_victorious = "{{ is_victorious }}"
 </script>
 {% include 'backend/headAnimation.html' %}
 {% endblock %}
