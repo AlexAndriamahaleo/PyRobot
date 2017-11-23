@@ -84,10 +84,11 @@ var moveRigth = function(player,x,y){
 
 var deadPlayer = function(player){
 	player.dead();
-	if (player == playername)
-		document.getElementById("win").innerHTML = "You are defeated by " + opponent; // LOSE
+	//if (player == playername)
+	if (is_victorious == "no")
+		document.getElementById("win").innerHTML = "You are defeated by " + opponent;
 	else 
-		document.getElementById("win").innerHTML = "You defeated " + opponent; // WIN
+		document.getElementById("win").innerHTML = "You defeated " + opponent;
 
 	var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 	var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/" + opponent + "-notifications/");
