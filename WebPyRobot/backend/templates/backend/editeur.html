@@ -27,6 +27,15 @@ MaturePyRobot - Editeur
     .btn:hover {
         background-color: #388e3c;
     }
+
+    .collection .collection-item.active .secondary-content {
+        color: #1a237e;
+    }
+
+    .secondary-content {
+        color: #b71c1c;
+    }
+
 </style>
 {% endblock %}
 
@@ -36,20 +45,19 @@ MaturePyRobot - Editeur
         <div class="pad row col s12 m12 l12 ">
             <div class="pad col s12 m3 l3 ">
                 <ul class="collection with-header">
-                    <li class="collection-header"><h4>Vos Scripts</h4></li>
+                    <li class="collection-header"><h4 class="indigo-text darken-4">Vos Scripts</h4></li>
                     {% for script in scripts %}
                     <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
-                        <div>
+                        <div class="indigo-text darken-4">
                             {{ script.name|truncatechars:16 }}
                             <a href="{% url 'backend:editor' %}?script={{ script.pk }}"
-                               class="script-1 secondary-content"><i
-                                    class="material-icons">send</i></a>
+                               class="script-1 secondary-content tooltipped" data-position="right" data-delay="50" data-tooltip="Charger le script"><i class="fa fa-share-square-o fa-lg"></i></a>
                         </div>
                     </li>
                     {% endfor %}
                     {% if scripts_count < 5 %}
                     <li class="collection-item {{ addnew }}">
-                        <a href="{% url 'backend:editor' %}?addnew=yes">Add New</a>
+                        <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped indigo-text darken-4" data-position="bottom" data-delay="50" data-tooltip="Ajouter un script"><i class="fa fa-plus" aria-hidden="true"></i></a>
                     </li>
                     {% endif %}
                 </ul>
@@ -68,14 +76,14 @@ MaturePyRobot - Editeur
                                     class="material-icons">menu</i></a>
                             <ul class="left hide-on-med-and-down">
                                 <li class="save hoverable">
-                                    <input type="submit" class="transparent_button indigo-text darken-4" name="action"
-                                           value="Sauvgarder">
+                                    <input type="submit" class="btn-flat indigo-text darken-4" name="action" value="Sauvgarder">
                                 </li>
                                 <li class="save hoverable">
-                                    <input type="submit" class="transparent_button indigo-text darken-4" name="action"
-                                           value="Activer">
+                                    <input type="submit" class="btn-flat indigo-text darken-4" name="action" value="Activer">
                                 </li>
-                                <li><a class="indigo-text darken-4 hoverable" href="{% url 'backend:fight' %}">Tester</a></li>
+                                <li>
+                                    <a class="indigo-text darken-4" href="{% url 'backend:fight' %}">TESTER</a>
+                                </li>
                             </ul>
                             <ul class="side-nav" id="mobile-demo">
                                 <li class="save"><a class="waves-effect" href="#"><i

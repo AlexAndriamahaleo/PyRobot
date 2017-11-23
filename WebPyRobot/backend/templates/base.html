@@ -34,14 +34,12 @@
 <main class="container">
     <div class="section">
         {% for message in messages %}
-        <div id="alert_box" class="card {% if message.tags %}{{ message.tags }}{% endif %}">
-            <div class="card-content white-text">
-                <p>{{ message }}</p>
+            <div id="alert_box" class="card-panel green {% if message.tags %}{{ message.tags }}{% endif %}">
+              <p class="black-text">
+                  {{ message }}
+                  <a type="button" class="waves-effect waves-teal red close right btn btn-floating pulse" data-dismiss="alert" aria-label="Close" id="alert_close"><i class="close material-icons black-text">close</i></a>
+              </p>
             </div>
-            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close" id="alert_close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
         {% endfor %}
 
         <div class="row">

@@ -218,10 +218,10 @@ class Game(object):
         user2 = tank2.owner.user
         # Group(user2.user.username + '-notifications').send(
         #     {'text': "The battle against user %s ended" % user1.user.username})
-        Notification.objects.create(user=user1.user, content="Your battle against %s has ended" % user2.user.username,
+        Notification.objects.create(user=user1.user, content="Le combat contre %s vient de se terminer" % user2.user.username,
                                     is_read=True)
         Notification.objects.create(user=user2.user,
-                                    content="The battle against user %s has ended" % user1.user.username)
+                                    content="Le combat contre %s vient de se terminer" % user1.user.username)
 
     def run(self, i):
         # for i in range(0, 64):

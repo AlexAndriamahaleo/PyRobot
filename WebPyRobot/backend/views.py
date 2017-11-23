@@ -483,23 +483,23 @@ class AIScriptView(LoginRequiredMixin, ListView):
             if addnew == "yes":
                 if request.user.userprofile.ia_set.count() < 5:
                     if text.strip() == '':
-                        messages.error(request, "You must enter AI code")
+                        messages.error(request, "Veuillez taper le code de votre IA")
                     else:
                         Ia.objects.create(
                             owner = request.user.userprofile,
                             name = ia_name,
                             text = text
                         )
-                        messages.success(request, "The AI %s is added successfully" % ia_name)
+                        messages.success(request, "L'Intelligence Artificielle %s a bien été ajoutée" % ia_name)
                 else:
-                    messages.error(request, "You exceed the maximum number of AI (5)")
+                    messages.error(request, "Vous avez atteint le nombre maximum d'IA autorisé (5)")
             else:
                 try:
                     selected = Ia.objects.get(pk=selected_pk)
                     selected.name = ia_name
                     selected.text = text
                     selected.save()
-                    messages.success(request, "The AI %s has been updated successfully" % ia_name)
+                    messages.success(request, "L'Intelligence Artificielle [%s] a été mise à jour" % ia_name)
                 except:
                     messages.error(request, "Invalid AI")
         elif action == "Activer":
@@ -507,7 +507,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
             try:
                 selected = Ia.objects.get(pk=selected_pk)
                 request.user.userprofile.change_active_ai(selected)
-                messages.success(request, "The AI %s has been activated successfully" % selected.name)
+                messages.success(request, "L'Intelligence Artificielle [%s] a bien été activée" % selected.name)
             except:
                 messages.error(request, "Invalid AI")
         else:

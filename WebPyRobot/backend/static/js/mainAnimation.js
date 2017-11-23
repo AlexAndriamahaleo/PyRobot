@@ -86,15 +86,15 @@ var deadPlayer = function(player){
 	player.dead();
 	//if (player == playername)
 	if (is_victorious == "no")
-		document.getElementById("win").innerHTML = "You are defeated by " + opponent;
+		document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
 	else 
-		document.getElementById("win").innerHTML = "You defeated " + opponent;
+		document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
 
 	var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 	var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/" + opponent + "-notifications/");
 	socket.onopen = function() {
     	var message = {
-			msg_content: "The battle against user " + playername + " has ended",
+			msg_content: "Le combat contre " + playername + " est terminé",
 			msg_type: "notification",
 			msg_class: "success"
 		};
