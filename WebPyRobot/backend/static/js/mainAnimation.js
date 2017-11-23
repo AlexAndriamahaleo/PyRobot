@@ -183,7 +183,7 @@ window.onload = function() {
 
 	setInterval(function() {
 		map.dessinerMap(ctx);
-	}, 60);
+	}, 50);
 
 	var asbird;
 	var xbird;
@@ -211,5 +211,5 @@ window.onload = function() {
 		   	var ybird = Math.floor((Math.random() * 32) + 1);
 		   	map.addBird(new Bird("bird.png",32,ybird,3,32,ybird,contraint));
 		   }
-	}, 400);
+	}, 300);
 };
