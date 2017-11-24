@@ -525,7 +525,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 kwargs['temporary_name'] = ia_name
                 if addnew == "yes":
                     kwargs["addnew"] = "yes"
-                messages.error(request, "Your script is empty or contains blocked content")
+                messages.error(request, "Votre script est vide ou contient un contenu bloqué")
         elif action == "Activer":
             selected_pk = self.request.POST.get("selected_pk")
             try:
