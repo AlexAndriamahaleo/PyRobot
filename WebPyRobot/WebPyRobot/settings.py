@@ -142,3 +142,6 @@ MESSAGE_TAGS = {
     messages.WARNING: 'orange',
     messages.ERROR: 'red',
 }
+
+
+NOT_ALLOWED_KW = ['import', 'exec']

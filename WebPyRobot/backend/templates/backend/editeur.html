@@ -87,7 +87,9 @@ MaturePyRobot - Editeur
                 <div class="pad col s12 m9 l9 ">
                     Nom de ton IA:
                     <div class="input-field inline">
-                        <input type="text" name="ai_name" value="{{ selected.name }}" placeholder="Nom de IA"/>
+                        <input type="text" name="ai_name"
+                               value="{% if temporary_name %}{{ temporary_name }}{% else %}{{ selected.name }}{% endif %}"
+                               placeholder="Nom de IA"/>
 
                     </div>
                     <span class="new badge" data-badge-caption="{{ active_script.name }}">Active AI: </span>
@@ -117,7 +119,7 @@ MaturePyRobot - Editeur
                         </div>
                     </nav>
 
-                    <textarea name="ia" id="ia" cols="40" rows="10">{{ selected.text }}</textarea>
+                    <textarea name="ia" id="ia" cols="40" rows="10">{% if temporary_text %}{{ temporary_text }}{% else %}{{ selected.text }}{% endif %}</textarea>
 
                     {% if addnew %}
                     <input type="hidden" name="addnew_flag" value="yes"/>

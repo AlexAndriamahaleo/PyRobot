@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.cache import never_cache
@@ -27,6 +27,7 @@ from .funct.funct import getItemByType,getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
 from .models import UserProfile, Tank, Ia, BattleHistory, Notification
+from .utils import validate_ai_script
 
 
 
@@ -462,7 +463,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
         except:
             selected = context['active_script']
 
-        addnew = self.request.GET.get("addnew")
+        addnew = self.request.GET.get("addnew", context.get("addnew"))
         if addnew == "yes":
             selected = None
             context['addnew'] = "active"
@@ -471,7 +472,23 @@ class AIScriptView(LoginRequiredMixin, ListView):
         return context
 
     def get(self, request, *args, **kwargs):
-        return super(AIScriptView, self).get(request, *args, **kwargs)
+        self.object_list = self.get_queryset()
+        allow_empty = self.get_allow_empty()
+
+        if not allow_empty:
+            # When pagination is enabled and object_list is a queryset,
+            # it's better to do a cheap query than to load the unpaginated
+            # queryset in memory.
+            if self.get_paginate_by(self.object_list) is not None and hasattr(self.object_list, 'exists'):
+                is_empty = not self.object_list.exists()
+            else:
+                is_empty = len(self.object_list) == 0
+            if is_empty:
+                raise Http404(_("Empty list and '%(class_name)s.allow_empty' is False.") % {
+                    'class_name': self.__class__.__name__,
+                })
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
         action = self.request.POST.get("action")
@@ -480,28 +497,35 @@ class AIScriptView(LoginRequiredMixin, ListView):
             selected_pk = self.request.POST.get("selected_pk")
             ia_name = request.POST.get('ai_name', '')
             text = request.POST.get('ia', '')
-            if addnew == "yes":
-                if request.user.userprofile.ia_set.count() < 5:
-                    if text.strip() == '':
-                        messages.error(request, "Veuillez taper le code de votre IA")
+            if validate_ai_script(text):
+                if addnew == "yes":
+                    if request.user.userprofile.ia_set.count() < 5:
+                        if text.strip() == '':
+                            messages.error(request, "Veuillez taper le code de votre IA")
+                        else:
+                            Ia.objects.create(
+                                owner = request.user.userprofile,
+                                name = ia_name,
+                                text = text
+                            )
+                            messages.success(request, "L'Intelligence Artificielle %s a bien été ajoutée" % ia_name)
                     else:
-                        Ia.objects.create(
-                            owner = request.user.userprofile,
-                            name = ia_name,
-                            text = text
-                        )
-                        messages.success(request, "L'Intelligence Artificielle %s a bien été ajoutée" % ia_name)
+                        messages.error(request, "Vous avez atteint le nombre maximum d'IA autorisé (5)")
                 else:
-                    messages.error(request, "Vous avez atteint le nombre maximum d'IA autorisé (5)")
+                    try:
+                        selected = Ia.objects.get(pk=selected_pk)
+                        selected.name = ia_name
+                        selected.text = text
+                        selected.save()
+                        messages.success(request, "L'Intelligence Artificielle [%s] a été mise à jour" % ia_name)
+                    except:
+                        messages.error(request, "Invalid AI")
             else:
-                try:
-                    selected = Ia.objects.get(pk=selected_pk)
-                    selected.name = ia_name
-                    selected.text = text
-                    selected.save()
-                    messages.success(request, "L'Intelligence Artificielle [%s] a été mise à jour" % ia_name)
-                except:
-                    messages.error(request, "Invalid AI")
+                kwargs['temporary_text'] = text
+                kwargs['temporary_name'] = ia_name
+                if addnew == "yes":
+                    kwargs["addnew"] = "yes"
+                messages.error(request, "Your script is empty or contains blocked content")
         elif action == "Activer":
             selected_pk = self.request.POST.get("selected_pk")
             try:
