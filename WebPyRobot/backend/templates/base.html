@@ -12,6 +12,7 @@
     <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <style>
         body {
@@ -58,36 +59,35 @@
             <div class="col s12 m6 l6">
                 <h4 class="yellow-text">Liens utiles</h4>
                 <ul>
+                    <li>
+                        <a class="white-text" href="https://docs.python.org/3/" target="_blank"><i class="devicon-python-plain"></i> Python</a>
+                    </li>
                     <li><a class="white-text" href="https://openclassrooms.com" target="_blank"><i class="fa fa-pencil"
                                                                                                    aria-hidden="true"></i>
                         Openclassrooms</a></li>
                     <li><a href="https://www.w3schools.com/" class="white-text" target="_blank"><i
                             class="fa fa-graduation-cap" aria-hidden="true"></i>
                         w3schools</a></li>
-                    <li><a href="https://github.com/"
-                           class="white-text" target="_blank">
-                        <i class="fa fa-github" style="font-size:24px"></i> Github</a></li>
                 </ul>
             </div>
             <div class="col s12 m6 l6">
                 <h4 class="yellow-text">Autres</h4>
                 <ul>
-                    <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fa fa-google"
-                                                                                               aria-hidden="true"></i>
-                        Google</a></li>
-                    <li><a href="https://stackoverflow.com/" class="white-text" target="_blank"><i
-                            class="fa fa-stack-overflow" aria-hidden="true"></i>
-                        Stackoverflow</a></li>
-                    <li><a href="https://www.tutorialspoint.com/" class="white-text" target="_blank"> <i
-                            class="fa fa-magic" aria-hidden="true"></i>
-                        Tutorialspoint</a></li>
+                    <li><a href="https://www.univ-amu.fr/" class="white-text" target="_blank"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Aix Marseille Université</a></li>
+                    <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fa fa-google" aria-hidden="true"></i> Google</a></li>
+                    <li><a href="https://github.com/"
+                           class="white-text" target="_blank">
+                        <i class="fa fa-github" style="font-size:24px"></i> Github</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="footer-copyright">
-        <div class="container white-text">
-            © 2017 design par <a class="white-text" href="https://github.com/AlexAndriamahaleo">BananiaStyle</a>.
+        {% include 'backend/legalNoticeContact.html' %}
+        <div class="container white-text center-align">
+            <a class="white-text modal-trigger left" href="#modal2"><i class="fa fa-envelope" aria-hidden="true"></i> Contact</a>
+            <i class="fa fa-copyright" aria-hidden="true"></i> 2017 design par <a class="white-text" href="https://github.com/AlexAndriamahaleo" target="_blank">BananiaStyle</a>.
+            <a class="white-text modal-trigger right" href="#modal1"><i class="fa fa-gavel" aria-hidden="true"></i> Mentions Légales</a>
         </div>
     </div>
 </footer>
