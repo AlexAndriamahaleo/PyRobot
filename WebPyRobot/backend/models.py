@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     exp = models.PositiveIntegerField(default=0)
     srch = models.PositiveIntegerField(default=0)
     dev = models.PositiveIntegerField(default=0)
-    level = models.PositiveIntegerField(default=1)
+    level = models.PositiveIntegerField(default=10)
 
     def __str__(self):
         return self.user.username

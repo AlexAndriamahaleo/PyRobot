@@ -15,7 +15,7 @@
 <body>
 
 <nav class="indigo darken-4" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo yellow-text">MPR</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">MPR</a>
         <ul class="right hide-on-med-and-down">
             <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
  Connexion</a></li>
@@ -97,8 +97,12 @@
                 <div class="row white-text lighten-5">
                     <div class="col s12 m12 l12">
                          {% if error %}
-                          <h5>{{ error }}</h5>
-                          {% endif %}
+                            <div class="card-panel red accent-4">
+                              <p class="black-text">
+                                  {{ error }}
+                              </p>
+                            </div>
+                        {% endif %}
                         <h5>
                             Envie d'apprendre un langage de programmation ? S'initier à la programmation ?
                             Vous êtes au bon endroit ! Pour vous, nous avons choisis la méthode d'apprentissage

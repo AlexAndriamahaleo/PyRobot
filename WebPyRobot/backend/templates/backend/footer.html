@@ -1,41 +1,13 @@
 {% load static %}
 
 <footer class="section" style="background-color: #1a237e">
-    <div class="container">
-        <div class="row">
-            <div class="col s12 m6 l6">
-                <h4 class="yellow-text">Liens utiles</h4>
-                <ul>
-                    <li><a class="white-text" href="https://openclassrooms.com" target="_blank"><i class="fa fa-pencil"
-                                                                                                   aria-hidden="true"></i>
-                        Openclassrooms</a></li>
-                    <li><a href="https://www.w3schools.com/" class="white-text" target="_blank"><i
-                            class="fa fa-graduation-cap" aria-hidden="true"></i>
-                        w3schools</a></li>
-                    <li><a href="https://github.com/"
-                           class="white-text" target="_blank">
-                        <i class="fa fa-github" style="font-size:24px"></i> Github</a></li>
-                </ul>
-            </div>
-            <div class="col s12 m6 l6">
-                <h4 class="yellow-text">Autres</h4>
-                <ul>
-                    <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fa fa-google"
-                                                                                               aria-hidden="true"></i>
-                        Google</a></li>
-                    <li><a href="https://stackoverflow.com/" class="white-text" target="_blank"><i
-                            class="fa fa-stack-overflow" aria-hidden="true"></i>
-                        Stackoverflow</a></li>
-                    <li><a href="https://www.tutorialspoint.com/" class="white-text" target="_blank"> <i
-                            class="fa fa-magic" aria-hidden="true"></i>
-                        Tutorialspoint</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+
+    {% include 'backend/legalNoticeContact.html' %}
     <div class="footer-copyright">
-        <div class="container white-text">
-            © 2017 design par <a class="white-text" href="https://github.com/AlexAndriamahaleo">BananiaStyle</a>.
+        <div class="container white-text center-align">
+            <a class="white-text modal-trigger left" href="#modal2">Contact</a>
+            © 2017 design par <a class="white-text" href="https://github.com/AlexAndriamahaleo" target="_blank">BananiaStyle</a>.
+            <a class="white-text modal-trigger right" href="#modal1">Mentions Legales</a>
         </div>
     </div>
 </footer>

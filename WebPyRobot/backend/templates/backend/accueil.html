@@ -7,6 +7,18 @@
 {% endblock %}
 
 {% block custom_css %}
+<style>
+    .progress {
+        position: relative;
+        height: 10px;
+        display: block;
+        width: 100%;
+        background-color: #d7ccc8;
+        border-radius: 5px;
+        margin: 0.5rem 0 1rem 0;
+        overflow: hidden;
+    }
+</style>
 
 {% endblock %}
 
@@ -97,13 +109,13 @@
         <div class="row">
             <div class=" col s12 m6 l6">
                 <h5>Équipements</h5>
-                <img class="responsive-img equipement-icon"
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.weapon.name }}"
                      src="/static/img/canon_svg/{{ tank.weapon.pathIcon }}">
-                <img class="responsive-img equipement-icon"
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.armor.name }}"
                      src="/static/img/shield_svg/{{ tank.armor.pathIcon }}">
-                <img class="responsive-img equipement-icon"
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.caterpillar.name }}"
                      src="/static/img/caterpillar_svg/{{ tank.caterpillar.pathIcon }}">
-                <img class="responsive-img equipement-icon"
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.navSystem.name }}"
                      src="/static/img/circuit_svg/{{ tank.navSystem.pathIcon }}">
             </div>
             <div class=" col s12 m6 l6">
