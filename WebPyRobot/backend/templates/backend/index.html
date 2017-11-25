@@ -96,13 +96,6 @@
             <div class="section">
                 <div class="row white-text lighten-5">
                     <div class="col s12 m12 l12">
-                         {% if error %}
-                            <div class="card-panel red accent-4">
-                              <p class="black-text">
-                                  {{ error }}
-                              </p>
-                            </div>
-                        {% endif %}
                         <h5>
                             Envie d'apprendre un langage de programmation ? S'initier à la programmation ?
                             Vous êtes au bon endroit ! Pour vous, nous avons choisis la méthode d'apprentissage
@@ -138,5 +131,12 @@
 </div>
 
 {% include 'backend/footer.html' %}
+
+<script>
+    {% if error %}
+        document.onload = setTimeout(function () { alertify.alert("{{ error }}"); }, 1000);
+    {% endif %}
+</script>
+
 </body>
 </html>

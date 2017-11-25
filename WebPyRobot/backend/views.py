@@ -65,7 +65,7 @@ def login(request):
             context = {
                 'form': form,
                 'next': request.GET.get('next'),
-                'error': 'Votre Pseudo et/ou votre mot de passe ne corresponde pas, veuillez réessayer. Merci'
+                'error': 'Votre Pseudo et/ou votre mot de passe ne correspond pas, veuillez réessayer. Merci'
             }
             return render(request, 'backend/index.html', context)
     return render(request, 'backend/index.html',  {'next': request.GET.get('next')})
@@ -130,7 +130,12 @@ class SignUp (FormView):
 
             return super(SignUp, self).form_valid(form)
 
-        return super(SignUp, self).form_invalid(form)
+        context = {
+            'form': form,
+            'error': 'Pseudo déjà utilisé, veuillez en choisir un autre. Merci'
+        }
+
+        return render(None, "backend/index.html", context)
 
 
 def thanks(request):
