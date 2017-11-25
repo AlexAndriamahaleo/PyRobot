@@ -141,7 +141,8 @@ def thanks(request):
 def fight(request):
     print ("Start ....")
     user1 = UserProfile.objects.get(user=request.user)
-    users = UserProfile.objects.exclude(pk=user1.pk)
+    users1 = UserProfile.objects.exclude(pk=user1.pk)
+    users = users1.exclude(agression=False)
     user2 = random.choice(list(users))
 
     notify = NotificationMessage()
