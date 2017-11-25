@@ -106,7 +106,10 @@ class SignUp (FormView):
 
             #create ia file default
             userProfile = UserProfile.objects.get(user=user)
-            i = Ia.objects.create(owner=userProfile, name=username+"\'s Ia", text=DefaultIa.objects.get(pk=1).text)
+            i = Ia.objects.create(owner=userProfile,
+                                  name="%s Default AI" % username,
+                                  text=DefaultIa.objects.get(pk=1).text,
+                                  active=True)
 
             #default Inventory
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=1))
