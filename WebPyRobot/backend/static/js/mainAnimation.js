@@ -26,7 +26,7 @@ var suprStr = 	function (stringReceive){
 							str = str + stringReceive[i];
 
 					}
-					$("#show_str").text(tabReceive);
+					//$("#show_str").text(tabReceive);
 				};
 // var tabReceive = [["0","moveDown","0","1"],
 // 				  ["0","shoot","10","10"],

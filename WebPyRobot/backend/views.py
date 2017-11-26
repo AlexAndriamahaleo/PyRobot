@@ -207,7 +207,9 @@ def fight(request):
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
         game.set_history(map_name)
     else:
-        res = json.loads(battle.result_stats)
+        res_stats = battle.result_stats
+        print ("Result Stats: %s" % res_stats)
+        res = json.loads(res_stats)
         opponent = battle.opponent.username
         is_victorious = "no"
         if battle.is_victorious:
