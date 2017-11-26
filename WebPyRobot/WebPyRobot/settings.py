@@ -145,3 +145,6 @@ MESSAGE_TAGS = {
 
 
 NOT_ALLOWED_KW = ['import', 'exec']
+
+
+BATTLE_MAP_NAMES = ['terre', 'premiere']

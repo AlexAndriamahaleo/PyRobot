@@ -50,6 +50,9 @@ class UserProfile(models.Model):
             old_ai.save()
         new_ai.active = True
         new_ai.save()
+        tank = self.tank_set.all()[0]
+        tank.ia = new_ai
+        tank.save()
 
     @property
     def get_ai_name(self):
@@ -57,6 +60,16 @@ class UserProfile(models.Model):
         if ai:
             return ai.name
         return "No Active Script"
+
+    def get_running_battle(self):
+        """
+        Get the current battle
+        :return:
+        """
+        battle = self.user.battlehistories.filter(is_finished=False)
+        if battle:
+            return battle[0]
+        return None
 
 
 class Ia(models.Model):
@@ -192,6 +205,18 @@ class BattleHistory(models.Model):
     is_victorious = models.BooleanField(default=False)
     used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
     opp_used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
+    # Status of a battle. We need to show clients that battle is realtime not a replay :))
+    is_finished = models.BooleanField(default=False, db_index=True)
+    # Animation step index.
+    step = models.PositiveIntegerField(default=0)
+    max_step = models.PositiveIntegerField(default=0)
+    # Result array. We should us JsonField but it's only available in PostgreSQL now
+    result_stats = models.TextField(default='')
+    player_x = models.PositiveIntegerField(default=0)
+    player_y = models.PositiveIntegerField(default=0)
+    opponent_x = models.PositiveIntegerField(default=0)
+    opponent_y = models.PositiveIntegerField(default=0)
+    map_name = models.CharField(max_length=10, default="terre")
     timestamp = models.DateTimeField(auto_now_add=True)
     difficult_level = models.CharField(max_length=10, default="normal")
 

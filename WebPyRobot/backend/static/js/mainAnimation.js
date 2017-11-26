@@ -26,6 +26,7 @@ var suprStr = 	function (stringReceive){
 							str = str + stringReceive[i];
 
 					}
+					$("#show_str").text(tabReceive);
 				};
 // var tabReceive = [["0","moveDown","0","1"],
 // 				  ["0","shoot","10","10"],
@@ -50,16 +51,20 @@ var winHieght = (window.innerHeight);
 
 var contraint =36/(Math.min(winHieght,winWidth)/36);
 
-if(Math.floor((Math.random() * 2) + 1) == 2){
-	var map = new Map("terre",contraint);
-}
-else
-	var map = new Map("premiere",contraint);
+// if(Math.floor((Math.random() * 2) + 1) == 2){
+// 	var map = new Map("terre",contraint);
+// 	var map_name = "terre";
+// }
+// else{
+// 	var map = new Map("premiere",contraint);
+// 	var map_name = "premiere";
+// }
+var map = new Map(map_name, contraint);
 
-var player1 = new Player("tank1.png", 0, 0, STATE.DOWN,contraint);
+var player1 = new Player("tank1.png", player_x, player_y, STATE.DOWN,contraint);
 map.addPlayer(player1);
 
-var player2 = new Player("tank2.png", 31, 31, STATE.UP,contraint);
+var player2 = new Player("tank2.png", opponent_x, opponent_y, STATE.UP,contraint);
 map.addPlayer(player2);
 
 
@@ -85,7 +90,7 @@ var moveRigth = function(player,x,y){
 var deadPlayer = function(player){
 	player.dead();
 	//if (player == playername)
-	if (is_victorious == "no")
+	if (iv == "no")
 		document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
 	else 
 		document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
@@ -120,7 +125,7 @@ var shoot = function(player,x,y){
 };
 
 var initAnimation = function(){
-	for (var i = 0; i < this.tabReceive.length; i++) {
+	for (var i = step_index; i < this.tabReceive.length; i++) {
 		if(tabReceive[i][0]  == "0"){
 			tabReceive[i][0] = player1;
 		}
@@ -168,13 +173,16 @@ var initAnimation = function(){
 
 window.onload = function() {
 
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/" + playername + "-notifications/");
+
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
 
 	canvas.width  = map.getLargeur() * 32 /contraint;
 	canvas.height = map.getHauteur() * 32 /contraint;
 
-	var j = 0;
+	var j = step_index;
 	var i = 0;
 	var k = 0;
 
@@ -192,7 +200,20 @@ window.onload = function() {
 	setInterval(function() {
 		    if(j < animation.length){
 		    	animation[j](j);
-		   		++j;
+
+		   		var message = {
+                    step: j ,
+                    message: '',
+                    type: 'battle_step',
+                    username: playername,
+                    player_x: player1.x,
+                    opponent_x: player2.x,
+                    player_y: player1.y,
+                    opponent_y: player2.y,
+                    map: map_name
+                };
+                socket.send(JSON.stringify(message));
+                ++j;
 		   	}
 		   asbird =Math.floor((Math.random() * 20) + 1);
 		   if(asbird == 1){

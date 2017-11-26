@@ -9,6 +9,7 @@ from django.contrib.auth import logout as system_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
@@ -142,54 +143,88 @@ def thanks(request):
 
 @login_required
 def fight(request):
-    print ("Start ....")
     user1 = UserProfile.objects.get(user=request.user)
-    users1 = UserProfile.objects.exclude(pk=user1.pk)
-    users = users1.exclude(agression=False)
-    user2 = random.choice(list(users))
 
-    notify = NotificationMessage()
-    notify.msg_content = "%s vient de démarrer un combat contre toi" % user1.user.username
-    print (notify.dumps())
-    Group(user2.user.username + '-notifications').send(
-        {'text': notify.dumps()})
+    battle = user1.get_running_battle()
+    if not battle:
+        users1 = UserProfile.objects.exclude(pk=user1.pk)
+        users = users1.exclude(agression=False)
+        if not users:
+            messages.error(request, "There is no user available for battle")
+            context = {
+                "battle_err": True
+            }
+            return render(request, "backend/fight.html", context)
+        user2 = random.choice(list(users))
 
-    Notification.objects.create(user=user1.user, content="Vous démarrer un combat face à %s" % user2.user.username,
-                                is_read=True)
-    Notification.objects.create(user=user2.user,
-                                content="%s vient de démarrer un combat contre toi" % user1.user.username)
-    tank1 = Tank.objects.get(owner=user1)
-    tank2 = Tank.objects.get(owner=user2)
-    ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
-    ia2 = user2.get_active_ai_script() #Ia.objects.get(owner=user2)
-    game = Game(tank1, tank2, ia1, ia2)
+        notify = NotificationMessage()
+        notify.msg_content = "%s vient de démarrer un combat contre toi" % user1.user.username
 
-    res = game.run(0)
+        Group(user2.user.username + '-notifications').send(
+            {'text': notify.dumps()})
 
-    if game.is_victorious():
-        user1.money = user1.money + 500
-        user1.exp = 0 #user1.exp + 5
-        user1.srch = 0 #user1.srch + 10
-        user1.save()
-        user2.money = user2.money + 100
-        user2.exp = 0 #user2.exp + 1
-        user2.save()
-        is_victorious = "yes"
+        Notification.objects.create(user=user1.user, content="Vous démarrer un combat face à %s" % user2.user.username,
+                                    is_read=True)
+        Notification.objects.create(user=user2.user,
+                                    content="%s vient de démarrer un combat contre toi" % user1.user.username)
+        tank1 = Tank.objects.get(owner=user1)
+        tank2 = Tank.objects.get(owner=user2)
+        ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
+        ia2 = user2.get_active_ai_script() #Ia.objects.get(owner=user2)
+        game = Game(tank1, tank2, ia1, ia2)
+
+        res = game.run(0)
+
+        if game.is_victorious():
+            user1.money = user1.money + 500
+            user1.exp = 0 #user1.exp + 5
+            user1.srch = 0 #user1.srch + 10
+            user1.save()
+            user2.money = user2.money + 100
+            user2.exp = 0 #user2.exp + 1
+            user2.save()
+            is_victorious = "yes"
+        else:
+            user2.money = user2.money + 500
+            user2.exp = 0 #user2.exp + 5
+            user2.srch = 0 # user2.srch + 10
+            user2.save()
+            user1.money = user1.money + 100
+            user1.exp = 0 #user1.exp + 1
+            user1.save()
+            is_victorious = "no"
+        opponent = user2.user.username
+        player_x = 0
+        player_y = 0
+        opponent_x = 31
+        opponent_y = 31
+        step = 0
+        map_name = random.choice(settings.BATTLE_MAP_NAMES)
+        game.set_history(map_name)
     else:
-        user2.money = user2.money + 500
-        user2.exp = 0 #user2.exp + 5
-        user2.srch = 0 # user2.srch + 10
-        user2.save()
-        user1.money = user1.money + 100
-        user1.exp = 0 #user1.exp + 1
-        user1.save()
+        res = json.loads(battle.result_stats)
+        opponent = battle.opponent.username
         is_victorious = "no"
+        if battle.is_victorious:
+            is_victorious = "yes"
+        player_x = battle.player_x
+        player_y = battle.player_y
+        opponent_x = battle.opponent_x
+        opponent_y = battle.opponent_y
+        step = battle.step
+        map_name = battle.map_name
 
     context = {
         'result': res,
         'pageIn': 'accueil',
-        'component': user2.user.username,
+        'opponent': opponent,
         'is_victorious':is_victorious,
+        'player_x': player_x,
+        'player_y': player_y,
+        'opponent_x': opponent_x,
+        'opponent_y': opponent_y,
+        'step': step,
+        'map_name': map_name
     }
     return render(request, "backend/fight.html", context)
 
@@ -441,6 +476,7 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
 
     def get_queryset(self):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
+        queryset = queryset.filter(is_finished=True)
         return queryset.order_by('-timestamp')
 
     def get_context_data(self, **kwargs):
@@ -468,9 +504,12 @@ class AIScriptView(LoginRequiredMixin, ListView):
             selected = context['active_script']
 
         addnew = self.request.GET.get("addnew", context.get("addnew"))
-        if addnew == "yes":
+        if addnew in ["yes", "yes1"]:
             selected = None
             context['addnew'] = "active"
+            if addnew == "yes":
+                print ("hello")
+                context['temporary_text'] = DefaultIa.objects.all()[0].text
 
         context['selected'] = selected
         return context
@@ -528,7 +567,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 kwargs['temporary_text'] = text
                 kwargs['temporary_name'] = ia_name
                 if addnew == "yes":
-                    kwargs["addnew"] = "yes"
+                    kwargs["addnew"] = "yes1"
                 messages.error(request, "Votre script est vide ou contient un contenu bloqué")
         elif action == "Activer":
             selected_pk = self.request.POST.get("selected_pk")
@@ -537,6 +576,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 request.user.userprofile.change_active_ai(selected)
                 messages.success(request, "L'Intelligence Artificielle [%s] a bien été activée" % selected.name)
             except:
+                import traceback; print (traceback.format_exc())
                 messages.error(request, "Invalid AI")
         else:
             pass

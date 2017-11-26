@@ -1,3 +1,5 @@
+import json
+
 from ..models import BattleHistory, Notification
 
 
@@ -190,7 +192,7 @@ class Game(object):
                     return True
         return False
 
-    def set_history(self):
+    def set_history(self, map_name):
         """
         Save history of a battle
         :return:
@@ -206,7 +208,10 @@ class Game(object):
             used_script = tank1.owner.get_active_ai_script(),
             opp_used_script = tank2.owner.get_active_ai_script(),
             opponent = opponent,
-            is_victorious = self.is_victorious()
+            is_victorious = self.is_victorious(),
+            result_stats = json.dumps(self.__result),
+            max_step = len(self.__result),
+            map_name = map_name
         )
 
     def notify_endgame(self):
@@ -228,12 +233,12 @@ class Game(object):
         if i >= 100: return self.__result
         if self.__robots[0].getLife() <= 0:
             self.__result.append([0, "dead", 0, 0])
-            self.set_history()
+            # self.set_history()
             # self.notify_endgame()
             return self.__result
         if self.__robots[1].getLife() <= 0:
             self.__result.append([1, "dead", 0, 0])
-            self.set_history()
+            # self.set_history()
             # self.notify_endgame()
             return self.__result
 

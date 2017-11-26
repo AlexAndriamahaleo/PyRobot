@@ -5,27 +5,43 @@
 {% block title %} MaturePyRobot - Combat {% endblock %}
 
 {% block content %}
-<div class="col s12 m9 l10 pad">
-    <div class="row z-depth-1 section padding-section">
-        <div class="card-panel yellow lighten-2">
-            <span id="win" class="indigo-text darken-4">Animation en cours...</span>
+    {% if battle_err %}
+        <div class="col s12 m9 l10 pad">
+            <div class="row z-depth-1 section padding-section" id="show_str"></div>
         </div>
-        <canvas class="col l8 offset-l2" id="canvas"></canvas>
-        <div class="col l4 offset-l5">
-            <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)"
-               class="waves-effect waves-light btn">Skip <i class="fa fa-forward" aria-hidden="true"></i>
-            </a>
+    {% else %}
+        <div class="col s12 m9 l10 pad">
+            <div class="row z-depth-1 section padding-section" id="show_str">
+            </div>
+            <div class="row z-depth-1 section padding-section">
+                <div class="card-panel yellow lighten-2">
+                    <span id="win" class="indigo-text darken-4">Animation en cours...</span>
+                </div>
+                <canvas class="col l8 offset-l2" id="canvas"></canvas>
+                <div class="col l4 offset-l5">
+                    <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)"
+                       class="waves-effect waves-light btn">Skip <i class="fa fa-forward" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    {% endif %}
 {% endblock %}
 
 {% block custom_js %}
-<script type="text/javascript">
-    var a = "{{ result }}".replace(/&#39;/g, "\"");
-    var opponent = "{{ component }}";
-    var playername = "{{ request.user.username }}";
-    var is_victorious = "{{ is_victorious }}"
-</script>
-{% include 'backend/headAnimation.html' %}
+    {% if not battle_err %}
+        <script type="text/javascript">
+            var a = "{{ result }}".replace(/&#39;/g, "\"");
+            var opponent = "{{ opponent }}";
+            var playername = "{{ request.user.username }}";
+            var iv = "{{ is_victorious }}";
+            var player_x = {{ player_x }};
+            var player_y = {{ player_y }};
+            var opponent_x = {{ opponent_x }};
+            var opponent_y = {{ opponent_y }};
+            var step_index = {{ step }};
+            var map_name = "{{ map_name }}"
+        </script>
+        {% include 'backend/headAnimation.html' %}
+    {% endif %}
 {% endblock %}
