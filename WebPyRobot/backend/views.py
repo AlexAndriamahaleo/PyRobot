@@ -208,8 +208,12 @@ def fight(request):
         bh_pk = game.set_history(map_name)
     else:
         res_stats = battle.result_stats
-        print ("Result Stats: %s" % res_stats)
-        res = json.loads(res_stats)
+        try:
+            res = json.loads(res_stats)
+        except ValueError:
+            print ("ValueError - battle result: %s" % res_stats)
+            res = []
+
         opponent = battle.opponent.username
         is_victorious = "no"
         if battle.is_victorious:
