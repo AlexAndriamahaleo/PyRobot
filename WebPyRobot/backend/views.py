@@ -205,7 +205,7 @@ def fight(request):
         opponent_y = 31
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
-        game.set_history(map_name)
+        bh_pk = game.set_history(map_name)
     else:
         res_stats = battle.result_stats
         print ("Result Stats: %s" % res_stats)
@@ -220,6 +220,7 @@ def fight(request):
         opponent_y = battle.opponent_y
         step = battle.step
         map_name = battle.map_name
+        bh_pk = battle.pk
 
     context = {
         'result': res,
@@ -231,7 +232,8 @@ def fight(request):
         'opponent_x': opponent_x,
         'opponent_y': opponent_y,
         'step': step,
-        'map_name': map_name
+        'map_name': map_name,
+        'history_pk': bh_pk
     }
     return render(request, "backend/fight.html", context)
 
@@ -588,3 +590,18 @@ class AIScriptView(LoginRequiredMixin, ListView):
         else:
             pass
         return self.get(request, *args, **kwargs)
+
+
+@login_required
+def finish_battle(request):
+    if request.method == "POST":
+        bh_pk = request.POST.get("history_pk")
+        try:
+            battle = BattleHistory.objects.get(pk=bh_pk)
+            battle.is_finished = True
+            battle.save()
+            messages.success(request, "Finished the battle")
+        except:
+            messages.error(request, "Battle not found")
+
+    return redirect("backend:battle_histories")

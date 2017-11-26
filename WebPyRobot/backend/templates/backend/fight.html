@@ -16,11 +16,24 @@
                     <span id="win" class="indigo-text darken-4">Animation en cours...</span>
                 </div>
                 <canvas class="col l8 offset-l2" id="canvas"></canvas>
+                <div class="col l4 offset-l5">&nbsp;</div>
                 <div class="col l4 offset-l5">
-                    <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)"
-                       class="waves-effect waves-light btn">Skip <i class="fa fa-forward" aria-hidden="true"></i>
-                    </a>
+                    <div class="row">
+                        <div class="col l5">
+                            <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)"
+                               class="waves-effect waves-light btn">Skip <i class="fa fa-forward" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="col l4">
+                            <form action="{% url 'backend:finish_battle' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="history_pk" value="{{ history_pk }}" />
+                                <input class="waves-effect waves-light btn" type="submit" value="Finish Battle" />
+                        </form>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     {% endif %}

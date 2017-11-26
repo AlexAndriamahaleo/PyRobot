@@ -29,8 +29,7 @@ urlpatterns = [
     url(r'^recherche/$', views.recherche, name='recherche'),
     url(r'^developpement/$', views.developpement, name='developpement'),
 
-    url(r'^dragonball-chars/$', api_views.angular_ajax_test, name="test_api"),
-
-    url(r'^battle-histories/$', views.HistoriesView.as_view(), name="battle_histories")
+    url(r'^battle-histories/$', views.HistoriesView.as_view(), name="battle_histories"),
+    url(r'^finish-battle/$', views.finish_battle, name='finish_battle')
 
 ]

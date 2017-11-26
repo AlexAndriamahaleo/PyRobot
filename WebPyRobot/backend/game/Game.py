@@ -203,16 +203,17 @@ class Game(object):
         tank2 = robot2.getTank()
         player = tank1.owner.user
         opponent = tank2.owner.user
-        BattleHistory.objects.create(
-            user = player,
-            used_script = tank1.owner.get_active_ai_script(),
-            opp_used_script = tank2.owner.get_active_ai_script(),
-            opponent = opponent,
-            is_victorious = self.is_victorious(),
-            result_stats = json.dumps(self.__result),
-            max_step = len(self.__result),
-            map_name = map_name
-        )
+        bh = BattleHistory.objects.create(
+                user = player,
+                used_script = tank1.owner.get_active_ai_script(),
+                opp_used_script = tank2.owner.get_active_ai_script(),
+                opponent = opponent,
+                is_victorious = self.is_victorious(),
+                result_stats = json.dumps(self.__result),
+                max_step = len(self.__result),
+                map_name = map_name
+            )
+        return bh.pk
 
     def notify_endgame(self):
         robot1 = self.__robots[0]
