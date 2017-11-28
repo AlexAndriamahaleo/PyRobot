@@ -193,8 +193,8 @@ def fight(request):
                                     is_read=True)
         Notification.objects.create(user=user2.user,
                                     content="%s vient de démarrer un combat contre toi" % user1.user.username)
-        tank1 = Tank.objects.get(owner=user1)
-        tank2 = Tank.objects.get(owner=user2)
+        tank1 = user1.get_tank() #Tank.objects.get(owner=user1)
+        tank2 = user2.get_tank() # Tank.objects.get(owner=user2)
         ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
         ia2 = user2.get_active_ai_script() #Ia.objects.get(owner=user2)
         game = Game(tank1, tank2, ia1, ia2)
@@ -202,11 +202,12 @@ def fight(request):
         res = game.run(0)
 
         if game.is_victorious():                #launcher WIN
-            award_battle(user1, user2)
+            # award_battle(user1, user2)
             is_victorious = "yes"
         else:                                   #launcher LOSE
-            award_battle(user2, user1)
+            # award_battle(user2, user1)
             is_victorious = "no"
+
         opponent = user2.user.username
         player_x = 0
         player_y = 0

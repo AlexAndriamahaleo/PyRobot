@@ -49,6 +49,9 @@ def award_battle(winner, loser):
     if winner.exp >= winner.next_level_exp:
         winner.level += 1
         winner.calc_next_level_exp()
+        tank = winner.get_tank()
+        tank.hp_value += 50
+        tank.save()
     winner.money += w_money
     winner.save()
 
@@ -56,6 +59,9 @@ def award_battle(winner, loser):
     if loser.exp >= loser.next_level_exp:
         loser.level += 1
         loser.calc_next_level_exp()
+        tank = loser.get_tank()
+        tank.hp_value += 50
+        tank.save()
     loser.money += 100
     loser.save()
 

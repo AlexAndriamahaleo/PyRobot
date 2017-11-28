@@ -7,7 +7,7 @@ class Robot(object):
 
     def __init__(self, tank, id):
         self.__tank = tank
-        self.__life = 100
+        self.__life = tank.hp_value
         self.__pm = self.__tank.caterpillar.moveValue
         self.__pa = self.__tank.navSystem.actionValue
         self.__cpa = self.__pa

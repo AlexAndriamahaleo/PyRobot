@@ -78,6 +78,9 @@ class UserProfile(models.Model):
         self.next_level_exp = int((self.level + 1)**2/settings.EXP_CONSTANT)
         # instance.save()
 
+    def get_tank(self):
+        return self.tank_set.all()[0]
+
 # pre_save.connect(calc_next_level_exp, sender=UserProfile)
 
 
@@ -175,6 +178,7 @@ class Tank(models.Model):
     armor = models.ForeignKey(Armor)
     caterpillar = models.ForeignKey(Caterpillar)
     navSystem = models.ForeignKey(NavSystem)
+    hp_value = models.PositiveIntegerField(default=100)
 
     def __str__(self):
         return self.owner.__str__()

@@ -1,5 +1,7 @@
 import sys, os, django
-sys.path.append("./") #here store is root folder(means parent).
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR) #here store is root folder(means parent).
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "WebPyRobot.development")
 django.setup()
 
