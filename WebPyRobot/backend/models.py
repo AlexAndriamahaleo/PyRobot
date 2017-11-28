@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_save
 
@@ -14,7 +15,7 @@ class UserProfile(models.Model):
     srch = models.PositiveIntegerField(default=0)
     dev = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=0)
-    next_level_exp = models.PositiveIntegerField(default=25)
+    next_level_exp = models.PositiveIntegerField(default=int(1/settings.EXP_CONSTANT))
     true_level = models.PositiveIntegerField(default=1)
 
     def __str__(self):
@@ -74,7 +75,7 @@ class UserProfile(models.Model):
         return None
 
     def calc_next_level_exp(self):
-        self.next_level_exp = int((self.level + 1)**2/0.1)
+        self.next_level_exp = int((self.level + 1)**2/settings.EXP_CONSTANT)
         # instance.save()
 
 # pre_save.connect(calc_next_level_exp, sender=UserProfile)
