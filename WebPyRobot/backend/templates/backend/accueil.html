@@ -32,11 +32,11 @@
             </div>
             <div class="card-content">
                 <h1 class="card-title black-text">Tableau de bord</h1>
-                <p>Niveau</p>
+                <p>Niveau ({{ user.userprofile.level }})</p>
                 <div class="progress">
-                    <div id="level" class="determinate tooltipped" data-position="right" data-delay="50" data-tooltip="{% if user %}{{ user.userprofile.true_level }}{% endif %}/10" style="width: {% if user %}{{ user.userprofile.level }}{% endif %}%"></div>
+                    <div id="level" class="determinate tooltipped" data-position="right" data-delay="50" data-tooltip="{% if user %}{{ user.userprofile.level }}{% endif %}" style="width: {% if user %}{{ user.userprofile.level }}{% endif %}%"></div>
                 </div>
-                <p>Expérience</p>
+                <p>Expérience ({{ user.userprofile.exp }} - Next level exp: {{ user.userprofile.next_level_exp }})</p>
                 <div class="progress">
                     <div id="experience" class="determinate tooltipped" data-position="right" data-delay="50" data-tooltip="{% if user %}{{ user.userprofile.exp }}{% endif %}%" style="width: {% if user %}{{ user.userprofile.exp }}{% endif %}%"></div>
                 </div>

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import post_delete, post_save, pre_save
 
 
 class UserProfile(models.Model):
@@ -13,7 +13,8 @@ class UserProfile(models.Model):
     exp = models.PositiveIntegerField(default=0)
     srch = models.PositiveIntegerField(default=0)
     dev = models.PositiveIntegerField(default=0)
-    level = models.PositiveIntegerField(default=10)
+    level = models.PositiveIntegerField(default=0)
+    next_level_exp = models.PositiveIntegerField(default=25)
     true_level = models.PositiveIntegerField(default=1)
 
     def __str__(self):
@@ -71,6 +72,13 @@ class UserProfile(models.Model):
         if battle:
             return battle[0]
         return None
+
+    def calc_next_level_exp(self):
+        self.next_level_exp = int((self.level + 1)**2/0.1)
+        # instance.save()
+
+# pre_save.connect(calc_next_level_exp, sender=UserProfile)
+
 
 
 class Ia(models.Model):

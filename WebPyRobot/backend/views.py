@@ -28,7 +28,7 @@ from .funct.funct import getItemByType,getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
 from .models import UserProfile, Tank, Ia, BattleHistory, Notification
-from .utils import validate_ai_script
+from .utils import validate_ai_script, award_battle
 from math import *
 
 
@@ -202,78 +202,10 @@ def fight(request):
         res = game.run(0)
 
         if game.is_victorious():                #launcher WIN
-            user1.money = user1.money + 300
-            user1.true_level = user1.level/10
-
-            if user1.level < user2.level:   #If user2 has better level than user1
-                diff = user2.level - user1.level
-            else:
-                diff = 0
-
-            tmpexpu1 = funcexp((user1.level - diff)/10)
-            tmpexpu2 = funcexp((user2.level + diff)/10)
-
-            if user1.level != 100:  # level max technically lvl 10
-                if handleNewLevel(tmpexpu1, user1.exp) == True :
-                    user1.exp = 100 - (tmpexpu1 + user1.exp)
-                    user1.level = user1.level + 10 # level up 10 by 10
-                    user1.true_level = user1.true_level + 1
-                else :
-                    user1.exp = user1.exp + tmpexpu1
-            user1.srch = 0 #user1.srch + 10
-            user1.save()
-
-            user2.money = user2.money + 100
-            user2.true_level = user2.level/10
-
-
-            if user2.level != 100:
-                if handleNewLevel(tmpexpu2, user2.exp) == True :
-                    user2.exp = 100 - (tmpexpu2 + user2.exp)
-                    user2.level = user2.level + 10 # level up 10 by 10
-                    user2.true_level = user2.true_level + 1
-                else :
-                    user2.exp = user2.exp + tmpexpu2
-            user2.srch = 0
-            user2.save()
+            award_battle(user1, user2)
             is_victorious = "yes"
         else:                                   #launcher LOSE
-            user2.money = user2.money + 300
-            user2.true_level = user2.level/10
-
-
-            if user2.level < user1.level:
-                diff = user1.level - user2.level
-            else:
-                diff = 0
-
-            tmpexpu1_lose = funcexp((user1.level + diff)/10)
-            tmpexpu2_win = funcexp((user2.level - diff)/10)
-
-            if user2.level != 100:
-                if handleNewLevel(tmpexpu2_win, user2.exp) == True :
-                    user2.exp = 100 - (tmpexpu2_win + user2.exp)
-                    user2.level = user2.level + 10 # level up 10 by 10
-                    user2.true_level = user2.true_level + 1
-                else :
-                    user2.exp = user2.exp + tmpexpu2_win
-
-            user2.srch = 0 # user2.srch + 10
-            user2.save()
-
-            user1.money = user1.money + 100
-            user1.true_level = user1.level/10
-
-
-            if user1.level != 100:
-                if handleNewLevel(tmpexpu1_lose, user1.exp) == True :
-                    user1.exp = 100 - (tmpexpu1_lose + user1.exp)
-                    user1.level = user1.level + 10 # level up 10 by 10
-                    user1.true_level = user1.true_level + 1
-                else :
-                    user1.exp = user1.exp + tmpexpu1_lose
-            user1.srch = 0
-            user1.save()
+            award_battle(user2, user1)
             is_victorious = "no"
         opponent = user2.user.username
         player_x = 0
