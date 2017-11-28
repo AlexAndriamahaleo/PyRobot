@@ -3,3 +3,4 @@ Pillow==4.2.1
 psycopg2==2.7.3.2
 channels==1.1.8
 django-pure-pagination==0.3.0
+asgi-redis==1.4.3
