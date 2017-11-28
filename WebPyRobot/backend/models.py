@@ -14,6 +14,7 @@ class UserProfile(models.Model):
     srch = models.PositiveIntegerField(default=0)
     dev = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=10)
+    true_level = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.user.username
