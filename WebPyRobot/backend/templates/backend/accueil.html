@@ -1,85 +1,136 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>WebPyRobot - Accueil</title>
+{% extends "base.html" %}
 
-    {% include 'backend/head.html' %}
+{% load staticfiles %}
 
-  </head>
-  <body>
-    {% include 'backend/header.html' with moneyIn=money user=username%}
-    <main class="container">
-      <div class="section">
-        <div class="row">
+{% block title %}
+    MaturePyRobot - Accueil
+{% endblock %}
 
-            {% if returnChange %}
-                <p>{{ returnChange }}</p>
-            {% endif %}
+{% block custom_css %}
+<style>
+    .progress {
+        position: relative;
+        height: 10px;
+        display: block;
+        width: 100%;
+        background-color: #d7ccc8;
+        border-radius: 5px;
+        margin: 0.5rem 0 1rem 0;
+        overflow: hidden;
+    }
+</style>
 
-            {% include 'backend/sideNav.html' with page=pageIn %}
+{% endblock %}
 
-          <div class="col s12 m9 l10 z-depth-2 pad">
-            <div class="row z-depth-1 section padding-section">
-              <div class="col s12 m6 l6 pad">
-                <h5>Introduction</h5>
-                <img class="responsive-img" style="margin-bottom: auto; margin-top: auto" src="{% static "img/tank.png" %}">
-              </div>
-              <div class="col s12 m6 l6 pad">
-                <div class="row z-depth-1 section padding-section">
-                  <div class="col s6 m6 l6 pad">
-                    <a class="waves-effect waves-light btn-large" href="{% url "backend:fight" %}">Battle</a>
-                  </div>
-                  <div class="col s6 m6 l6 pad">
-                    <h6>Agression Mode</h6>
-                    <form method="post" id="agression" action="{% url 'backend:agression' %}">
-                    {% csrf_token %}
-                        <div class="switch" type="submit">
-                          <label>
-                            Off
-                            <input id="agressionInput" type="checkbox" typeof="submit" {% if agression %}checked{% endif %}>
-                            <span class="lever"></span>
-                            On
-                          </label>
-                        </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="row z-depth-1 section padding-section">
-                  <div class="col s12 m12 l12 pad">
-                    <h5>Statistique</h5>
-                    <p class="left-align"><img class="responsive-img mini-img" src="{% static "img/svg_tank/sword.svg" %}"><span style="margin-left: 8%">Attaque = {{ tank.weapon.attackValue }}</span></p>
-                    <p class="left-align"><img class="responsive-img mini-img" src="{% static "img/svg_tank/shield.svg" %}"><span style="margin-left: 8%">Défense = {{ tank.armor.armorValue}}</span></p>
-                    <p class="left-align"><img class="responsive-img mini-img" src="{% static "img/svg_tank/boot.svg" %}"><span style="margin-left: 8%">Point de Movement = {{ tank.caterpillar.moveValue }}</span></p>
-                    <p class="left-align"><img class="responsive-img mini-img" src="{% static "img/svg_tank/circuit.svg" %}"><span style="margin-left: 8%">Point d'action = {{ tank.navSystem.actionValue  }}</span></p>
-                  </div>
-                </div>
-                
-              </div>
+
+
+{% block content %}
+    <div class="col s12 m8 l6">
+        <div class="card">
+            <div class="card-image">
+                <img class="responsive-img" style="margin-bottom: auto; margin-top: auto" src="{% static 'img/tank.png' %}">
             </div>
-            <div class="row z-depth-1 section padding-section">
-              <div class="col s12 m8 l8 pad">
-                <h5>Equipement</h5>
-                <img class="responsive-img equipement-icon" src="/static/img/canon_svg/{{ tank.weapon.pathIcon }}">
-                <img class="responsive-img equipement-icon" src="/static/img/shield_svg/{{ tank.armor.pathIcon }}">
-                <img class="responsive-img equipement-icon" src="/static/img/caterpillar_svg/{{ tank.caterpillar.pathIcon }}">
-                <img class="responsive-img equipement-icon" src="/static/img/circuit_svg/{{ tank.navSystem.pathIcon }}">
-              </div>
-              <div class="col s12 m4 l4 pad">
-                <h5>Code IA</h5>
-                <div class="valign-wrapper">
-                  <i class="large material-icons">insert_drive_file</i>
-                  <span>{{ tank.ia.name }}</span>
+            <div class="card-content">
+                <h1 class="card-title black-text">Tableau de bord</h1>
+                <p>Niveau ({{ user.userprofile.level }})</p>
+                <div class="progress">
+                    <div id="level" class="determinate tooltipped" data-position="right" data-delay="50" data-tooltip="{% if user %}{{ user.userprofile.level }}{% endif %}" style="width: {% if user %}{{ user.userprofile.level }}{% endif %}%"></div>
                 </div>
-              </div>
+                <p>Expérience ({{ user.userprofile.exp }} - Next level exp: {{ user.userprofile.next_level_exp }})</p>
+                <div class="progress">
+                    <div id="experience" class="determinate tooltipped" data-position="right" data-delay="50" data-tooltip="{% if user %}{{ user.userprofile.exp }}{% endif %}%" style="width: {% if user %}{{ user.userprofile.exp }}{% endif %}%"></div>
+                </div>
+
+
             </div>
-          </div>
+            <div class="card-action">
+                <div class="row">
+                    <div class="col s12 m6 l6">
+                        <a class="waves-effect waves-red btn-large"
+                           href="{% url 'backend:fight'%}">Combattre</a>
+                    </div>
+                    <div class="col s12 m6 l6">
+                        <h6>Mode Passif</h6>
+                        <form method="post" id="agression" action="{% url 'backend:agression' %}">
+                            {% csrf_token %}
+                            <div class="switch" type="submit">
+                                <label>
+                                    Activer
+                                    <input id="agressionInput" type="checkbox" typeof="submit" {% if agression %}checked{% endif %}>
+                                    <span class="lever"></span>
+                                    Désactiver
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </main>
-    {% include 'backend/footer.html' %}
-    <script src="{% static "js/accueil.js" %}"></script>
-  </body>
-</html>
+    </div>
+
+    <div class="col s12 m12 l4">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Tes aptitudes</span>
+                <p class="left-align"><img class="responsive-img mini-img"
+                                           src="{% static 'img/svg_tank/sword.svg' %}"><span
+                        style="margin-left: 8%">Attaque = {{ tank.weapon.attackValue }}</span></p>
+                <p class="left-align"><img class="responsive-img mini-img"
+                                           src="{% static 'img/svg_tank/shield.svg'%}"><span
+                        style="margin-left: 8%">Défense = {{ tank.armor.armorValue}}</span></p>
+                <p class="left-align"><img class="responsive-img mini-img"
+                                           src="{% static 'img/svg_tank/boot.svg'%}"><span
+                        style="margin-left: 8%">Points de Movement = {{ tank.caterpillar.moveValue }}</span>
+                </p>
+                <p class="left-align"><img class="responsive-img mini-img"
+                                           src="{% static 'img/svg_tank/circuit.svg'%}"><span
+                        style="margin-left: 8%">Points d'action = {{ tank.navSystem.actionValue  }}</span>
+                </p>
+
+                <!--
+
+                FUTURE FEATURES WAITING FOR UPDATE
+
+                <p>Recherche</p>
+                <div class="progress">
+                    <div class="determinate" style="width: {% if user %}{{ user.userprofile.srch }}{% endif %}%"></div>
+                </div>
+                <p>Développement</p>
+                <div class="progress">
+                    <div class="determinate" style="width: {% if user %}{{ user.userprofile.dev }}{% endif %}%"></div>
+                </div>
+
+                -->
+            </div>
+        </div>
+    </div>
+
+    <div class="col s12 m12 l12 push-l2 push-s5">
+        <div class="row">
+            <div class=" col s12 m6 l6">
+                <h5>Équipements</h5>
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.weapon.name }}"
+                     src="/static/img/canon_svg/{{ tank.weapon.pathIcon }}">
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.armor.name }}"
+                     src="/static/img/shield_svg/{{ tank.armor.pathIcon }}">
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.caterpillar.name }}"
+                     src="/static/img/caterpillar_svg/{{ tank.caterpillar.pathIcon }}">
+                <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.navSystem.name }}"
+                     src="/static/img/circuit_svg/{{ tank.navSystem.pathIcon }}">
+            </div>
+            <div class=" col s12 m6 l6">
+                <h5>Script actuel</h5>
+                <div class="valign-wrapper">
+                    <i class="large material-icons">insert_drive_file</i>
+                    <span>{{tank.ia.name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block custom_js %}
+    <script src="{% static 'js/accueil.js' %}"></script>
+{% endblock %}
+

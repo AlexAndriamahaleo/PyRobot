@@ -1,178 +1,195 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>WebPyRobot - Boutique</title>
+{% extends "base.html" %}
 
-    {% include 'backend/head.html' %}
+{% load staticfiles %}
 
-  </head>
-  <body>
-    {% include 'backend/header.html' with moneyIn=money user=username%}
-    <main class="container">
-      <div class="section">
-        <div class="row">
+{% block title %}MaturePyRobot - Boutique{% endblock %}
 
-          {% include 'backend/sideNav.html' with page=pageIn %}
+{% block custom_css %}
 
-          <div class="col s12 m9 l10 pad">
-            <div class="row z-depth-1 section padding-section">
-              <div class="pad col s12 m8 l8 ">
-              {{ return }}
-                <div class="col s12">
-                  <ul class="tabs">
-                    <li class="tab col s4"><a href="#Canon" class="active">Canons</a></li>
-                    <li class="tab col s4"><a href="#Blindage">Blindages</a></li>
-                    <li class="tab col s4"><a href="#Chenille">Chenilles</a></li>
-                    <li class="tab col s4"><a href="#info">Système</a></li>
-                  </ul>
-                </div>
-                <div id="Canon" class="col s12">
-                    {% for weapon in weapons %}
-                  <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard" id="weapon{{ weapon.pk }}">
-                    <div class="row">
-                      <div class="col s12 center-align"><img src="/static/img/canon_svg/{{ weapon.pathIcon}}" class="pad equipement-icon responsive-img"></div>
-                      <div class="col s12 center-align"><span class="black-text">{{ weapon.name }}</span></div>
+{% endblock %}
+
+{% block content %}
+<div class="col s12 m9 l10">
+        <div class="col s12 m7 l7">
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header active"><i class="fa fa-rocket" aria-hidden="true"></i> CANONS</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div id="Canon" class="col s12">
+                                {% for weapon in weapons %}
+                                    <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard"
+                                         id="weapon{{ weapon.pk }}">
+                                        <div class="row">
+                                            <div class="col s12 center-align"><img src="/static/img/canon_svg/{{ weapon.pathIcon}}"
+                                                                                   class="pad equipement-icon responsive-img"></div>
+                                            <div class="col s12 center-align"><span class="black-text">{{ weapon.name }}</span></div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                    {% endfor %}
-
-                </div>
-                <div id="Blindage" class="col s12">
-                    {% for armor in armors%}
-                  <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard" id="armor{{ armor.pk }}">
-                    <div class="row">
-                      <div class="col s12 center-align"><img src="/static/img/shield_svg/{{ armor.pathIcon }}" class="pad equipement-icon responsive-img"></div>
-                      <div class="col s12 center-align"><span class="black-text">{{ armor.name }}</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="fa fa-square" aria-hidden="true"></i> BLINDAGES</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div id="Blindage" class="col s12">
+                                {% for armor in armors%}
+                                <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard"
+                                     id="armor{{ armor.pk }}">
+                                    <div class="row">
+                                        <div class="col s12 center-align"><img src="/static/img/shield_svg/{{ armor.pathIcon }}"
+                                                                               class="pad equipement-icon responsive-img"></div>
+                                        <div class="col s12 center-align"><span class="black-text">{{ armor.name }}</span></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                    {% endfor %}
-
-                </div>
-                <div id="Chenille" class="col s12">
-                    {% for caterpillar in caterpillars %}
-                  <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard" id="caterpillar{{ caterpillar.pk }}">
-                    <div class="row">
-                      <div class="col s12 center-align"><img src="/static/img/caterpillar_svg/{{ caterpillar.pathIcon }}" class="pad equipement-icon responsive-img"></div>
-                      <div class="col s12 center-align"><span class="black-text">{{ caterpillar.name }}</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="fa fa-cogs" aria-hidden="true"></i> CHENILLES</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div id="Chenille" class="col s12">
+                                {% for caterpillar in caterpillars %}
+                                <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard"
+                                     id="caterpillar{{ caterpillar.pk }}">
+                                    <div class="row">
+                                        <div class="col s12 center-align"><img
+                                                src="/static/img/caterpillar_svg/{{ caterpillar.pathIcon }}"
+                                                class="pad equipement-icon responsive-img"></div>
+                                        <div class="col s12 center-align"><span class="black-text">{{ caterpillar.name }}</span></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                    {% endfor %}
-
-                </div>
-                <div id="info" class="col s12">
-
-                    {% for navSyst in navSys %}
-                  <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard" id="navSyst{{ navSyst.pk }}">
-                    <div class="row">
-                      <div class="col s12 center-align"><img src="/static/img/circuit_svg/{{ navSyst.pathIcon }}" class="pad equipement-icon responsive-img"></div>
-                      <div class="col s12 center-align"><span class="black-text">{{ navSyst.name }}</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="fa fa-microchip" aria-hidden="true"></i> PROCESSEURS</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div id="info" class="col s12">
+                                {% for navSyst in navSys %}
+                                <div style="cursor:pointer" class="card-panel hoverable col s4 grey lighten-5 openCard"
+                                     id="navSyst{{ navSyst.pk }}">
+                                    <div class="row">
+                                        <div class="col s12 center-align"><img src="/static/img/circuit_svg/{{ navSyst.pathIcon }}"
+                                                                               class="pad equipement-icon responsive-img"></div>
+                                        <div class="col s12 center-align"><span class="black-text">{{ navSyst.name }}</span></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                    {% endfor %}
-
-                </div>
-              </div>
-              <div class="pad col s12 m4 l4 ">
-
-                  {% for weapon in weapons %}
-                    <div class="card" id="cardweapon{{ weapon.pk }}">
-                      <div class="card-image">
-                        <img style="width: 80%; height: 90%; margin-left: auto; margin-right: auto" src="/static/img/canon_svg/{{ weapon.pathIcon }}">
-                        <span class="card-title black-text">{{ weapon.name }}</span>
-                      </div>
-                      <div class="card-content">
-                        <h5>Statistiques</h5>
-                        <span> Attaque : {{ weapon.attackValue }}</span><br/>
-                        <span> Prix : {{ weapon.price }} $</span>
-                      </div>
-                      <div class="card-action">
-                        <form method="post" action="{% url 'backend:buyStuff' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="typeItem" value="1">
-                            <input type="hidden" name="item" value="{{ weapon.pk }}">
-                            <input type="hidden" name="price" value="{{ weapon.price }}">
-                            <button type="submit" class="waves-effect waves-light btn ">Acheter</button>
-                        </form>
-                      </div>
-                    </div>
-                  {% endfor %}
-                  {% for armor in armors %}
-                    <div class="card" id="cardarmor{{ armor.pk }}">
-                      <div class="card-image">
-                        <img cstyle="width: 80%; height: 90%; margin-left: auto; margin-right: auto" src="/static/img/shield_svg/{{ armor.pathIcon }}">
-                        <span class="card-title black-text">{{ armor.name }}</span>
-                      </div>
-                      <div class="card-content">
-                        <h5>Statistiques</h5>
-                        <span> Defense : {{ armor.armorValue }}</span><br/>
-                        <span> Prix : {{ armor.price }} $</span>
-                      </div>
-                      <div class="card-action">
-                        <form method="post" action="{% url 'backend:buyStuff' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="typeItem" value="2">
-                            <input type="hidden" name="item" value="{{ armor.pk }}">
-                            <input type="hidden" name="price" value="{{ armor.price }}">
-                            <button type="submit" class="waves-effect waves-light btn">Acheter</button>
-                        </form>
-                      </div>
-                    </div>
-                  {% endfor %}
-                  {% for caterpillar in caterpillars %}
-                    <div class="card" id="cardcaterpillar{{ caterpillar.pk }}">
-                      <div class="card-image">
-                        <img style="width: 80%; height: auto; margin-left: auto; margin-right: auto" src="/static/img/caterpillar_svg/{{ caterpillar.pathIcon }}">
-                        <span class="card-title black-text">{{ caterpillar.name }}</span>
-                      </div>
-                      <div class="card-content">
-                        <h5>Statistiques</h5>
-                        <span> Point de déplacement : {{ caterpillar.moveValue }}</span><br/>
-                        <span> Prix : {{ caterpillar.price }} $</span>
-                      </div>
-                      <div class="card-action">
-                        <form method="post" action="{% url 'backend:buyStuff' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="typeItem" value="3">
-                            <input type="hidden" name="item" value="{{ caterpillar.pk }}">
-                            <input type="hidden" name="price" value="{{ caterpillar.price }}">
-                            <button type="submit" class="waves-effect waves-light btn">Acheter</button>
-                        </form>
-                      </div>
-                    </div>
-                  {% endfor %}
-                  {% for navSyst in navSys %}
-                    <div class="card" id="cardnavSyst{{ navSyst.pk }}">
-                      <div class="card-image">
-                        <img style="width: 80%; height: auto; margin-left: auto; margin-right: auto" src="/static/img/circuit_svg/{{ navSyst.pathIcon }}">
-                        <span class="card-title black-text">{{ navSyst.name }}</span>
-                      </div>
-                      <div class="card-content">
-                        <h5>Statistiques</h5>
-                        <span> Point d'action : {{ navSyst.actionValue }}</span><br/>
-                        <span> Prix : {{ navSyst.price }} $</span>
-                      </div>
-                      <div class="card-action">
-                        <form method="post" action="{% url 'backend:buyStuff' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="typeItem" value="4">
-                            <input type="hidden" name="item" value="{{ navSyst.pk }}">
-                            <input type="hidden" name="price" value="{{ navSyst.price }}">
-                            <button type="submit" class="waves-effect waves-light btn">Acheter</button>
-                        </form>
-                      </div>
-                    </div>
-                  {% endfor %}
-
-              </div>
-            </div>
-          </div>
+                </li>
+            </ul>
         </div>
-      </div>
-    </main>
-    {% include 'backend/footer.html' %}
-    <script src="{% static 'js/market.js' %}"></script>
-  </body>
-</html>
+
+        <div class="pad col s12 m3 l3 ">
+
+        {% for weapon in weapons %}
+        <div class="card" id="cardweapon{{ weapon.pk }}">
+            <div class="card-image">
+                <img style="width: 80%; height: 90%; margin-left: auto; margin-right: auto"
+                     src="/static/img/canon_svg/{{ weapon.pathIcon }}">
+            </div>
+            <div class="card-content">
+                <p class="card-title black-text">{{ weapon.name }}</p>
+                <h5>Caractéristiques</h5>
+                <span> Attaque : {{ weapon.attackValue }}</span><br/>
+                <span> Prix : {{ weapon.price }} <i class="fa fa-eur" aria-hidden="true"></i></span>
+            </div>
+            <div class="card-action">
+                <form method="post" action="{% url 'backend:buyStuff' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="typeItem" value="1">
+                    <input type="hidden" name="item" value="{{ weapon.pk }}">
+                    <input type="hidden" name="price" value="{{ weapon.price }}">
+                    <button type="submit" class="waves-effect waves-light btn ">Acheter</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% for armor in armors %}
+        <div class="card" id="cardarmor{{ armor.pk }}">
+            <div class="card-image">
+                <img cstyle="width: 80%; height: 90%; margin-left: auto; margin-right: auto"
+                     src="/static/img/shield_svg/{{ armor.pathIcon }}">
+            </div>
+            <div class="card-content">
+                <p class="card-title black-text">{{ armor.name }}</p>
+                <h5>Caractéristiques</h5>
+                <span> Defense : {{ armor.armorValue }}</span><br/>
+                <span> Prix : {{ armor.price }} <i class="fa fa-eur" aria-hidden="true"></i></span>
+            </div>
+            <div class="card-action">
+                <form method="post" action="{% url 'backend:buyStuff' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="typeItem" value="2">
+                    <input type="hidden" name="item" value="{{ armor.pk }}">
+                    <input type="hidden" name="price" value="{{ armor.price }}">
+                    <button type="submit" class="waves-effect waves-light btn">Acheter</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% for caterpillar in caterpillars %}
+        <div class="card" id="cardcaterpillar{{ caterpillar.pk }}">
+            <div class="card-image">
+                <img style="width: 80%; height: auto; margin-left: auto; margin-right: auto"
+                     src="/static/img/caterpillar_svg/{{ caterpillar.pathIcon }}">
+            </div>
+            <div class="card-content">
+                <p class="card-title black-text">{{ caterpillar.name }}</p>
+                <h5>Caractéristiques</h5>
+                <span> Point de déplacement : {{ caterpillar.moveValue }}</span><br/>
+                <span> Prix : {{ caterpillar.price }} <i class="fa fa-eur" aria-hidden="true"></i></span>
+            </div>
+            <div class="card-action">
+                <form method="post" action="{% url 'backend:buyStuff' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="typeItem" value="3">
+                    <input type="hidden" name="item" value="{{ caterpillar.pk }}">
+                    <input type="hidden" name="price" value="{{ caterpillar.price }}">
+                    <button type="submit" class="waves-effect waves-light btn">Acheter</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% for navSyst in navSys %}
+        <div class="card" id="cardnavSyst{{ navSyst.pk }}">
+            <div class="card-image">
+                <img style="width: 80%; height: auto; margin-left: auto; margin-right: auto"
+                     src="/static/img/circuit_svg/{{ navSyst.pathIcon }}">
+            </div>
+            <div class="card-content">
+                <p class="card-title black-text">{{ navSyst.name }}</p>
+                <h5>Caractéristiques</h5>
+                <span> Point d'action : {{ navSyst.actionValue }}</span><br/>
+                <span> Prix : {{ navSyst.price }} <i class="fa fa-eur" aria-hidden="true"></i></span>
+            </div>
+            <div class="card-action">
+                <form method="post" action="{% url 'backend:buyStuff' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="typeItem" value="4">
+                    <input type="hidden" name="item" value="{{ navSyst.pk }}">
+                    <input type="hidden" name="price" value="{{ navSyst.price }}">
+                    <button type="submit" class="waves-effect waves-light btn">Acheter</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static 'js/market.js' %}"></script>
+{% endblock %}

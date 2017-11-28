@@ -9,16 +9,10 @@ DEBUG = True
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'maturepyrobot',
-#         'USER': 'maturepyrobot',
-#         'PASSWORD': '',
+#         'NAME': 'pyrobot',
+#         'USER': 'pyrobot',
+#         'PASSWORD': '111111',
 #         'HOST': 'localhost',
-#         'PORT': '',
+#         'PORT': 5435,
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}

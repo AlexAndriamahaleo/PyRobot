@@ -1,11 +1,40 @@
-          <div class="col hide-on-small-only m3 l2">
-            <div class="toc-wrapper">
-              <div class="section collection">
-                <a style="cursor:pointer" onclick="window.location.href='/'"  class="collection-item {% if page == "accueil"  %}active{% endif %}">Accueil</a>
-                <a style="cursor:pointer" onclick="window.location.href='/market'"  class="collection-item {% if page == "market"  %}active{% endif %}">Boutique</a>
-                <a style="cursor:pointer" onclick="window.location.href='/editor'"  class="collection-item {% if page == "editor"  %}active{% endif %}">Editeur</a>
-                <a style="cursor:pointer" onclick="window.location.href='/inventory'"  class="collection-item {% if page == "inventory"  %}active{% endif %}">Inventaire</a>
-                <a style="cursor:pointer" onclick="window.location.href='/help'"  class="collection-item {% if page == "help"  %}active{% endif %}">Aide</a>
-              </div>
-            </div>
-          </div>
+<div class="col hide-on-small-only m3 l2">
+    <div class="collection">
+        <a style="cursor:pointer" onclick="window.location.href='/'"
+           class="collection-item {% if page == 'accueil' %}active{% endif %}">Accueil</a>
+
+        <a style="cursor:pointer" onclick="window.location.href='/editor'"
+           class="collection-item {% if page == 'editor' %}active{% endif %}">Éditeur</a>
+
+        <a style="cursor:pointer" onclick="window.location.href='/inventory'"
+           class="collection-item {% if page == 'inventory' %}active{% endif %}">Inventaire</a>
+
+        <!--
+
+        FUTURE FEATURES WAITING FOR UPDATE
+
+        <a style="cursor:pointer" onclick="window.location.href='/recherche'"
+           class="collection-item {% if page == 'recherche' %}active{% endif %} tooltipped" data-position="left" data-delay="50" data-tooltip="Prochainement">Recherche</a>
+
+        <a style="cursor:pointer" onclick="window.location.href='/developpement'"
+           class="collection-item {% if page == 'developpement' %}active{% endif %} tooltipped" data-position="left" data-delay="50" data-tooltip="Prochainement">Développement</a>
+
+
+           -->
+
+        <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
+           class="collection-item {% if page == 'battle_histories' %}active{% endif %}">Historique <br>de combat</a>
+
+        <a style="cursor:pointer" onclick="window.location.href='/market'"
+           class="collection-item {% if page == 'market' %}active{% endif %}"><i class="fa fa-shopping-cart fa-fw" ></i> Boutique</a>
+
+        <a style="cursor:pointer" onclick="window.location.href='/documentation'"
+           class="collection-item {% if page == 'documentation' %}active{% endif %}">Documentation</a>
+
+        <a style="cursor:pointer" onclick="window.location.href='/faq'"
+           class="collection-item {% if page == 'faq' %}active{% endif %}"><i class="fa fa-question-circle fa-fw" ></i> FAQ</a>
+
+        <a style="cursor:pointer" onclick="window.location.href='/tutoriels'"
+           class="collection-item {% if page == 'tutoriels'  %}active{% endif %}">Tutoriels</a>
+    </div>
+</div>

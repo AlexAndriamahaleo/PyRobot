@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^registrationComplete/autoLogin/$', views.thanks, name='registrationComplete'),
     url(r'^password_change$', views.password_change, name='password_change'),
     url(r'^combat/$', views.fight, name='fight'),
-    url(r'^editor/$', views.editor, name='editor'),
+    url(r'^editor/$', views.AIScriptView.as_view(), name='editor'),
     url(r'^editor/(?P<pk>[0-9]+)/$', views.editorDetail, name='editorDetail'),
     url(r'^inventory/$', views.inventory, name='inventory'),
     url(r'^market/$', views.market, name='market'),
@@ -23,7 +23,13 @@ urlpatterns = [
     url(r'^changeStuff/$', views.changeStuff, name='changeStuff'),
     url(r'^buyStuff/$', views.buyStuff, name='buyStuff'),
     url(r'^documentation/$', views.documentation, name='documentation'),
+    url(r'^faq/$', views.faq, name='faq'),
+    url(r'^tutoriels/$', views.tutoriel, name='tutoriels'),
 
-    url(r'^dragonball-chars/$', api_views.angular_ajax_test, name="test_api")
+    url(r'^recherche/$', views.recherche, name='recherche'),
+    url(r'^developpement/$', views.developpement, name='developpement'),
+
+    url(r'^battle-histories/$', views.HistoriesView.as_view(), name="battle_histories"),
+    url(r'^finish-battle/$', views.finish_battle, name='finish_battle')
 
 ]

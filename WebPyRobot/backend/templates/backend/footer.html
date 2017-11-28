@@ -1,18 +1,19 @@
-    {% load static %}
+{% load static %}
 
-    <footer class="page-footer grey">
-        <div class="footer-copyright">
-            <div class="container">
-              <div class="row">
-                <a class="grey-text text-lighten-4 left-align col s4 m4 l4 " href="#!">Condition d'utilisation</a>
-                <i class="small material-icons col center-align s4 m4 l4">insert_chart</i>
-                <a class="grey-text text-lighten-4 right-align col s4 m4 l4" href="#!">Mention Légale</a>
-              </div>
-            </div>
+<footer class="section" style="background-color: #1a237e">
+
+    {% include 'backend/legalNoticeContact.html' %}
+    <div class="footer-copyright">
+        <div class="container white-text center-align">
+            <a class="white-text modal-trigger left" href="#modal2">Contact</a>
+            © 2017 design par <a class="white-text" href="https://github.com/AlexAndriamahaleo" target="_blank">BananiaStyle</a>.
+            <a class="white-text modal-trigger right" href="#modal1">Mentions Legales</a>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <!--  Scripts-->
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="{% static 'js/materialize.js' %}"></script>
-    <script src="{% static 'js/init.js' %}"></script>
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="{% static 'js/materialize.js' %}"></script>
+<script src="{% static 'js/init.js' %}"></script>
+<script src="{% static 'js/alertify.js' %}"></script>

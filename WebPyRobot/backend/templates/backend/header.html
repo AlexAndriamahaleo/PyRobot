@@ -1,34 +1,93 @@
 {% load static %}
+
 <header class="navbar-fixed">
-      <nav class="light-blue lighten-1" role="navigation">
-        <div class="nav-wrapper container"><a id="logo-container" style="cursor:pointer" onclick="window.location.href='/'" class="brand-logo"><img class="img-logo" src="{% static "img/svg_tank/tank.svg" %}">  WebPyRobot</a>
-          <ul class="right hide-on-med-and-down">
-            <li><a href="#">Combat<span class="new badge">2</span></a></li>
-            <li><a href="#"><i class="material-icons left">attach_money</i>{{ moneyIn }}</a></li>
-            <li><a href="#"><i class="material-icons left">account_box</i>{{ user }}</a></li>
-            <li><a style="cursor:pointer" onclick="window.location.href='/parameter'"><i class="material-icons">settings</i></a></li>
-            <li><a style="cursor:pointer" onclick="window.location.href='/logout'"><i class="material-icons">power_settings_new</i></a></li>
-          </ul>
+    <!--<nav class="indigo darken-4" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" style="cursor:pointer" onclick="window.location.href='/'" class="brand-logo yellow-text ">
+            <img class="img-logo" src="{% static 'img/svg_tank/tank.svg' %}"> MaturePyRobot</a>
 
-          <ul id="nav-mobile" class="side-nav">
-            <li>
-              <div class="userView">
-                <img class="background" src="{% static 'img/galaxy.jpg' %}">
-                <a href="#!name"><span class="white-text name">{{ user }}</span></a>
-                <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
-              </div>
-            </li>
-            <li><a class="waves-effect" href="#">Combat<span class="new badge">2</span></a></li>
-            <li><a class="waves-effect" href="#"><i class="material-icons left">attach_money</i>{{ moneyIn }}</a></li>
-            <li><a class="waves-effect" onclick="window.location.href='/parameter'"><i class="material-icons left">settings</i>Paramêtre</a></li>
-            <li><a class="waves-effect" onclick="window.location.href='/logout'"><i class="material-icons left">power_settings_new</i>Déconecter</a></li>
+            <ul class="right hide-on-med-and-down">
+                <li><a class="yellow-text " href="#">Combat <span class="new badge red pulse" data-badge-caption="nouveaux combats">2</span></a></li>
+                <li><a class="yellow-text " href="#">{{ moneyIn }} <i class="fa fa-eur" aria-hidden="true"></i></a></li>
+                <li><a class="yellow-text " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a></li>
+                <li>
+                    <a class="yellow-text  tooltipped" data-position="bottom" data-delay="50" data-tooltip="Changer le mot de passe" style="cursor:pointer" onclick="window.location.href='/parameter'">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li>
+                    <a class="yellow-text  tooltipped" data-position="bottom" data-delay="50" data-tooltip="Déconnexion" style="cursor:pointer" onclick="window.location.href='/logout'">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
 
-              <li><div class="divider"></div></li>
+            <ul id="nav-mobile" class="side-nav">
+                <li>
+                    <div class="userView">
+                        <a href="#!name"><span class="white-text name">{{ user }}</span></a>
+                        <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
+                    </div>
+                </li>
+                <li><a class="yellow-text " href="#">Combats <span class="new badge red pulse" data-badge-caption="nouveaux combats">2</span></a></li>
+                <li><a class="yellow-text " href="#">{{ moneyIn }} <i class="fa fa-eur" aria-hidden="true"></i></a></li>
+                <li><a class="yellow-text " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a></li>
+                <li><a class="yellow-text " style="cursor:pointer" onclick="window.location.href='/parameter'"><i class="material-icons">settings</i></a></li>
+                <li><a class="yellow-text " style="cursor:pointer" onclick="window.location.href='/logout'"><i class="material-icons">power_settings_new</i></a></li>
+                <li>
+                    <div class="divider"></div>
+                </li>
 
-            {% include 'backend/mobilNav_Link.html' %}
+                {% include 'backend/mobilNav_Link.html' %}
 
-          </ul>
-          <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         </div>
-      </nav>
-    </header>
+    </nav>-->
+    <ul id="slide-out" class="side-nav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <a href="#!name"><span class="white-text name">{{ user }}</span></a>
+                    <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
+                </div>
+            </div>
+        </li>
+        <li><a class="indigo-text darken-4 " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a></li>
+        <li><a class="indigo-text darken-4 " href="#">{{ moneyIn }} <i class="fa fa-eur" aria-hidden="true"></i></a></li>
+        <li><a class="indigo-text darken-4 " style="cursor:pointer" onclick="window.location.href='/parameter'"><i class="fa fa-key" aria-hidden="true"></i> Modifier Mot de Passe</a></li>
+        <li><a class="indigo-text darken-4 " style="cursor:pointer" onclick="window.location.href='/logout'"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+
+        {% include 'backend/mobilNav_Link.html' %}
+    </ul>
+    <nav class="indigo darken-4" role="navigation">
+        <div class="container nav-wrapper">
+            <a href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">MaturePyRobot</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <!--<li><a class="yellow-text " href="#">Combats <span class="new badge red pulse" data-badge-caption="nouveaux combats">2</span></a>
+                </li>-->
+                <li>
+                    <a class="yellow-text " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a>
+                </li>
+                <li>
+                    <a class="yellow-text " href="#">{{ moneyIn }} <i class="fa fa-eur fa-fw" aria-hidden="true"></i></a>
+                </li>
+                <li>
+                    <a class="yellow-text tooltipped" data-position="bottom" data-delay="50"
+                       data-tooltip="Changer le mot de passe" style="cursor:pointer"
+                       onclick="window.location.href='/parameter'">
+                        <i class="fa fa-key fa-2x" aria-hidden="true"></i></a>
+                </li>
+                <li>
+                    <a class="yellow-text  tooltipped" data-position="bottom" data-delay="50"
+                       data-tooltip="Déconnexion" style="cursor:pointer" onclick="window.location.href='/logout'">
+                        <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+</header>
