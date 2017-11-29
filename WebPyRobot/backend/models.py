@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_save
+
+from ckeditor.fields import RichTextField
+
 
 
 class UserProfile(models.Model):
@@ -243,3 +246,17 @@ class Notification(models.Model):
     content = models.CharField(max_length=200)
     is_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class FAQ(models.Model):
+    """
+    FAQ
+    """
+    question = models.TextField(null=False)
+    answer = RichTextField(null=False)
+    symbol = models.CharField(default='fa-book', null=True, help_text='Font Awesome icon name', max_length=50)
+
+    def save(self, *args, **kwargs):
+        self.question = self.question.strip().rstrip('?')
+        super(FAQ, self).save(*args, **kwargs)
+
