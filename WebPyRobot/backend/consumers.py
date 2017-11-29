@@ -46,42 +46,45 @@ def ws_receive(message):
     Handle data received from clients
     """
     try:
-        data = json.loads(message['text'])
-    except ValueError:
-        log.debug("ws message isn't json")
-        return
-
-    # Battle data from the frontend side
-    if data.get('msg_type') == "battle_step":
-        username = data.get("username")
         try:
-            user = User.objects.get(username=username)
-        except:
-            import traceback; print(traceback.format_exc())
-            log.error("User not found %s" % username)
+            data = json.loads(message['text'])
+        except ValueError:
+            log.debug("ws message isn't json")
             return
-        battle = user.userprofile.get_running_battle()
 
-        # Battle finished
-        if data.get("finished") == "yes":
-            battle.is_finished = True
+        # Battle data from the frontend side
+        if data.get('msg_type') == "battle_step":
+            username = data.get("username")
+            try:
+                user = User.objects.get(username=username)
+            except:
+                import traceback; print(traceback.format_exc())
+                log.error("User not found %s" % username)
+                return
+            battle = user.userprofile.get_running_battle()
+
+            # Battle finished
+            if data.get("finished") == "yes":
+                battle.is_finished = True
+                battle.save()
+                if battle.is_victorious:
+                    award_battle(battle.user.userprofile, battle.opponent.userprofile)
+                else:
+                    award_battle(battle.opponent.userprofile, battle.user.userprofile)
+                return
+
+            step = int(data.get("step", 0))
+            battle.step = step
+            battle.player_x = data.get('player_x', 0)
+            battle.player_y = data.get('player_y', 0)
+            battle.opponent_y = data.get('opponent_y', 0)
+            battle.opponent_x = data.get('opponent_x', 0)
             battle.save()
-            if battle.is_victorious:
-                award_battle(battle.user.userprofile, battle.opponent.userprofile)
-            else:
-                award_battle(battle.opponent.userprofile, battle.user.userprofile)
-            return
-
-        step = int(data.get("step", 0))
-        battle.step = step
-        battle.player_x = data.get('player_x', 0)
-        battle.player_y = data.get('player_y', 0)
-        battle.opponent_y = data.get('opponent_y', 0)
-        battle.opponent_x = data.get('opponent_x', 0)
-        battle.save()
-    else:
-        label = message.channel_session['label']
-        Group(label, channel_layer=message.channel_layer).send({'text': message['text']})
+        else:
+            label = message.channel_session['label']
+            Group(label, channel_layer=message.channel_layer).send({'text': message['text']})
+    except:
+        log.error(traceback.format_exc())
 
 
 @channel_session
