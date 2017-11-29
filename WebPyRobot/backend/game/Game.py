@@ -1,5 +1,7 @@
 import json
 
+from django.conf import settings
+
 from ..models import BattleHistory, Notification
 
 
@@ -55,7 +57,7 @@ class Robot(object):
 
 class Game(object):
     def __init__(self, r1, r2, ia1, ia2):
-        self.__size = 32
+        self.__size = settings.BATTLE_MAP_SIZE
         self.__map = []
         self.__current = 0
         self.__robots = [Robot(r1, 0), Robot(r2, 1)]
@@ -177,9 +179,10 @@ class Game(object):
         paWe = self.__robots[self.__current].getWPa()
         dWe = self.__robots[self.__current].getWeaponDamage()
         range = self.__robots[self.__current].getRange()
+        mid_point = int(self.__size/2)
         if pa - paWe >= 0:
             if(dist > range):
-                    self.__result.append([self.__current, "shoot", 16, 16])
+                self.__result.append([self.__current, "shoot", mid_point, mid_point])
             else:
                 self.__result.append([self.__current, "shoot",x, y])
                 self.__robots[self.getEnemyTankId()].setLife(self.__robots[self.getEnemyTankId()].getLife()-dWe)
