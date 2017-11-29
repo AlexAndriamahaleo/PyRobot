@@ -27,7 +27,7 @@ from .forms import SignUpForm, ChangeDataForm, CodeForm
 from .funct.funct import getItemByType,getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
-from .models import UserProfile, Tank, Ia, BattleHistory, Notification
+from .models import UserProfile, Tank, Ia, BattleHistory, Notification, FAQ
 from .utils import validate_ai_script
 
 
@@ -428,10 +428,12 @@ def documentation (request):
 
 @login_required
 def faq (request):
+    faqs = FAQ.objects.all().order_by('pk')
     context = {
         'pageIn': 'faq',
+        'faqs': faqs
     }
-    return render (request,"backend/faq.html", context)
+    return render (request,"backend/faq_updated.html", context)
 
 @login_required
 def tutoriel (request):

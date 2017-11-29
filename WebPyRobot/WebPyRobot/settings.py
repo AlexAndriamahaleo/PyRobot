@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'channels',
     'backend',
     'pure_pagination',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
