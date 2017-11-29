@@ -46,14 +46,15 @@ $(function() {
     socket.onmessage = function(message) {
         console.log(message);
         var data = JSON.parse(message.data);
-        $.notify(data.msg_content, {
-            position: "top right",
-            className: data.msg_class,
-            autoHide: true,
-            autoHideDelay: 10000,
-            hideDuration: 500,
-            style: "bootstrap_html"
-        });
+        if (data.msg_type == "notification")
+            $.notify(data.msg_content, {
+                position: "top right",
+                className: data.msg_class,
+                autoHide: true,
+                autoHideDelay: 10000,
+                hideDuration: 500,
+                style: "bootstrap_html"
+            });
     };
 
 });

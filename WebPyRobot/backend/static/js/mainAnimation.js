@@ -61,10 +61,10 @@ var contraint =36/(Math.min(winHieght,winWidth)/36);
 // }
 var map = new Map(map_name, contraint);
 
-var player1 = new Player("tank1.png", player_x, player_y, STATE.DOWN,contraint);
+var player1 = new Player("tank1.png", player_x, player_y, STATE.DOWN,contraint, playername);
 map.addPlayer(player1);
 
-var player2 = new Player("tank2.png", opponent_x, opponent_y, STATE.UP,contraint);
+var player2 = new Player("tank2.png", opponent_x, opponent_y, STATE.UP,contraint, opponent);
 map.addPlayer(player2);
 
 
@@ -89,8 +89,7 @@ var moveRigth = function(player,x,y){
 
 var deadPlayer = function(player){
 	player.dead();
-	//if (player == playername)
-	if (iv == "no")
+	if (player.name == playername)
 		document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
 	else 
 		document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
@@ -106,6 +105,18 @@ var deadPlayer = function(player){
 		socket.send(JSON.stringify(message));
 	};
 	if (socket.readyState == WebSocket.OPEN) socket.onopen();
+
+	var socket2 = new WebSocket(ws_scheme + '://' + window.location.host + "/" + playername + "-notifications/");
+	socket2.onopen = function() {
+    	var message = {
+			msg_type: "battle_step",
+			msg_class: "success",
+            finished: "yes",
+            username: playername
+		};
+		socket2.send(JSON.stringify(message));
+	};
+	if (socket2.readyState == WebSocket.OPEN) socket2.onopen();
 };
 
 var shoot = function(player,x,y){
@@ -204,13 +215,13 @@ window.onload = function() {
 		   		var message = {
                     step: j ,
                     message: '',
-                    type: 'battle_step',
+                    msg_type: 'battle_step',
                     username: playername,
                     player_x: player1.x,
                     opponent_x: player2.x,
                     player_y: player1.y,
                     opponent_y: player2.y,
-                    map: map_name
+                    map: map_name,
                 };
                 socket.send(JSON.stringify(message));
                 ++j;

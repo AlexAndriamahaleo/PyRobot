@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_save
+
+from ckeditor.fields import RichTextField
+
 
 
 class UserProfile(models.Model):
@@ -78,8 +81,8 @@ class UserProfile(models.Model):
         self.next_level_exp = int((self.level + 1)**2/settings.EXP_CONSTANT)
         # instance.save()
 
-# pre_save.connect(calc_next_level_exp, sender=UserProfile)
-
+    def get_tank(self):
+        return self.tank_set.all()[0]
 
 
 class Ia(models.Model):
@@ -175,6 +178,7 @@ class Tank(models.Model):
     armor = models.ForeignKey(Armor)
     caterpillar = models.ForeignKey(Caterpillar)
     navSystem = models.ForeignKey(NavSystem)
+    hp_value = models.PositiveIntegerField(default=100)
 
     def __str__(self):
         return self.owner.__str__()
@@ -222,8 +226,10 @@ class BattleHistory(models.Model):
     max_step = models.PositiveIntegerField(default=0)
     # Result array. We should us JsonField but it's only available in PostgreSQL now
     result_stats = models.TextField(default='')
+    # Player positions
     player_x = models.PositiveIntegerField(default=0)
     player_y = models.PositiveIntegerField(default=0)
+    # Opponent positions
     opponent_x = models.PositiveIntegerField(default=0)
     opponent_y = models.PositiveIntegerField(default=0)
     map_name = models.CharField(max_length=10, default="terre")
@@ -232,7 +238,25 @@ class BattleHistory(models.Model):
 
 
 class Notification(models.Model):
+    """
+    A notification, like Facebook notification
+    Define for later use
+    """
     user = models.ForeignKey(User, related_name="notifications")
     content = models.CharField(max_length=200)
     is_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class FAQ(models.Model):
+    """
+    FAQ
+    """
+    question = models.TextField(null=False)
+    answer = RichTextField(null=False)
+    symbol = models.CharField(default='fa-book', null=True, help_text='Font Awesome icon name', max_length=50)
+
+    def save(self, *args, **kwargs):
+        self.question = self.question.strip().rstrip('?')
+        super(FAQ, self).save(*args, **kwargs)
+

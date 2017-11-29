@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+MaturePyRobot - FAQ
+{% endblock %}
+
+{% block content %}
+<div class="col s12 m9 l10 pad">
+    <h2>FAQ</h2>
+    <ul class="collapsible" data-collapsible="accordion">
+        {% for fq in faqs %}
+        <li>
+            <div class="collapsible-header"><i class="fa {{ fq.symbol }}" aria-hidden="true"></i> {{ fq.question }} ?</div>
+            <div class="collapsible-body">
+                {{ fq.answer|safe }}
+            </div>
+        </li>
+        {% endfor %}
+
+    </ul>
+</div>
+{% endblock %}
