@@ -424,14 +424,17 @@ def agression(request):
 
 @login_required
 def changeStuff(request):
-    userProfile = UserProfile.objects.get(user=request.user)
+    userProfile = request.user.userprofile
     tank = Tank.objects.get(owner=userProfile)
     itemIn = request.POST.get("item")
     typeIn = request.POST.get("typeItem")
     if int(typeIn) == 1:
         w = getItemByType(itemIn, TypeItem(pk=1))
-        tank.weapon = w
-        tank.save()
+        if w.attackCost > tank.navSystem.actionValue:
+            messages.error(request, "This weapon need %d of PA. Your current PA is: %d" % (w.attackCost, tank.navSystem.actionValue))
+        else:
+            tank.weapon = w
+            tank.save()
     elif int(typeIn) == 2:
         a = getItemByType(itemIn, TypeItem(pk=2))
         tank.armor = a
@@ -443,7 +446,19 @@ def changeStuff(request):
     elif int(typeIn) == 4:
         n = getItemByType(itemIn, TypeItem(pk=4))
         tank.navSystem = n
+        if tank.weapon.attackCost > n.actionValue:
+            inventory = userProfile.__getInventory__()
+            weapons = inventory[0]
+            avail_wps = []
+            for wp in weapons:
+                if wp.pk !=  tank.weapon.pk:
+                    if wp.attackCost <= n.actionValue:
+                        avail_wps.append(wp)
+            wps = sorted(avail_wps, key=lambda x: x.attackValue, reverse=True)
+            tank.weapon = wps[0]
         tank.save()
+
+
     return redirect(reverse('backend:inventory'))
 
 @login_required

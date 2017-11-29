@@ -116,6 +116,7 @@ class Weapon(models.Model):
 
     def __str__(self):
         return self.name
+
     def isInInventory(self,user):
         inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=1), item=self.pk)
         if inv.count() > 0 :
@@ -190,7 +191,7 @@ class TypeItem (models.Model):
     def __str__(self):
         return self.name
 
-class Inventory (models.Model):
+class Inventory(models.Model):
     owner = models.ForeignKey(UserProfile)
     item = models.PositiveIntegerField()
     typeItem = models.ForeignKey(TypeItem)
@@ -235,6 +236,12 @@ class BattleHistory(models.Model):
     map_name = models.CharField(max_length=10, default="terre")
     timestamp = models.DateTimeField(auto_now_add=True)
     difficult_level = models.CharField(max_length=10, default="normal")
+
+    def player_name(self):
+        return self.user.username
+
+    def opponent_name(self):
+        return self.opponent.username
 
 
 class Notification(models.Model):

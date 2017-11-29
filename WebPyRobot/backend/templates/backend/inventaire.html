@@ -6,6 +6,18 @@
 MaturePyRobot - Inventaire
 {% endblock %}
 
+{% block custom_css %}
+    <style>
+        span.badge.new {
+            font-size: 1rem;
+        }
+
+        span.badge {
+            float: left;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 <div class="col s12 m9 l10 pad">
     <div class="card col s12 m6 l6">
@@ -82,9 +94,8 @@ MaturePyRobot - Inventaire
                                 </div>
                                 <div class="card-content">
                                     <p>
-                                        Ataque: {{ weapon.attackValue }} <img
-                                            style="width: 20px; height: 20px;margin-right: 5%;margin-top:15% "
-                                            src="{% static 'fonts/svg_tank/sword.svg' %}"/>
+                                        Ataque: {{ weapon.attackValue }} <i class="fa fa-bomb" aria-hidden="true"></i><br>
+                                        <span class="new badge red" data-badge-caption="{{ weapon.attackCost }}">PA requis: </span>
                                     </p>
                                 </div>
                                 <div class="card-action center-align hoverable">
@@ -105,7 +116,7 @@ MaturePyRobot - Inventaire
                 </div>
             </li>
             <li>
-                <div class="collapsible-header"><i class="fa fa-square" aria-hidden="true"></i>
+                <div class="collapsible-header"><i class="fa fa-shield" aria-hidden="true"></i>
                     BLINDAGES
                 </div>
                 <div class="collapsible-body">
@@ -124,9 +135,7 @@ MaturePyRobot - Inventaire
                                 <div class="card-content">
                                     <p>
                                         Réduit les dommages causés par votre adversaire.<br>
-                                        Défense: {{ armor.armorValue }} <img
-                                            style="width: 20px; height: 20px;margin-right: 5%;margin-top:15% "
-                                            src="{% static 'fonts/svg_tank/shield.svg' %}"/>
+                                        Défense: {{ armor.armorValue }} <i class="fa fa-shield" aria-hidden="true"></i>
                                     </p>
                                 </div>
                                 <div class="card-action center-align hoverable">
@@ -164,10 +173,8 @@ MaturePyRobot - Inventaire
                                 </div>
                                 <div class="card-content">
                                     <p>
-                                        Permet de bouger.<br>
-                                        Points de mouvement: {{ cater.moveValue }} <img
-                                            style="width: 20px; height: 20px;margin-right: 5%;margin-top:15% "
-                                            src="{% static 'fonts/svg_tank/boot.svg' %}"/>
+                                        Permet de se déplacer.<br>
+                                        PM: {{ cater.moveValue }} <i class="small material-icons">directions_run</i>
                                     </p>
                                 </div>
                                 <div class="card-action center-align hoverable">
@@ -206,9 +213,7 @@ MaturePyRobot - Inventaire
                                 <div class="card-content">
                                     <p>
                                         Permet d'effectuer plusieurs action.<br>
-                                        Points d'action: {{ navSys.actionValue }} <img
-                                            style="width: 20px; height: 20px;margin-right: 5%;margin-top:15% "
-                                            src="{% static 'fonts/svg_tank/circuit.svg' %}"/>
+                                        Points d'action: {{ navSys.actionValue }} <i class="fa fa-microchip" aria-hidden="true"></i>
                                     </p>
                                 </div>
                                 <div class="card-action center-align hoverable">
