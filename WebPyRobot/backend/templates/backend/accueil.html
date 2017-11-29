@@ -32,13 +32,26 @@
             </div>
             <div class="card-content">
                 <h1 class="card-title black-text">Tableau de bord</h1>
-                <p>Niveau ({{ user.userprofile.level }})</p>
+                <!--<p>Niveau ({{ user.userprofile.level }})</p>
                 <div class="progress">
                     <div id="level" class="determinate tooltipped" data-position="right" data-delay="50" data-tooltip="{% if user %}{{ user.userprofile.level }}{% endif %}" style="width: {% if user %}{{ user.userprofile.level }}{% endif %}%"></div>
                 </div>
                 <p>Expérience ({{ user.userprofile.exp }} - Next level exp: {{ user.userprofile.next_level_exp }})</p>
                 <div class="progress">
                     <div id="experience" class="determinate tooltipped" data-position="right" data-delay="50" data-tooltip="{% if user %}{{ user.userprofile.exp }}{% endif %}%" style="width: {% if user %}{{ user.userprofile.exp }}{% endif %}%"></div>
+                </div>-->
+                <div>
+                    <p>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i> Niveau actuel: {{ user.userprofile.level }}
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <i class="fa fa-signal" aria-hidden="true"></i> Expérience actuelle: {{ user.userprofile.exp }} <br>
+                        <i class="fa fa-line-chart" aria-hidden="true"></i> Prochain niveau à {{ user.userprofile.next_level_exp }} d'expérience
+                    </p>
                 </div>
 
 
