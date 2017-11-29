@@ -13,6 +13,7 @@ class FAQAdminForm(forms.ModelForm):
 
 class FAQAdmin(admin.ModelAdmin):
     form = FAQAdminForm
+    list_display = ['question']
 
 admin.site.register(FAQ, FAQAdmin)
 
