@@ -85,6 +85,7 @@ def ws_receive(message):
             Group(label, channel_layer=message.channel_layer).send({'text': message['text']})
     except:
         log.error(traceback.format_exc())
+        log.error(message['text'])
 
 
 @channel_session
