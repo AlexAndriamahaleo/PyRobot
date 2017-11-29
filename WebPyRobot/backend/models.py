@@ -236,6 +236,12 @@ class BattleHistory(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     difficult_level = models.CharField(max_length=10, default="normal")
 
+    def player_name(self):
+        return self.user.username
+
+    def opponent_name(self):
+        return self.opponent.username
+
 
 class Notification(models.Model):
     """
