@@ -230,6 +230,79 @@ def fight(request):
 
 
 @login_required
+def testcpu(request):
+    user1 = UserProfile.objects.get(user=request.user)
+
+    battle = user1.get_running_battle()
+    if not battle:
+        users1 = UserProfile.objects.exclude(pk=user1.pk)
+        users = users1.exclude(agression=False)
+        if not users:
+            messages.error(request, "There is no user available for battle")
+            context = {
+                "battle_err": True
+            }
+            return render(request, "backend/fight.html", context)
+        user2 = UserProfile.objects.get(user=request.user)
+
+        tank1 = Tank.objects.get(owner=user1)
+        tank2 = Tank.objects.get(owner=user1)
+
+        ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
+        ia2 = user1.get_active_ai_script() #Ia.objects.get(owner=CPU)
+
+        game = Game(tank1, tank2, ia1, ia2)
+
+        res = game.run(0)
+
+        if game.is_victorious():                #launcher WIN
+            is_victorious = "yes"
+        else:                                   #launcher LOSE
+            is_victorious = "no"
+        opponent = "CPU"
+        player_x = 0
+        player_y = 0
+        opponent_x = 31
+        opponent_y = 31
+        step = 0
+        map_name = random.choice(settings.BATTLE_MAP_NAMES)
+        bh_pk = game.set_history(map_name)
+    else:
+        res_stats = battle.result_stats
+        try:
+            res = json.loads(res_stats)
+        except ValueError:
+            print ("ValueError - battle result: %s" % res_stats)
+            res = []
+
+        opponent = "CPU"
+        is_victorious = "no"
+        if battle.is_victorious:
+            is_victorious = "yes"
+        player_x = battle.player_x
+        player_y = battle.player_y
+        opponent_x = battle.opponent_x
+        opponent_y = battle.opponent_y
+        step = battle.step
+        map_name = battle.map_name
+        bh_pk = battle.pk
+
+    context = {
+        'result': res,
+        'pageIn': 'accueil',
+        'opponent': opponent,
+        'is_victorious':is_victorious,
+        'player_x': player_x,
+        'player_y': player_y,
+        'opponent_x': opponent_x,
+        'opponent_y': opponent_y,
+        'step': step,
+        'map_name': map_name,
+        'history_pk': bh_pk
+    }
+    return render(request, "backend/fight.html", context)
+
+@login_required
 def password_change(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
