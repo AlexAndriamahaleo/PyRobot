@@ -116,6 +116,7 @@ class Weapon(models.Model):
 
     def __str__(self):
         return self.name
+
     def isInInventory(self,user):
         inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=1), item=self.pk)
         if inv.count() > 0 :
@@ -190,7 +191,7 @@ class TypeItem (models.Model):
     def __str__(self):
         return self.name
 
-class Inventory (models.Model):
+class Inventory(models.Model):
     owner = models.ForeignKey(UserProfile)
     item = models.PositiveIntegerField()
     typeItem = models.ForeignKey(TypeItem)
