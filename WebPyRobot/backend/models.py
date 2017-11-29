@@ -81,9 +81,6 @@ class UserProfile(models.Model):
     def get_tank(self):
         return self.tank_set.all()[0]
 
-# pre_save.connect(calc_next_level_exp, sender=UserProfile)
-
-
 
 class Ia(models.Model):
     owner = models.ForeignKey(UserProfile)
@@ -226,8 +223,10 @@ class BattleHistory(models.Model):
     max_step = models.PositiveIntegerField(default=0)
     # Result array. We should us JsonField but it's only available in PostgreSQL now
     result_stats = models.TextField(default='')
+    # Player positions
     player_x = models.PositiveIntegerField(default=0)
     player_y = models.PositiveIntegerField(default=0)
+    # Opponent positions
     opponent_x = models.PositiveIntegerField(default=0)
     opponent_y = models.PositiveIntegerField(default=0)
     map_name = models.CharField(max_length=10, default="terre")
@@ -236,6 +235,10 @@ class BattleHistory(models.Model):
 
 
 class Notification(models.Model):
+    """
+    A notification, like Facebook notification
+    Define for later use
+    """
     user = models.ForeignKey(User, related_name="notifications")
     content = models.CharField(max_length=200)
     is_read = models.BooleanField(default=False)

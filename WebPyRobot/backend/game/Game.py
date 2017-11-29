@@ -186,6 +186,10 @@ class Game(object):
             self.__robots[self.__current].setPA(pa-paWe)
 
     def is_victorious(self):
+        """
+        Check if the player who starts the battle is the winner or not
+        :return:
+        """
         for i in self.__result:
             if i[1] == "dead":
                 if i[0] == 1:
@@ -195,7 +199,7 @@ class Game(object):
     def set_history(self, map_name):
         """
         Save history of a battle
-        :return:
+        :return: ID of BattleHistory object
         """
         robot1 = self.__robots[0]
         robot2 = self.__robots[1]
@@ -222,29 +226,20 @@ class Game(object):
         tank2 = robot2.getTank()
         user1 = tank1.owner.user
         user2 = tank2.owner.user
-        # Group(user2.user.username + '-notifications').send(
-        #     {'text': "The battle against user %s ended" % user1.user.username})
         Notification.objects.create(user=user1.user, content="Le combat contre %s vient de se terminer" % user2.user.username,
                                     is_read=True)
         Notification.objects.create(user=user2.user,
                                     content="Le combat contre %s vient de se terminer" % user1.user.username)
 
     def run(self, i):
-        # for i in range(0, 64):
         if i >= 100: return self.__result
         if self.__robots[0].getLife() <= 0:
             self.__result.append([0, "dead", 0, 0])
-            # self.set_history()
-            # self.notify_endgame()
             return self.__result
         if self.__robots[1].getLife() <= 0:
             self.__result.append([1, "dead", 0, 0])
-            # self.set_history()
-            # self.notify_endgame()
             return self.__result
 
-        def exit():
-            pass
         self.__current = 0
         exec (self.__robotsia[0].text)
         self.__result.append([0, "endTurn", 0, 0])
@@ -259,23 +254,4 @@ class Game(object):
         self.__robots[1].setPM(self.__robots[1].gettankpm())
         self.__robots[1].setPA(self.__robots[1].gettankpa())
 
-#         text = """
-# # Default ia
-#
-# # Get the enemy position in the game
-# enemy = self.getEnemyTankId()
-# enemypos = self.getPosition(enemy)
-#
-# # Move foward to the enemy
-# self.moveTank(enemypos)
-#
-# # Shoot the enemy Gracefuly
-# self.shoot()
-# """
-#         exec (text)
-#         print (text)
-
         return self.run(i + 1)
-
-        # return self.__result
-

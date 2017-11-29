@@ -1,4 +1,3 @@
-import re
 import json
 import logging
 import traceback
@@ -8,7 +7,6 @@ from django.contrib.auth.models import User
 from channels import Group
 from channels.sessions import channel_session
 
-from .models import BattleHistory, UserProfile
 from .utils import award_battle
 
 
@@ -25,6 +23,9 @@ log = logging.getLogger(__name__)
 
 @channel_session
 def ws_connect(message):
+    """
+    Starting websocket connection
+    """
     try:
         prefix = message['path'].strip('/').strip()
         if prefix == '':
@@ -41,13 +42,16 @@ def ws_connect(message):
 
 @channel_session
 def ws_receive(message):
+    """
+    Handle data received from clients
+    """
     try:
         data = json.loads(message['text'])
     except ValueError:
         log.debug("ws message isn't json")
         return
-    print (data)
-    print (message)
+
+    # Battle data from the frontend side
     if data.get('msg_type') == "battle_step":
         username = data.get("username")
         try:
@@ -58,6 +62,7 @@ def ws_receive(message):
             return
         battle = user.userprofile.get_running_battle()
 
+        # Battle finished
         if data.get("finished") == "yes":
             battle.is_finished = True
             battle.save()
@@ -78,8 +83,12 @@ def ws_receive(message):
         label = message.channel_session['label']
         Group(label, channel_layer=message.channel_layer).send({'text': message['text']})
 
+
 @channel_session
 def ws_disconnect(message):
+    """
+    Ends websocket connection
+    """
     try:
         label = message.channel_session['label']
         Group(label, channel_layer=message.channel_layer).discard(message.reply_channel)
