@@ -8,15 +8,8 @@
 
 {% block custom_css %}
 <style>
-    .progress {
-        position: relative;
-        height: 10px;
-        display: block;
-        width: 100%;
-        background-color: #d7ccc8;
-        border-radius: 5px;
-        margin: 0.5rem 0 1rem 0;
-        overflow: hidden;
+    i.small {
+        font-size: 2.75rem;
     }
 </style>
 
@@ -85,24 +78,41 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Tes aptitudes</span>
-                <p class="left-align"><img class="responsive-img mini-img"
-                                           src="{% static 'img/svg_tank/sword.svg' %}"><span
-                        style="margin-left: 8%">Attaque = {{ tank.weapon.attackValue }}</span></p>
-                <p class="left-align"><img class="responsive-img mini-img"
-                                           src="{% static 'img/svg_tank/shield.svg'%}"><span
-                        style="margin-left: 8%">Défense = {{ tank.armor.armorValue}}</span></p>
-                <p class="left-align"><img class="responsive-img mini-img"
-                                           src="{% static 'img/svg_tank/boot.svg'%}"><span
-                        style="margin-left: 8%">Points de Movement = {{ tank.caterpillar.moveValue }}</span>
-                </p>
-                <p class="left-align"><img class="responsive-img mini-img"
-                                           src="{% static 'img/svg_tank/circuit.svg'%}"><span
-                        style="margin-left: 8%">Points d'action = {{ tank.navSystem.actionValue  }}</span>
-                </p>
-                <p class="left-align"><img class="responsive-img mini-img"
+                <div class="left-align">
+                    <p>
+                        <i class="fa fa-bomb fa-2x" aria-hidden="true"></i>
+                        Attaque = {{ tank.weapon.attackValue }}
+                    </p>
+                </div>
+                <div class="left-align">
+                    <p>
+                        <i class="fa fa-shield fa-2x" aria-hidden="true"></i>
+                        Défense = {{ tank.armor.armorValue}}
+                    </p>
+                </div>
+                <div class="left-align">
+                    <p>
+                        <i class="small material-icons">directions_run</i>
+                        Points de Movement = {{ tank.caterpillar.moveValue }}
+                    </p>
+                </div>
+                <div class="left-align">
+                    <p>
+                        <i class="fa fa-microchip fa-2x" aria-hidden="true"></i>
+                        Points d'action = {{ tank.navSystem.actionValue  }}
+                    </p>
+                </div>
+                <!--<p class="left-align"><img class="responsive-img mini-img"
                                            src="{% static 'img/hp.png'%}"><span
                         style="margin-left: 8%">HP = {{ tank.hp_value  }}</span>
-                </p>
+                </p>-->
+                <div class="left-align">
+                    <p>
+                        <i class="fa fa-heart fa-2x" aria-hidden="true"></i>
+                        Points de vie = {{ tank.hp_value  }}
+                    </p>
+                </div>
+
 
                 <!--
 
