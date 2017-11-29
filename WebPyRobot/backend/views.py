@@ -28,8 +28,7 @@ from .funct.funct import getItemByType,getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
 from .models import UserProfile, Tank, Ia, BattleHistory, Notification
-from .utils import validate_ai_script, award_battle
-from math import *
+from .utils import validate_ai_script
 
 
 
@@ -104,7 +103,7 @@ class SignUp (FormView):
             user = User.objects.create_user(username, email, password)
 
             #create User
-            UserProfile(user=user, money=0).save()
+            UserProfile(user=user, money=0, next_level_exp=int(1/settings.EXP_CONSTANT)).save()
 
             #create ia file default
             userProfile = UserProfile.objects.get(user=user)
@@ -146,76 +145,58 @@ class SignUp (FormView):
 def thanks(request):
     return index(request)
 
-def funcexp(lvl):
-    res = ((1 / exp(lvl)) / (radians(sinh(lvl)))) + ((lvl + 25) / lvl) + 1
-    return res
-
-def handleDifferentLevel(lvl_u1, lvl_u2):
-    if lvl_u1 > lvl_u2:
-        gap = lvl_u1 - lvl_u2
-        return gap
-    elif lvl_u2 > lvl_u1:
-        gap = lvl_u2 - lvl_u1
-        return gap
-    else:
-        return 0
-
-def handleNewLevel(n_exp, exp):
-    tmp = n_exp + exp
-    if tmp > 100:
-        return True
-    else:
-        return False
 
 @login_required
 def fight(request):
+    """
+    Process a battle
+    """
     user1 = UserProfile.objects.get(user=request.user)
-
     battle = user1.get_running_battle()
+
+    # New battle
     if not battle:
         users1 = UserProfile.objects.exclude(pk=user1.pk)
-        users = users1.exclude(agression=False)
+        # Get list of players which have level = the current player level +/- 5
+        users = users1.exclude(agression=False, level__lte=user1.level-5, level__gte=user1.level+5)
         if not users:
             messages.error(request, "There is no user available for battle")
             context = {
                 "battle_err": True
             }
             return render(request, "backend/fight.html", context)
+        # Get opponent by a random choice from the list above
         user2 = random.choice(list(users))
 
+        # Send realtime notification to the opponent if he's online
         notify = NotificationMessage()
         notify.msg_content = "%s vient de démarrer un combat contre toi" % user1.user.username
-
         Group(user2.user.username + '-notifications').send(
             {'text': notify.dumps()})
 
+        # Notification objects. Not in use in this phase
         Notification.objects.create(user=user1.user, content="Vous démarrer un combat face à %s" % user2.user.username,
                                     is_read=True)
         Notification.objects.create(user=user2.user,
                                     content="%s vient de démarrer un combat contre toi" % user1.user.username)
-        tank1 = user1.get_tank() #Tank.objects.get(owner=user1)
-        tank2 = user2.get_tank() # Tank.objects.get(owner=user2)
-        ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
-        ia2 = user2.get_active_ai_script() #Ia.objects.get(owner=user2)
-        game = Game(tank1, tank2, ia1, ia2)
 
+        # Get players's tanks and start the battle
+        tank1 = user1.get_tank()
+        tank2 = user2.get_tank()
+        ia1 = user1.get_active_ai_script()
+        ia2 = user2.get_active_ai_script()
+        game = Game(tank1, tank2, ia1, ia2)
         res = game.run(0)
 
-        if game.is_victorious():                #launcher WIN
-            # award_battle(user1, user2)
-            is_victorious = "yes"
-        else:                                   #launcher LOSE
-            # award_battle(user2, user1)
-            is_victorious = "no"
-
         opponent = user2.user.username
-        player_x = 0
-        player_y = 0
-        opponent_x = 31
-        opponent_y = 31
+        player_x = settings.PLAYER_INITIAL_POS_X
+        player_y = settings.PLAYER_INITIAL_POS_Y
+        opponent_x = settings.OPPONENT_INITIAL_POS_X
+        opponent_y = settings.OPPONENT_INITIAL_POS_Y
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
         bh_pk = game.set_history(map_name)
+    # Continue current battle
     else:
         res_stats = battle.result_stats
         try:
@@ -225,9 +206,6 @@ def fight(request):
             res = []
 
         opponent = battle.opponent.username
-        is_victorious = "no"
-        if battle.is_victorious:
-            is_victorious = "yes"
         player_x = battle.player_x
         player_y = battle.player_y
         opponent_x = battle.opponent_x
@@ -240,7 +218,6 @@ def fight(request):
         'result': res,
         'pageIn': 'accueil',
         'opponent': opponent,
-        'is_victorious':is_victorious,
         'player_x': player_x,
         'player_y': player_y,
         'opponent_x': opponent_x,
@@ -294,24 +271,10 @@ def editor(request):
 
 @login_required
 def createscript(request):
-
-    #create ia file default
-    #userProfile = UserProfile.objects.get(user=user)
-    #i = Ia.objects.create(owner=userProfile, name=username + "\'s Ia", text=DefaultIa.objects.get(pk=1).text)
-
-    #from .forms import CodeForm
-    #userprofile = UserProfile.objects.get(user=request.user)
-
-    # create ia file default
     userProfile = UserProfile.objects.get(user=request.user)
 
     ia = Ia.objects.create(owner=userProfile, name=request.user+ "\'s Ia", text=DefaultIa.objects.get(pk=1).text)
     ia.save()
-
-    #ia = Ia.objects.get(owner=userProfile)
-
-    #ia.text = DefaultIa.objects.all()
-    #ia.save()
 
     context = {
         'money': UserProfile.objects.get(user=request.user).money,
@@ -493,6 +456,9 @@ def developpement (request):
 
 
 class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
+    """
+    History of battles of a user
+    """
     template_name = "backend/histories.html"
     model = BattleHistory
     paginate_by = 10
@@ -509,12 +475,15 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
 
 
 class AIScriptView(LoginRequiredMixin, ListView):
+    """
+    Editeur page.
+    Using of ListView is not necessary ^^
+    """
     template_name = "backend/editeur.html"
     model = Ia
 
     def get_context_data(self, **kwargs):
         context = super(AIScriptView, self).get_context_data(**kwargs)
-        context['scripts'] = self.request.user.userprofile.ia_set.all()
         context['pageIn'] = 'editor'
         context['scripts'] = self.request.user.userprofile.ia_set.all()
         context['active_script'] = self.request.user.userprofile.get_active_ai_script()
@@ -526,18 +495,21 @@ class AIScriptView(LoginRequiredMixin, ListView):
         except:
             selected = context['active_script']
 
+        # Initiate view for adding new AI script
         addnew = self.request.GET.get("addnew", context.get("addnew"))
         if addnew in ["yes", "yes1"]:
             selected = None
             context['addnew'] = "active"
             if addnew == "yes":
-                print ("hello")
                 context['temporary_text'] = DefaultIa.objects.all()[0].text
 
         context['selected'] = selected
         return context
 
     def get(self, request, *args, **kwargs):
+        """
+        Overwrite this func to customize context data
+        """
         self.object_list = self.get_queryset()
         allow_empty = self.get_allow_empty()
 
@@ -558,6 +530,8 @@ class AIScriptView(LoginRequiredMixin, ListView):
 
     def post(self, request, *args, **kwargs):
         action = self.request.POST.get("action")
+
+        # When user clicks on Sauvgarder button
         if action == "Sauvgarder":
             addnew = self.request.POST.get("addnew_flag")
             selected_pk = self.request.POST.get("selected_pk")
@@ -587,11 +561,14 @@ class AIScriptView(LoginRequiredMixin, ListView):
                     except:
                         messages.error(request, "Invalid AI")
             else:
+                # If the valiation is failed, return user's entered data to him
                 kwargs['temporary_text'] = text
                 kwargs['temporary_name'] = ia_name
                 if addnew == "yes":
                     kwargs["addnew"] = "yes1"
                 messages.error(request, "Votre script est vide ou contient un contenu bloqué")
+
+        # When user clicks on Activer button
         elif action == "Activer":
             selected_pk = self.request.POST.get("selected_pk")
             try:
@@ -601,6 +578,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
             except:
                 import traceback; print (traceback.format_exc())
                 messages.error(request, "Invalid AI")
+        # Other action is invalid, just pass through
         else:
             pass
         return self.get(request, *args, **kwargs)
@@ -608,6 +586,9 @@ class AIScriptView(LoginRequiredMixin, ListView):
 
 @login_required
 def finish_battle(request):
+    """
+    Finish a battle immediately
+    """
     if request.method == "POST":
         bh_pk = request.POST.get("history_pk")
         try:

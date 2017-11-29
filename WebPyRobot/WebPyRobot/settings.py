@@ -148,5 +148,13 @@ NOT_ALLOWED_KW = ['import', 'exec']
 
 
 BATTLE_MAP_NAMES = ['terre', 'premiere']
+BATTLE_MAP_SIZE = 32
 
 EXP_CONSTANT = 0.1
+
+# Players initial position
+PLAYER_INITIAL_POS_X = 0
+PLAYER_INITIAL_POS_Y = 0
+OPPONENT_INITIAL_POS_X = 31
+OPPONENT_INITIAL_POS_Y = 31
+
