@@ -477,9 +477,9 @@ def buyStuff (request):
                    'weapons': Weapon.objects.all(),
                    'armors': Armor.objects.all(),
                    'caterpillars': Caterpillar.objects.all(),
-                   'navSys': NavSystem.objects.all(),
-                   "return": "Item déjà acheter "
+                   'navSys': NavSystem.objects.all()
                    }
+        messages.error(request, "Équipement déjà acheter")
         return render(request, 'backend/boutique.html', context)
     elif price > user.money :
         context = {'money': UserProfile.objects.get(user=request.user).money,
@@ -488,9 +488,9 @@ def buyStuff (request):
                    'weapons': Weapon.objects.all(),
                    'armors': Armor.objects.all(),
                    'caterpillars': Caterpillar.objects.all(),
-                   'navSys': NavSystem.objects.all(),
-                   "return": "Pas assez d'argent"
+                   'navSys': NavSystem.objects.all()
                    }
+        messages.error(request, "Vous n'avez pas assez d'argent")
         return render(request, 'backend/boutique.html', context)
     else :
         user.money = user.money - price
@@ -503,8 +503,9 @@ def buyStuff (request):
                    'armors': Armor.objects.all(),
                    'caterpillars': Caterpillar.objects.all(),
                    'navSys': NavSystem.objects.all(),
-                   "return": "Achat effectué"
+                   "messages": {"Achat éffectué. Retrouvez l'équipement dans votre inventaire"}
                    }
+        messages.success(request, "Achat éffectué. Retrouvez l'équipement dans votre inventaire")
         return render(request, 'backend/boutique.html', context)
 
 @login_required
