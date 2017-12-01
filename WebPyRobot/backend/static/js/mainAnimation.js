@@ -94,6 +94,8 @@ var deadPlayer = function(player){
 	else 
 		document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
 
+	document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn\" type=\"submit\" value=\"Voir l\'historique\"/>"
+
 	var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 	var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/" + opponent + "-notifications/");
 	socket.onopen = function() {

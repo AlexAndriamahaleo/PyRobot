@@ -243,7 +243,7 @@ def testcpu(request):
                 "battle_err": True
             }
             return render(request, "backend/fight.html", context)
-        user2 = UserProfile.objects.get(user=request.user)
+        #user2 = UserProfile.objects.get(user=request.user)
 
         tank1 = Tank.objects.get(owner=user1)
         tank2 = Tank.objects.get(owner=user1)
