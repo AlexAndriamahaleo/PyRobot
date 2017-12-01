@@ -65,7 +65,7 @@ The server will be available at http://127.0.0.1:8000/
 #### Pre-requirements
 - Nginx (lastest version)
 - Supervisor (lastest version)
-- uWsgi (lastest version)
+- Redis
 
 #### Deploy
 Install Python3 and PostgreSQL on your server, don't forget to install Python development library (python-dev or python-devel) if you don't build Python from source
@@ -77,24 +77,27 @@ Install Supervisor:
 ~~~~
 $ sudo apt-get install supervisor
 ~~~~
-Install uWsgi
+Install redis
 ~~~~
-$ sudo apt-get install uwsgi
-OR
-$ sudo pip3 install uwsgi
+$ sudo apt-get install redis-server
 ~~~~
 
 Push your code to the server
+
+Edit WebPyRobot/production.py to add your database, secret key, Channels settings for production
 
 Install dependencies and initiate data:
 ~~~~
 $ ./init.sh
 ~~~~
+Setup static files for Nginx
+~~~~
+$ python3 prod_manage.py collectstatic
+~~~~
 Edit configuration files in conf/ to match your server settings:
 
-- `webpyrobot.ini` is the configuration file of the project in `uwsgi`
+- `webpyrobot_channels_supervisord.conf` is the configuration file to keep the project running with `daphne` under the management of `supervisord`. It's also for managing Channels workers
 - `webpyrobot_nginx.conf` is the  configuration file of the project in `nginx`
-- `webpyrobot_uwsgi_supervisord.conf` is the configuration file to keep the project running with `uwsgi` under the management of `supervisord`
 
 Start `supervisord` and `nginx`
 

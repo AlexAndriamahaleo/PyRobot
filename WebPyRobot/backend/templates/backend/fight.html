@@ -1,35 +1,57 @@
+{% extends 'base.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>WebPyRobot - Accueil</title>
 
-    {% include 'backend/head.html' %}
-    <script type="text/javascript">
-        var a = "{{ result }}".replace(/&#39;/g, "\"");
-    </script>
-    {% include 'backend/headAnimation.html' %}
+{% block title %} MaturePyRobot - Combat {% endblock %}
 
-
-
-  </head>
-  <body>
-  {% include 'backend/header.html' with moneyIn=money user=username%}
-    <main class="container">
-        <div class="section">
-        <div class="row">
-            {% include 'backend/sideNav.html' with page=pageIn %}
-
-            <div class="col s12 m9 l10 pad">
-              <h3 id="win" class="col l12"></h3>
-              <canvas class="col l8 offset-l2" id="canvas"></canvas>
-	      <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)" class="brand-logo"><img class="img-logo" src="{% static "img/skip.png" %}"></a>
-            </div>
-	    
+{% block content %}
+    {% if battle_err %}
+        <div class="col s12 m9 l10 pad">
+            <div class="row z-depth-1 section padding-section" id="show_str"></div>
         </div>
-    </main>
-    {% include 'backend/footer.html' %}
-  </body>
-</html>
+    {% else %}
+        <div class="col s12 m9 l10 pad">
+            <div class="row z-depth-1 section padding-section">
+                <div class="card-panel yellow lighten-2">
+                    <span id="win" class="indigo-text darken-4">Bataille en cours...</span>
+                </div>
+                <canvas class="col l8 offset-l2" id="canvas"></canvas>
+                <div class="col l4 offset-l5">&nbsp;</div>
+                <div class="col l4 offset-l5">
+                    <div class="row">
+                        <div class="col l5">
+                            <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)"
+                               class="waves-effect waves-light btn">Skip <i class="fa fa-forward" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="col l4">
+                            <form action="{% url 'backend:finish_battle' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="history_pk" value="{{ history_pk }}" />
+                                <input class="waves-effect waves-light btn" type="submit" value="Finish Battle" />
+                        </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block custom_js %}
+    {% if not battle_err %}
+        <script type="text/javascript">
+            var a = "{{ result }}".replace(/&#39;/g, "\"");
+            var opponent = "{{ opponent }}";
+            var playername = "{{ request.user.username }}";
+            var player_x = {{ player_x }};
+            var player_y = {{ player_y }};
+            var opponent_x = {{ opponent_x }};
+            var opponent_y = {{ opponent_y }};
+            var step_index = {{ step }};
+            var map_name = "{{ map_name }}"
+        </script>
+        {% include 'backend/headAnimation.html' %}
+    {% endif %}
+{% endblock %}

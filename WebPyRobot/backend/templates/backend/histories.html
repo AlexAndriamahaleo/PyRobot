@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+MaturePyRobot - Historique
+{% endblock %}
+
+{% block custom_css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="col s12 m9 l10">
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Adversaire</th>
+                <th>Script Utilisé</th>
+                <th>Résultat</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for history in page_obj.object_list %}
+                <tr>
+                    <td>{{ history.timestamp }}</td>
+                    {% if  history.opponent.username != request.user.username %}
+                        <td>{{ history.opponent.username }}</td>
+                        <td>{{ history.used_script.name }}</td>
+                        <td>
+                            {% if history.is_victorious %}
+                                Gagné
+                            {% else %}
+                                Perdu
+                            {% endif %}
+                        </td>
+                    {% else %}
+                        <td>{{ history.user.username }}</td>
+                        <td>{{ history.opp_used_script.name }}</td>
+                        <td>
+                            {% if history.is_victorious %}
+                                Perdu
+                            {% else %}
+                                Gagné
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<hr />
+<div id="pagination">
+    {{ page_obj.render }}
+</div>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+
+{% endblock %}

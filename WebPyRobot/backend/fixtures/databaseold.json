@@ -1,0 +1,169 @@
+[
+  {
+    "model": "backend.Weapon",
+    "pk": 1,
+    "fields": {
+      "name": "Canon #1",
+      "price": "300",
+      "attackValue": "20",
+      "range": "15",
+      "pathIcon" : "canon_1.svg",
+      "attackCost" : 1
+
+    }
+  },
+  {
+    "model": "backend.Weapon",
+    "pk": 2,
+    "fields": {
+      "name": "Canon #2",
+      "price": "600",
+      "attackValue": "60",
+      "range": "25",
+      "pathIcon" : "canon_2.svg",
+      "attackCost" : 2
+    }
+  },
+  {
+    "model": "backend.Weapon",
+    "pk": 3,
+    "fields": {
+      "name": "Canon #3",
+      "price": "1000",
+      "attackValue": "80",
+      "range": "40",
+      "pathIcon" : "canon_3.svg",
+      "attackCost" : 3
+
+    }
+  },
+
+  {
+    "model": "backend.Armor",
+    "pk": 1,
+    "fields": {
+      "name": "Blindage #1",
+      "price": "300",
+      "armorValue": "10",
+      "pathIcon" : "shield_1.svg"
+    }
+  },
+  {
+    "model": "backend.Armor",
+    "pk": 2,
+    "fields": {
+      "name": "Blindage #2",
+      "price": "600",
+      "armorValue": "30",
+      "pathIcon" : "shield_2.svg"
+
+    }
+  },
+  {
+    "model": "backend.Armor",
+    "pk": 3,
+    "fields": {
+      "name": "Blindage #3",
+      "price": "1000",
+      "armorValue": "50",
+      "pathIcon" : "shield_3.svg"
+    }
+  },
+
+  {
+    "model": "backend.Caterpillar",
+    "pk": 1,
+    "fields": {
+      "name": "Rouage #1",
+      "price": "300",
+      "moveValue": "2",
+      "pathIcon" : "cater_1.svg"
+    }
+  },
+  {
+    "model": "backend.Caterpillar",
+    "pk": 2,
+    "fields": {
+      "name": "Rouage #2",
+      "price": "600",
+      "moveValue": "5",
+      "pathIcon" : "cater_2.svg"
+    }
+  },
+  {
+    "model": "backend.Caterpillar",
+    "pk": 3,
+    "fields": {
+      "name": "Rouage #3",
+      "price": "1000",
+      "moveValue": "8",
+      "pathIcon" : "cater_3.svg"
+    }
+  },
+
+  {
+    "model": "backend.NavSystem",
+    "pk": 1,
+    "fields": {
+      "name": "Process #1",
+      "price": "300",
+      "actionValue": "2",
+      "pathIcon" : "circuit_1.svg"
+    }
+  },
+  {
+    "model": "backend.NavSystem",
+    "pk": 2,
+    "fields": {
+      "name": "Process #2",
+      "price": "600",
+      "actionValue": "4",
+      "pathIcon" : "circuit_2.svg"
+    }
+  },
+  {
+    "model": "backend.NavSystem",
+    "pk": 3,
+    "fields": {
+      "name": "Process #3",
+      "price": "1000",
+      "actionValue": "6",
+      "pathIcon" : "circuit_3.svg"
+    }
+  },
+  {
+    "model": "backend.TypeItem",
+    "pk": 1,
+    "fields": {
+      "name": "Weapon"
+    }
+  },
+  {
+    "model": "backend.TypeItem",
+    "pk": 2,
+    "fields": {
+      "name": "Armor"
+    }
+  },
+  {
+    "model": "backend.TypeItem",
+    "pk": 3,
+    "fields": {
+      "name": "Caterpillar"
+    }
+  },
+  {
+    "model": "backend.TypeItem",
+    "pk": 4,
+    "fields": {
+      "name": "NavSystem"
+    }
+  },
+  {
+    "model":"backend.DefaultIa",
+    "pk": 1,
+    "fields": {
+      "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos)\n# Shoot the enemy Gracefuly\nself.shoot()"
+    }
+  }
+]

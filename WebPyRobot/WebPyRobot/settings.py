@@ -5,6 +5,7 @@ Settings for development or deployment are in specific files
 """
 
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,7 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'backend',
+    'pure_pagination',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +127,35 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 LOGIN_REDIRECT_URL='backend:login'
 LOGIN_URL='backend:login'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "backend.routing.channel_routing",
+    },
+}
+
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'deep-purple',
+    messages.INFO: 'blue',
+    messages.SUCCESS: 'green',
+    messages.WARNING: 'orange',
+    messages.ERROR: 'red',
+}
+
+
+NOT_ALLOWED_KW = ['import', 'exec']
+
+
+BATTLE_MAP_NAMES = ['terre', 'premiere']
+BATTLE_MAP_SIZE = 32
+
+EXP_CONSTANT = 0.1
+
+# Players initial position
+PLAYER_INITIAL_POS_X = 0
+PLAYER_INITIAL_POS_Y = 0
+OPPONENT_INITIAL_POS_X = 31
+OPPONENT_INITIAL_POS_Y = 31
+

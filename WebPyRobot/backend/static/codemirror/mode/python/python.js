@@ -16,38 +16,35 @@
     }
 
     var wordOperators = wordRegexp(["and", "or", "not", "is"]);
-    var commonKeywords = ["as", "assert", "break", "class", "continue",
+    var commonKeywords = ["as", "break", "class", "continue",
         "def", "del", "elif", "else", "except", "finally",
-        "for", "from", "global", "if", "import",
-        "lambda", "pass", "raise", "return",
-        "try", "while", "with", "yield", "in"];
+        "for", "from", "global", "if", "pass", "return",
+        "try", "while", "with", "in"];
 
-    var commonBuiltins = ["abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr",
-        "classmethod", "compile", "complex", "delattr", "dict", "dir", "divmod",
-        "enumerate", "eval", "filter", "float", "format", "frozenset",
-        "getattr", "globals",
-        "getEnemyTankId()", "getTankId()",
+    var maturePyRobotKeywords = ["getEnemyTankId()", "getTankId()",
         "getCellDistance('''NumCell1''','''NumCell2''')",
         "getCellFromXY('''X''','''Y''')", "getCellPosX('''NumCell''')",
         "getCellPosY('''NumCell''')", "getPosition('''TankID''')",
         "getLife('''TankID''')", "getPM('''TankID''')",
-        "getPA('''TankID''')", "getRange('''TankID''')",
-        "hasattr", "hash", "help", "hex", "id",
-        "input", "int", "isinstance", "issubclass", "iter", "len",
-        "list", "locals", "map", "max", "memoryview", "min",
-        "moveTank('''NumCell''')",
+        "getPA('''TankID''')", "getRange('''TankID''')", "moveTank('''NumCell''')", "shoot()"];
+
+    var commonBuiltins = ["abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr",
+        "classmethod", "compile", "complex", "delattr", "dict", "dir", "divmod",
+        "enumerate", "eval", "filter", "float",
+        "globals", "hash", "hex", "id",
+        "input", "int", "isinstance", "iter", "len",
+        "list", "locals", "map", "max", "min",
         "next",
-        "object", "oct", "open", "ord", "pow", "property", "range",
+        "object", "oct", "ord", "pow", "property", "range",
         "repr", "reversed", "round",
         "self",
         "set", "setattr",
-        "shoot()",
         "slice",
-        "sorted", "staticmethod", "str", "sum", "super", "tuple",
-        "type", "vars", "zip", "__import__", "NotImplemented",
-        "Ellipsis", "__debug__"];
+        "sorted", "str", "sum", "super", "tuple",
+        "type"];
 
-    CodeMirror.registerHelper("hintWords", "python", commonKeywords.concat(commonBuiltins));
+    //CodeMirror.registerHelper("hintWords", "python", commonKeywords.concat(commonBuiltins));
+    CodeMirror.registerHelper("hintWords", "python", maturePyRobotKeywords.concat(commonKeywords).concat(commonBuiltins));
 
     function top(state) {
         return state.scopes[state.scopes.length - 1];

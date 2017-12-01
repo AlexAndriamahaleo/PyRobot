@@ -13,10 +13,11 @@ var STATE = {
 var TIME_MOVING = 3;
 var NB_IMAGE = 9;
 
-function Player(url, x, y, direction,contraint) {
+function Player(url, x, y, direction,contraint, name) {
     this.x = x; // (en cases)
     this.y = y; // (en cases)
     this.direction = direction;
+    this.name = name; // player name
     this.stateAnimation = -1;
     
     // Chargement de l'image dans l'attribut image

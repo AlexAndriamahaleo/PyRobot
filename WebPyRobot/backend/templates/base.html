@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>{% block title %} {% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <style>
+        body {
+            font-family: "Raleway", sans-serif
+        }
+
+        p {
+            font-size: large
+        }
+    </style>
+
+    {% block custom_css %} {% endblock %}
+
+</head>
+
+<body>
+{% block header %}
+{% include 'backend/header.html' with moneyIn=request.user.userprofile.money user=request.user.username%}
+{% endblock %}
+<main class="container">
+    <div class="section">
+        {% for message in messages %}
+            <div id="alert_box" class="card-panel {% if message.tags %}{{ message.tags }}{% endif %}">
+              <p class="black-text">
+                  {{ message }}
+                  <a type="button" class="waves-effect waves-teal red close right btn btn-floating pulse" data-dismiss="alert" aria-label="Close" id="alert_close"><i class="close material-icons black-text">close</i></a>
+              </p>
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            {% block sidenav %}
+            {% include 'backend/sideNav.html' with page=pageIn %}
+            {% endblock %}
+
+            {% block content %} {% endblock %}
+        </div>
+    </div>
+</main>
+
+<footer class="section" style="background-color: #1a237e">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <h4 class="yellow-text">Liens utiles</h4>
+                <ul>
+                    <li>
+                        <a class="white-text" href="https://docs.python.org/3/" target="_blank"><i class="devicon-python-plain"></i> Python</a>
+                    </li>
+                    <li><a class="white-text" href="https://openclassrooms.com" target="_blank"><i class="fa fa-pencil"
+                                                                                                   aria-hidden="true"></i>
+                        Openclassrooms</a></li>
+                    <li><a href="https://www.w3schools.com/" class="white-text" target="_blank"><i
+                            class="fa fa-graduation-cap" aria-hidden="true"></i>
+                        w3schools</a></li>
+                </ul>
+            </div>
+            <div class="col s12 m6 l6">
+                <h4 class="yellow-text">Autres</h4>
+                <ul>
+                    <li><a href="https://www.univ-amu.fr/" class="white-text" target="_blank"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Aix Marseille Université</a></li>
+                    <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fa fa-google" aria-hidden="true"></i> Google</a></li>
+                    <li><a href="https://github.com/"
+                           class="white-text" target="_blank">
+                        <i class="fa fa-github" style="font-size:24px"></i> Github</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        {% include 'backend/legalNoticeContact.html' %}
+        <div class="container white-text center-align">
+            <a class="white-text modal-trigger left" href="#modal2"><i class="fa fa-envelope" aria-hidden="true"></i> Contact</a>
+            <i class="fa fa-copyright" aria-hidden="true"></i> 2017 design par <a class="white-text" href="https://github.com/AlexAndriamahaleo" target="_blank">BananiaStyle</a>.
+            <a class="white-text modal-trigger right" href="#modal1"><i class="fa fa-gavel" aria-hidden="true"></i> Mentions Légales</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+{#<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>#}
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+{% if request.user.is_authenticated %}
+<script type="text/javascript">
+    var username = "{{ request.user.username }}";
+</script>
+<script src="{% static 'js/notify.min.js' %}"></script>
+<script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/notifications.js' %}"></script>
+{% endif %}
+<script type="text/javascript" src="{% static 'js/init.js' %}"></script>
+
+{% block custom_js %} {% endblock %}
+
+</body>
+</html>

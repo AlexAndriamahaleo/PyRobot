@@ -1,7 +1,15 @@
+import json
+
+from django.conf import settings
+
+from ..models import BattleHistory, Notification
+
+
 class Robot(object):
+
     def __init__(self, tank, id):
         self.__tank = tank
-        self.__life = 100
+        self.__life = tank.hp_value
         self.__pm = self.__tank.caterpillar.moveValue
         self.__pa = self.__tank.navSystem.actionValue
         self.__cpa = self.__pa
@@ -9,34 +17,47 @@ class Robot(object):
 
     def getTank(self):
         return self.__tank
+
     def getTankId(self):
         return self.__tank.id
+
     def getLife(self):
         return self.__life
+
     def getPM(self):
         return self.__cpm
+
     def getPointAction(self):
         return self.__cpa
+
     def setLife(self, life):
         self.__life = life
+
     def setPM(self, pm):
         self.__cpm = pm
+
     def setPA(self, pa):
         self.__cpa = pa
+
     def gettankpa(self):
         return self.__pa
+
     def gettankpm(self):
         return self.__pm
+
     def getWeaponDamage(self):
         return self.__tank.weapon.attackValue
+
     def getRange(self):
         return self.__tank.weapon.range
+
     def getWPa(self):
         return self.__tank.weapon.attackCost
 
+
 class Game(object):
     def __init__(self, r1, r2, ia1, ia2):
-        self.__size = 32
+        self.__size = settings.BATTLE_MAP_SIZE
         self.__map = []
         self.__current = 0
         self.__robots = [Robot(r1, 0), Robot(r2, 1)]
@@ -95,7 +116,7 @@ class Game(object):
         yp = self.getCellPosY(NumCell)
         x = self.getCellPosX(pos)
         y = self.getCellPosY(pos)
-        cpt = 0;
+        cpt = 0
         while pm > 0 and pos != NumCell:
             if x > xp:
                 # gauche
@@ -158,16 +179,62 @@ class Game(object):
         paWe = self.__robots[self.__current].getWPa()
         dWe = self.__robots[self.__current].getWeaponDamage()
         range = self.__robots[self.__current].getRange()
+        mid_point = int(self.__size/2)
         if pa - paWe >= 0:
             if(dist > range):
-                    self.__result.append([self.__current, "shoot", 16, 16])
+                self.__result.append([self.__current, "shoot", mid_point, mid_point])
             else:
                 self.__result.append([self.__current, "shoot",x, y])
                 self.__robots[self.getEnemyTankId()].setLife(self.__robots[self.getEnemyTankId()].getLife()-dWe)
             self.__robots[self.__current].setPA(pa-paWe)
 
+    def is_victorious(self):
+        """
+        Check if the player who starts the battle is the winner or not
+        :return:
+        """
+        for i in self.__result:
+            if i[1] == "dead":
+                if i[0] == 1:
+                    return True
+        return False
+
+    def set_history(self, map_name):
+        """
+        Save history of a battle
+        :return: ID of BattleHistory object
+        """
+        robot1 = self.__robots[0]
+        robot2 = self.__robots[1]
+        tank1 = robot1.getTank()
+        tank2 = robot2.getTank()
+        player = tank1.owner.user
+        opponent = tank2.owner.user
+        bh = BattleHistory.objects.create(
+                user = player,
+                used_script = tank1.owner.get_active_ai_script(),
+                opp_used_script = tank2.owner.get_active_ai_script(),
+                opponent = opponent,
+                is_victorious = self.is_victorious(),
+                result_stats = json.dumps(self.__result),
+                max_step = len(self.__result),
+                map_name = map_name
+            )
+        return bh.pk
+
+    def notify_endgame(self):
+        robot1 = self.__robots[0]
+        robot2 = self.__robots[1]
+        tank1 = robot1.getTank()
+        tank2 = robot2.getTank()
+        user1 = tank1.owner.user
+        user2 = tank2.owner.user
+        Notification.objects.create(user=user1.user, content="Le combat contre %s vient de se terminer" % user2.user.username,
+                                    is_read=True)
+        Notification.objects.create(user=user2.user,
+                                    content="Le combat contre %s vient de se terminer" % user1.user.username)
+
     def run(self, i):
-        # for i in range(0, 64):
         if i >= 100: return self.__result
         if self.__robots[0].getLife() <= 0:
             self.__result.append([0, "dead", 0, 0])
@@ -176,8 +243,6 @@ class Game(object):
             self.__result.append([1, "dead", 0, 0])
             return self.__result
 
-        def exit():
-            pass
         self.__current = 0
         exec (self.__robotsia[0].text)
         self.__result.append([0, "endTurn", 0, 0])
@@ -192,23 +257,4 @@ class Game(object):
         self.__robots[1].setPM(self.__robots[1].gettankpm())
         self.__robots[1].setPA(self.__robots[1].gettankpa())
 
-#         text = """
-# # Default ia
-#
-# # Get the enemy position in the game
-# enemy = self.getEnemyTankId()
-# enemypos = self.getPosition(enemy)
-#
-# # Move foward to the enemy
-# self.moveTank(enemypos)
-#
-# # Shoot the enemy Gracefuly
-# self.shoot()
-# """
-#         exec (text)
-#         print (text)
-
         return self.run(i + 1)
-
-        # return self.__result
-

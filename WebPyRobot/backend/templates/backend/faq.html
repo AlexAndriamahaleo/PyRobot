@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}
+MaturePyRobot - FAQ
+{% endblock %}
+
+{% block content %}
+<div class="col s12 m9 l10 pad">
+    <h2>FAQ</h2>
+    <ul class="collapsible" data-collapsible="accordion">
+        <li>
+            <div class="collapsible-header"><i class="fa fa-book" aria-hidden="true"></i> Quelles sont les règles du jeu ?</div>
+            <div class="collapsible-body">
+                <h5>Concevez...</h5>
+                <p>... la meilleur combinaison d'équipement pour votre tank.</p>
+                <h5>Imaginez et Codez...</h5>
+                <p>... ce tank qui prendra l'ascendant sur votre adversaire et vous mènera à la victoire grâce à vos compétences - ou future compétences - en programmation.</p>
+                <p>Nous incluons un système de niveau et d'expérience. Dans le jeu, vous allez vous confronter à plus fort que vous.
+                    [Bientôt] En cas de victoire la récompense (sous forme d'expérience) n'en sera que meilleur.</p>
+                <h4>Plus en détail</h4>
+                <p>Un combat se déroule sur une grille de jeu de 32 cases par 32 cases.
+                    Comme tout bon programmeur, cela signifie que pour les indices en X et en Y vont de 0 à 31.
+                    Vous avez donc 1024 cases sur cette grille. Qui vous permettront de mettre en place votre stratégie de jeu.
+                </p>
+                <p>Chaque objet possède des caractéristiques propres (attaque, défense, portée du canon).
+                Cependant certains objet possèdent des contraintes avec d'autres objet. Soyez attentif pour ne pas avoir de mauvaise surprise.</p>
+                <!--<p>Cependant ne vous fiez pas vraiment à l'animation.</p>
+                <p>Lors de la production de votre code essayer d'imaginer comment va se dérouler le combat.</p>
+                <p>L'animation n'est qu'un super visuel, ne retranscrit</p>-->
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-question" aria-hidden="true"></i> Pourquoi "MaturePyRobot" ?</div>
+            <div class="collapsible-body">
+                <p>Le précédent projet s'intitulait "WebPyRobot". Bien que ce soit légitime, car sur navigateur Web, nous avons décidé
+                    de nous démarquer. Nous avons mené ce projet à maturité, pour que les foncitonnalitées de base soient opérationnelles à 100%.
+                    ... (à compléter)</p>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-power-off" aria-hidden="true"></i> À quoi sert le Mode Passif ?</div>
+            <div class="collapsible-body"><span>Le mode passif te permet de ne pas te faire "agresser" par d'autre utilisateur pendant que tu modifies ton tank.</span></div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-clone" aria-hidden="true"></i> Comment fonctionne le Drag'n'Drop ?</div>
+            <div class="collapsible-body">
+                <a href="https://fr.wikipedia.org/wiki/Glisser-d%C3%A9poser" target="_blank"><i class="fa fa-wikipedia-w black-text" aria-hidden="true"></i> Wikipedia</a>
+                "Les glisser-déposer est, dans une interface graphique, une méthode consistant à utiliser une souris [..]
+                pour déplacer d'un endroit à un autre un élément graphiquep résent sur l'écran [..] d'un ordinateur."
+                <ol>
+                    <li>Faire un clique sur le script à importer et maintenir la pression sur le bouton.</li>
+                    <li>Déplacer votre souris, toujours en maintenant le clic, vers la zone final (l'éditeur python).</li>
+                    <li>Une fois sur l'éditeur, lâcher le clic. Et HOP !! Votre script est importé.</li>
+                </ol>
+                <br>
+                Sauvegardez le et continuez à travailler dessus en ligne.
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-television" aria-hidden="true"></i> L'animation est bizarre, pourquoi ?</div>
+            <div class="collapsible-body">
+                <p>Les tanks tirent au mileux ? Et au bout d'un certain temps, se tire dessus ?
+                    C'est normal, on essaie tant bien que mal de reproduire l'execution de votre code.
+                    Ce ne sont pas des bugs. Il bien entendu un gagnant et un perdant. Une notification vous l'indiquera.</p>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-file-text" aria-hidden="true"></i> Je n'arrive pas à glisser-déposer mon fichier depuis mon ordinateur vers l'éditeur</div>
+            <div class="collapsible-body">
+                <p>L'éditeur n'accepte que deux extensions:</p>
+                <ol>
+                    <li>nomdufichier.py</li>
+                    <li>nomdufichier.txt</li>
+                </ol>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-files-o" aria-hidden="true"></i> Comment sauvegarder un script en ligne sur mon ordinateur ?</div>
+            <div class="collapsible-body">
+                <ol>
+                    <li>Ouvrir votre éditeur préféré (sublime text, visual studio code, bloc-note, notpad++,...)</li>
+                    <li>Copier/Coller le code écrit dans l'éditeur dans un nouveau fichier portant l'extension .py ou .txt</li>
+                    <li>Enregistrer ce fichier sur votre ordinateur, il sera possible de le charger en ligne avec le Drag'n'Drop</li>
+                </ol>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-bars" aria-hidden="true"></i> J'ai atteint mon quota de script (max 5), comment supprimer un script ?</div>
+            <div class="collapsible-body">
+                <ol>
+                    <li>Charger le script à supprimer dans l'éditeur</li>
+                    <li>Écrire le nouveau script à la place</li>
+                    <li>Changer éventuellement le nom pour le nouveau script</li>
+                    <li>Sauvegarder</li>
+                </ol>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="fa fa-exclamation" aria-hidden="true"></i> En cas d'erreur que faire ?</div>
+            <div class="collapsible-body">
+                <p>Si une erreur survient, la plupart du temps, l'éditeur est mis en cause.</p>
+                <p>Tentez d'identifier d'eventuel erreur:<br>
+                - indentation du code<br>
+                - variable utilisée<br>
+                - syntaxe python respectée</p>
+                <p>En cas d'echec lors de la vérification contacter le support technique.</p>
+            </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}

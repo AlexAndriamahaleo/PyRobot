@@ -1,11 +1,25 @@
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+
+from ckeditor.fields import RichTextField
+
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     money = models.PositiveIntegerField(default=0)
     avatar = models.ImageField(blank=True)
     agression = models.BooleanField(default=False)
+
+    #Exp - R&D
+    exp = models.PositiveIntegerField(default=0)
+    srch = models.PositiveIntegerField(default=0)
+    dev = models.PositiveIntegerField(default=0)
+    level = models.PositiveIntegerField(default=0)
+    next_level_exp = models.PositiveIntegerField(default=int(1/settings.EXP_CONSTANT))
+    true_level = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.user.username
@@ -29,15 +43,66 @@ class UserProfile(models.Model):
             sOut.append(getItemByType(s.item, TypeItem(pk=4)))
         return [wOut, aOut, cOut, sOut]
 
+    def get_active_ai_script(self):
+        ai_scripts = self.ia_set.filter(active=True)
+        if ai_scripts:
+            return list(ai_scripts)[0]
+        return None
+
+    def change_active_ai(self, new_ai):
+        old_ai = self.get_active_ai_script()
+        if old_ai:
+            old_ai.active = False
+            old_ai.save()
+        new_ai.active = True
+        new_ai.save()
+        tank = self.tank_set.all()[0]
+        tank.ia = new_ai
+        tank.save()
+
+    @property
+    def get_ai_name(self):
+        ai = self.get_active_ai_script()
+        if ai:
+            return ai.name
+        return "No Active Script"
+
+    def get_running_battle(self):
+        """
+        Get the current battle
+        :return:
+        """
+        battle = self.user.battlehistories.filter(is_finished=False)
+        if battle:
+            return battle[0]
+        return None
+
+    def calc_next_level_exp(self):
+        self.next_level_exp = int((self.level + 1)**2/settings.EXP_CONSTANT)
+        # instance.save()
+
+    def get_tank(self):
+        return self.tank_set.all()[0]
+
+
 class Ia(models.Model):
     owner = models.ForeignKey(UserProfile)
     name = models.CharField(max_length=50, default='')
     text = models.TextField()
+    active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
     def getIaByOwner(user):
         return Ia.objects.get(owner=user)
+
+def create_ia_name(sender, instance, raw, created, **kwargs):
+    if instance.name == '':
+        instance.name = "AI Script %s" % instance.pk
+        instance.save()
+
+post_save.connect(create_ia_name, sender=Ia)
 
 
 class Weapon(models.Model):
@@ -51,6 +116,7 @@ class Weapon(models.Model):
 
     def __str__(self):
         return self.name
+
     def isInInventory(self,user):
         inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=1), item=self.pk)
         if inv.count() > 0 :
@@ -97,6 +163,7 @@ class NavSystem(models.Model):
 
     def __str__(self):
         return self.name
+
     def isInInventory(self,user):
         inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=4), item=self.pk)
         if inv.count() > 0 :
@@ -112,9 +179,11 @@ class Tank(models.Model):
     armor = models.ForeignKey(Armor)
     caterpillar = models.ForeignKey(Caterpillar)
     navSystem = models.ForeignKey(NavSystem)
+    hp_value = models.PositiveIntegerField(default=100)
 
     def __str__(self):
         return self.owner.__str__()
+
 
 class TypeItem (models.Model):
     name = models.CharField(max_length=200)
@@ -122,7 +191,7 @@ class TypeItem (models.Model):
     def __str__(self):
         return self.name
 
-class Inventory (models.Model):
+class Inventory(models.Model):
     owner = models.ForeignKey(UserProfile)
     item = models.PositiveIntegerField()
     typeItem = models.ForeignKey(TypeItem)
@@ -143,3 +212,58 @@ def getItemByType(itemIn,type):
         return Caterpillar.objects.get(pk=itemIn)
     elif type == TypeItem(pk=4) :
         return NavSystem.objects.get(pk=itemIn)
+
+
+class BattleHistory(models.Model):
+    user = models.ForeignKey(User, related_name="battlehistories")
+    opponent = models.ForeignKey(User, related_name="opponents")
+    is_victorious = models.BooleanField(default=False)
+    used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
+    opp_used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
+    # Status of a battle. We need to show clients that battle is realtime not a replay :))
+    is_finished = models.BooleanField(default=False, db_index=True)
+    # Animation step index.
+    step = models.PositiveIntegerField(default=0)
+    max_step = models.PositiveIntegerField(default=0)
+    # Result array. We should us JsonField but it's only available in PostgreSQL now
+    result_stats = models.TextField(default='')
+    # Player positions
+    player_x = models.PositiveIntegerField(default=0)
+    player_y = models.PositiveIntegerField(default=0)
+    # Opponent positions
+    opponent_x = models.PositiveIntegerField(default=0)
+    opponent_y = models.PositiveIntegerField(default=0)
+    map_name = models.CharField(max_length=10, default="terre")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    difficult_level = models.CharField(max_length=10, default="normal")
+
+    def player_name(self):
+        return self.user.username
+
+    def opponent_name(self):
+        return self.opponent.username
+
+
+class Notification(models.Model):
+    """
+    A notification, like Facebook notification
+    Define for later use
+    """
+    user = models.ForeignKey(User, related_name="notifications")
+    content = models.CharField(max_length=200)
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class FAQ(models.Model):
+    """
+    FAQ
+    """
+    question = models.TextField(null=False)
+    answer = RichTextField(null=False)
+    symbol = models.CharField(default='fa-book', null=True, help_text='Font Awesome icon name', max_length=50)
+
+    def save(self, *args, **kwargs):
+        self.question = self.question.strip().rstrip('?')
+        super(FAQ, self).save(*args, **kwargs)
+
