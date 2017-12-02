@@ -307,16 +307,46 @@ def replay(request):
     '''
     Replayeanimation without gains
     :param request:
-    :return: (now) redirect to main page
+    :return: replay battle againt user= p_id
     '''
+    op_id = request.GET['op_id']
+    print(op_id)
     user1 = UserProfile.objects.get(user=request.user)
+    user2 = UserProfile.objects.get(user=op_id)
+    opponent = user2.user.username
 
-    context = {'money': UserProfile.objects.get(user=request.user).money,
-               'username': request.user,
-               'pageIn': 'accueil',
-               'agression': UserProfile.objects.get(user=request.user).agression,
-               'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))}
-    return render(request, "backend/accueil.html", context)
+    tank1 = user1.get_tank()
+    tank2 = user2.get_tank()
+    ia1 = user1.get_active_ai_script()
+    ia2 = user2.get_active_ai_script()
+    game = Game(tank1, tank2, ia1, ia2)
+    res = game.run(0)
+
+    if game.is_victorious():  # launcher WIN
+        is_victorious = "yes"
+    else:  # launcher LOSE
+        is_victorious = "no"
+
+    player_x = 0
+    player_y = 0
+    opponent_x = 31
+    opponent_y = 31
+    step = 0
+    map_name = random.choice(settings.BATTLE_MAP_NAMES)
+
+    context = {
+        'result': res,
+        'pageIn': 'accueil',
+        'opponent': opponent,
+        'is_victorious': is_victorious,
+        'player_x': player_x,
+        'player_y': player_y,
+        'opponent_x': opponent_x,
+        'opponent_y': opponent_y,
+        'step': step,
+        'map_name': map_name,
+    }
+    return render(request, "backend/fight.html", context)
 
 @login_required
 def password_change(request):

@@ -17,7 +17,7 @@ MaturePyRobot - Historique
                 <th>Adversaire</th>
                 <th>Script Utilisé</th>
                 <th>Résultat</th>
-                <th>Rejouer le combat</th>
+                <th>Combat</th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +34,9 @@ MaturePyRobot - Historique
                                 Perdu
                             {% endif %}
                         </td>
+                        <td>
+                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}?op_id={{ history.opponent.pk }}">Voir</a>
+                        </td>
                     {% else %}
                         <td>{{ history.user.username }}</td>
                         <td>{{ history.opp_used_script.name }}</td>
@@ -44,10 +47,10 @@ MaturePyRobot - Historique
                                 Gagné
                             {% endif %}
                         </td>
-                    {% endif %}
-                        <td class="center-align">
-                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}">Voir</a>
+                        <td>
+                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}?op_id={{ history.user.pk }}">Voir</a>
                         </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
