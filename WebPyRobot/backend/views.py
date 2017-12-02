@@ -452,8 +452,11 @@ def parameter(request):
     form = ChangeDataForm()
     form.fields['email'].initial = request.user.email
     form.fields['username'].initial= request.user.username
-    context = {'money' : UserProfile.objects.get(user=request.user).money,
-               'username' : request.user,
+    context = {'money': UserProfile.objects.get(user=request.user).money,
+               'username': request.user,
+               'pageIn': 'accueil',
+               'agression': UserProfile.objects.get(user=request.user).agression,
+               'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
                'form': form}
     return render(request, 'backend/parameter.html',context)
 
