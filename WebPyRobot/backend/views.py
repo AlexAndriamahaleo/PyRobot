@@ -305,7 +305,7 @@ def testcpu(request):
 @login_required
 def replay(request):
     '''
-    Replayeanimation without gains
+    Replay animation without gains
     :param request:
     :return: replay battle againt user= p_id
     '''
@@ -359,13 +359,17 @@ def password_change(request):
             context = {'money': UserProfile.objects.get(user=request.user).money,
                        'username': request.user,
                        'pageIn': 'accueil',
-                       'returnChange': "Les Informations ont bien été enregistré"}
+                       'agression': UserProfile.objects.get(user=request.user).agression,
+                       'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))}
+            messages.success(request, "Changement de mot de passe effectué.")
             return render(request, "backend/accueil.html", context)
         else:
             context = {'money': UserProfile.objects.get(user=request.user).money,
                        'username': request.user,
                        'pageIn': 'accueil',
-                       'returnChange': "Erreur"}
+                       'agression': UserProfile.objects.get(user=request.user).agression,
+                       'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))}
+            messages.error(request, "Les mots de passe ne sont pas identiques. Veuillez réessayer.")
             return render(request, "backend/accueil.html", context)
 
 @login_required
@@ -548,8 +552,7 @@ def buyStuff (request):
                    'weapons': Weapon.objects.all(),
                    'armors': Armor.objects.all(),
                    'caterpillars': Caterpillar.objects.all(),
-                   'navSys': NavSystem.objects.all(),
-                   "messages": {"Achat éffectué. Retrouvez l'équipement dans votre inventaire"}
+                   'navSys': NavSystem.objects.all()
                    }
         messages.success(request, "Achat éffectué. Retrouvez l'équipement dans votre inventaire")
         return render(request, 'backend/boutique.html', context)
