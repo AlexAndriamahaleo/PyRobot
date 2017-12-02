@@ -303,6 +303,22 @@ def testcpu(request):
     return render(request, "backend/fight.html", context)
 
 @login_required
+def replay(request):
+    '''
+    Replayeanimation without gains
+    :param request:
+    :return: (now) redirect to main page
+    '''
+    user1 = UserProfile.objects.get(user=request.user)
+
+    context = {'money': UserProfile.objects.get(user=request.user).money,
+               'username': request.user,
+               'pageIn': 'accueil',
+               'agression': UserProfile.objects.get(user=request.user).agression,
+               'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))}
+    return render(request, "backend/accueil.html", context)
+
+@login_required
 def password_change(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)

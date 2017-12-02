@@ -17,6 +17,7 @@ MaturePyRobot - Historique
                 <th>Adversaire</th>
                 <th>Script Utilisé</th>
                 <th>Résultat</th>
+                <th>Rejouer le combat</th>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +45,9 @@ MaturePyRobot - Historique
                             {% endif %}
                         </td>
                     {% endif %}
+                        <td class="center-align">
+                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}">Voir</a>
+                        </td>
                 </tr>
             {% endfor %}
         </tbody>
