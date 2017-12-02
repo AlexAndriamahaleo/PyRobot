@@ -91,7 +91,7 @@ var deadPlayer = function(player){
 	player.dead();
 	if (player.name == playername)
 		document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
-	else 
+	else
 		document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
 
 	document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn\" type=\"submit\" value=\"Voir l\'historique\"/>"
@@ -176,9 +176,9 @@ var initAnimation = function(){
 			};
 		}
 		else if(tabReceive[i][1] == "dead")
-			animation[i] = function (i){ 
+			animation[i] = function (i){
 				deadPlayer(tabReceive[i][0]);
-			
+
 		}
 
 	}

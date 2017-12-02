@@ -609,6 +609,7 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     def get_queryset(self):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
         queryset = queryset.filter(is_finished=True)
+        queryset = queryset.exclude(opponent=self.request.user) # not display test mode result
         return queryset.order_by('-timestamp')
 
     def get_context_data(self, **kwargs):
