@@ -35,7 +35,7 @@ MaturePyRobot - Historique
                             {% endif %}
                         </td>
                         <td>
-                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}?op_id={{ history.opponent.pk }}">Voir</a>
+                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}?bh_pk={{ history.pk }}">Voir</a>
                         </td>
                     {% else %}
                         <td>{{ history.user.username }} ({{ history.user.username }})</td>
@@ -48,7 +48,7 @@ MaturePyRobot - Historique
                             {% endif %}
                         </td>
                         <td>
-                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}?op_id={{ history.user.pk }}">Voir</a>
+                            <a class="waves-effect waves-light btn" href="{% url 'backend:replay' %}?bh_pk={{ history.pk }}">Voir</a>
                         </td>
                     {% endif %}
                 </tr>

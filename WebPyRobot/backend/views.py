@@ -309,43 +309,48 @@ def replay(request):
     :param request:
     :return: replay battle againt user= p_id
     '''
-    op_id = request.GET['op_id']
-    print(op_id)
-    user1 = UserProfile.objects.get(user=request.user)
-    user2 = UserProfile.objects.get(user=op_id)
-    opponent = user2.user.username
+    bh_pk = request.GET.get('bh_pk')
+    try:
+        battle = BattleHistory.objects.get(pk=bh_pk)
+    except:
+        messages.error(request, "Battle not found")
+        return render(request, "backend/fight.html")
 
-    tank1 = user1.get_tank()
-    tank2 = user2.get_tank()
-    ia1 = user1.get_active_ai_script()
-    ia2 = user2.get_active_ai_script()
-    game = Game(tank1, tank2, ia1, ia2)
-    res = game.run(0)
+    if battle.user != request.user:
+        if battle.opponent != request.user:
+            messages.error(request, "You dont have permission to view this battle")
+            return render(request, "backend/fight.html")
 
-    if game.is_victorious():  # launcher WIN
-        is_victorious = "yes"
-    else:  # launcher LOSE
-        is_victorious = "no"
+    res_stats = battle.result_stats
+    try:
+        res = json.loads(res_stats)
+    except ValueError:
+        print("ValueError - battle result: %s" % res_stats)
+        res = []
 
+    opponent = battle.opponent.username
+    map_name = battle.map_name
+    bh_pk = battle.pk
     player_x = 0
     player_y = 0
     opponent_x = 31
     opponent_y = 31
     step = 0
-    map_name = random.choice(settings.BATTLE_MAP_NAMES)
 
     context = {
         'result': res,
         'pageIn': 'accueil',
         'opponent': opponent,
-        'is_victorious': is_victorious,
         'player_x': player_x,
         'player_y': player_y,
         'opponent_x': opponent_x,
         'opponent_y': opponent_y,
         'step': step,
         'map_name': map_name,
+        'history_pk': bh_pk,
+        'is_replay': "yes"
     }
+
     return render(request, "backend/fight.html", context)
 
 @login_required
