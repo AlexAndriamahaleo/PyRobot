@@ -3,13 +3,14 @@
 {% block title %}  Changer le mot de passe {% endblock %}
 
 {% block content %}
+    <div class="col s12 m9 l10 pad">
+        <form action="{% url 'backend:password_change' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
 
-  <div class="col s12 m9 l10 pad">
-      <form action="{% url 'backend:password_change' %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit" />
-    </form>
-  </div>
-
+            <button class="btn waves-effect waves-light" type="submit" name="action">Changer
+                <i class="material-icons right">autorenew</i>
+            </button>
+        </form>
+    </div>
 {% endblock %}

@@ -58,7 +58,7 @@ def ws_receive(message):
             try:
                 user = User.objects.get(username=username)
             except:
-                print(traceback.format_exc())
+                log.error(traceback.format_exc())
                 log.error("User not found %s" % username)
                 return
             battle = user.userprofile.get_running_battle()

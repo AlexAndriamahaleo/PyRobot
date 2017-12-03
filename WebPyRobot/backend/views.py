@@ -243,7 +243,7 @@ def testcpu(request):
                 "battle_err": True
             }
             return render(request, "backend/fight.html", context)
-        user2 = UserProfile.objects.get(user=request.user)
+        #user2 = UserProfile.objects.get(user=request.user)
 
         tank1 = Tank.objects.get(owner=user1)
         tank2 = Tank.objects.get(owner=user1)
@@ -303,6 +303,57 @@ def testcpu(request):
     return render(request, "backend/fight.html", context)
 
 @login_required
+def replay(request):
+    '''
+    Replay animation without gains
+    :param request:
+    :return: replay battle againt user= p_id
+    '''
+    bh_pk = request.GET.get('bh_pk')
+    try:
+        battle = BattleHistory.objects.get(pk=bh_pk)
+    except:
+        messages.error(request, "Battle not found")
+        return render(request, "backend/fight.html")
+
+    if battle.user != request.user:
+        if battle.opponent != request.user:
+            messages.error(request, "You dont have permission to view this battle")
+            return render(request, "backend/fight.html")
+
+    res_stats = battle.result_stats
+    try:
+        res = json.loads(res_stats)
+    except ValueError:
+        print("ValueError - battle result: %s" % res_stats)
+        res = []
+
+    opponent = battle.opponent.username
+    map_name = battle.map_name
+    bh_pk = battle.pk
+    player_x = 0
+    player_y = 0
+    opponent_x = 31
+    opponent_y = 31
+    step = 0
+
+    context = {
+        'result': res,
+        'pageIn': 'accueil',
+        'opponent': opponent,
+        'player_x': player_x,
+        'player_y': player_y,
+        'opponent_x': opponent_x,
+        'opponent_y': opponent_y,
+        'step': step,
+        'map_name': map_name,
+        'history_pk': bh_pk,
+        'is_replay': "yes"
+    }
+
+    return render(request, "backend/fight.html", context)
+
+@login_required
 def password_change(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
@@ -313,13 +364,17 @@ def password_change(request):
             context = {'money': UserProfile.objects.get(user=request.user).money,
                        'username': request.user,
                        'pageIn': 'accueil',
-                       'returnChange': "Les Informations ont bien été enregistré"}
+                       'agression': UserProfile.objects.get(user=request.user).agression,
+                       'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))}
+            messages.success(request, "Changement de mot de passe effectué.")
             return render(request, "backend/accueil.html", context)
         else:
             context = {'money': UserProfile.objects.get(user=request.user).money,
                        'username': request.user,
                        'pageIn': 'accueil',
-                       'returnChange': "Erreur"}
+                       'agression': UserProfile.objects.get(user=request.user).agression,
+                       'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))}
+            messages.error(request, "Les mots de passe ne sont pas identiques. Veuillez réessayer.")
             return render(request, "backend/accueil.html", context)
 
 @login_required
@@ -402,8 +457,11 @@ def parameter(request):
     form = ChangeDataForm()
     form.fields['email'].initial = request.user.email
     form.fields['username'].initial= request.user.username
-    context = {'money' : UserProfile.objects.get(user=request.user).money,
-               'username' : request.user,
+    context = {'money': UserProfile.objects.get(user=request.user).money,
+               'username': request.user,
+               'pageIn': 'accueil',
+               'agression': UserProfile.objects.get(user=request.user).agression,
+               'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
                'form': form}
     return render(request, 'backend/parameter.html',context)
 
@@ -477,9 +535,9 @@ def buyStuff (request):
                    'weapons': Weapon.objects.all(),
                    'armors': Armor.objects.all(),
                    'caterpillars': Caterpillar.objects.all(),
-                   'navSys': NavSystem.objects.all(),
-                   "return": "Item déjà acheter "
+                   'navSys': NavSystem.objects.all()
                    }
+        messages.error(request, "Équipement déjà acheter")
         return render(request, 'backend/boutique.html', context)
     elif price > user.money :
         context = {'money': UserProfile.objects.get(user=request.user).money,
@@ -488,9 +546,9 @@ def buyStuff (request):
                    'weapons': Weapon.objects.all(),
                    'armors': Armor.objects.all(),
                    'caterpillars': Caterpillar.objects.all(),
-                   'navSys': NavSystem.objects.all(),
-                   "return": "Pas assez d'argent"
+                   'navSys': NavSystem.objects.all()
                    }
+        messages.error(request, "Vous n'avez pas assez d'argent")
         return render(request, 'backend/boutique.html', context)
     else :
         user.money = user.money - price
@@ -502,9 +560,9 @@ def buyStuff (request):
                    'weapons': Weapon.objects.all(),
                    'armors': Armor.objects.all(),
                    'caterpillars': Caterpillar.objects.all(),
-                   'navSys': NavSystem.objects.all(),
-                   "return": "Achat effectué"
+                   'navSys': NavSystem.objects.all()
                    }
+        messages.success(request, "Achat éffectué. Retrouvez l'équipement dans votre inventaire")
         return render(request, 'backend/boutique.html', context)
 
 @login_required
@@ -556,6 +614,7 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     def get_queryset(self):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
         queryset = queryset.filter(is_finished=True)
+        queryset = queryset.exclude(opponent=self.request.user) # not display test mode result
         return queryset.order_by('-timestamp')
 
     def get_context_data(self, **kwargs):

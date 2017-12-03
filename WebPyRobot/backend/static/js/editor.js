@@ -10,7 +10,7 @@
             matchBrackets: true,
             dragDrop: true,
             allowDropFileTypes : ["text/x-python","text/plain"],
-            extraKeys: {"Ctrl-Space": "autocomplete"},
+            extraKeys: {"Ctrl-Space": "autocomplete", "Option-Space": "autocomplete"},
             globalVars: true
         });
 

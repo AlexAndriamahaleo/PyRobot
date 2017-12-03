@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^password_change$', views.password_change, name='password_change'),
     url(r'^combat/$', views.fight, name='fight'),
     url(r'^testcpu/$', views.testcpu, name='testcpu'),
+    url(r'^replay/$', views.replay, name='replay'),
     url(r'^editor/$', views.AIScriptView.as_view(), name='editor'),
     url(r'^editor/(?P<pk>[0-9]+)/$', views.editorDetail, name='editorDetail'),
     url(r'^inventory/$', views.inventory, name='inventory'),

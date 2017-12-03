@@ -77,6 +77,18 @@
     <div class="col s12 m12 l4">
         <div class="card">
             <div class="card-content">
+                <span class="card-title">Script actuel</span>
+                <div class="left-align">
+                    <p>
+                        <i class="fa fa-file fa-2x" aria-hidden="true"></i> {{tank.ia.name}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l4">
+        <div class="card">
+            <div class="card-content">
                 <span class="card-title">Tes aptitudes</span>
                 <div class="left-align">
                     <p>
@@ -134,7 +146,7 @@
 
     <div class="col s12 m12 l12 push-l2 push-s5">
         <div class="row">
-            <div class=" col s12 m6 l6">
+            <div class=" col s12 m12 l12">
                 <h5>Équipements</h5>
                 <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.weapon.name }}"
                      src="/static/img/canon_svg/{{ tank.weapon.pathIcon }}">
@@ -144,13 +156,6 @@
                      src="/static/img/caterpillar_svg/{{ tank.caterpillar.pathIcon }}">
                 <img class="responsive-img equipement-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ tank.navSystem.name }}"
                      src="/static/img/circuit_svg/{{ tank.navSystem.pathIcon }}">
-            </div>
-            <div class=" col s12 m6 l6">
-                <h5>Script actuel</h5>
-                <div class="valign-wrapper">
-                    <i class="large material-icons">insert_drive_file</i>
-                    <span>{{tank.ia.name}}</span>
-                </div>
             </div>
         </div>
     </div>
