@@ -572,7 +572,6 @@ def documentation (request):
     }
     return render (request,"backend/documentation.html", context)
 
-@login_required
 def faq (request):
     faqs = FAQ.objects.all().order_by('pk')
     context = {
