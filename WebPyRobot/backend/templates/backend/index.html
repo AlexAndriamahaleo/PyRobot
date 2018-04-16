@@ -15,23 +15,26 @@
 <body>
 
 <nav class="indigo darken-4" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">MPR</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo yellow-text"
+                                          onclick="window.location.href='/'">MPR</a>
         <ul class="right hide-on-med-and-down">
-            <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
- Connexion</a></li>
-            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
- Inscription</a></li>
+            <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fas fa-sign-in-alt fa-lg"></i>
+                Connexion</a></li>
+            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fas fa-user-plus fa-lg"></i>
+                Inscription</a></li>
         </ul>
 
-        <ul id="nav-mobile" class="side-nav">
-            <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
- Connexion</a></li>
-            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
- Inscription</a></li>
-        </ul>
+
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
 </nav>
+
+<ul id="nav-mobile" class="side-nav">
+    <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+        Connexion</a></li>
+    <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+        Inscription</a></li>
+</ul>
 
 
 <!-- MODAL  -->
@@ -42,7 +45,7 @@
             <div class="row">
                 {% csrf_token %}
                 <div class="input-field col s12">
-                    <input placeholder="BananiaStyle" id="username" name="username" type="text" class="validate">
+                    <input placeholder="Player_1" id="username" name="username" type="text" class="validate">
                     <label for="first_name">Pseudo</label>
                 </div>
                 <div class="input-field col s12">
@@ -56,7 +59,7 @@
         </form>
     </div>
     <div class="modal-footer">
-      <p> </p>
+        <p></p>
     </div>
 </div>
 <div id="modalInscription" class="modal">
@@ -77,6 +80,17 @@
                 <div class="input-field col s12">
                     {{ form.password }}
                     <label for="{{ form.password.label }}">{{ form.password.label }}</label>
+                </div>
+                <div class="input-field col s12">
+                    <select disabled id="ch1">
+                        <option value="" disabled selected>Choisir un championnat</option>
+                        <option value="1">Championnat 1</option>
+                        <option value="2">Championnat 2</option>
+                        <option value="3">Championnat 3</option>
+                    </select>
+                    <label for="ch1">
+                        Championnat
+                    </label>
                 </div>
             </div>
 
@@ -113,7 +127,8 @@
                         <br><br>
                         <h5>
                             Le joueur qui aura programmé le meilleur tank gagnera la partie et
-                            se verra octroyer certains bonus pour le développement de son tank.
+                            se verra octroyer des points de victoire le faisant monter au classement dans la ligue
+                            choisie.
                             Un système de "Test" est disponible, si vous souhaitez vous mesurer à l'ordinateur
                             dont le niveau sera équivalent au vôtre.<br><br>
 
@@ -134,7 +149,9 @@
 
 <script>
     {% if error %}
-        document.onload = setTimeout(function () { alertify.alert("{{ error }}"); }, 1000);
+        document.onload = setTimeout(function () {
+            alertify.alert("{{ error }}");
+        }, 1000);
     {% endif %}
 </script>
 

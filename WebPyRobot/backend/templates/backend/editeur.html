@@ -3,146 +3,170 @@
 {% load staticfiles %}
 
 {% block title %}
-MaturePyRobot - Editeur
+    MaturePyRobot - Editeur
 {% endblock %}
 
 {% block custom_css %}
-<!-- Editeur Python CSS -->
-<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}"/>
-<link rel="stylesheet" href="{% static 'codemirror/theme/cobalt.css' %}"/>
-<script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+    <!-- Editeur Python CSS -->
+    <link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}"/>
+    <link rel="stylesheet" href="{% static 'codemirror/theme/cobalt.css' %}"/>
+    <script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
 
 
-<script src="{% static 'codemirror/mode/python/python.js' %}"></script>
+    <script src="{% static 'codemirror/mode/python/python.js' %}"></script>
 
-<script src="{% static 'codemirror/addon/edit/closebrackets.js' %}"></script>
-<script src="{% static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
-<!-- CodeMirror Autocomplete-->
-<link rel="stylesheet" href="{% static 'codemirror/addon/hint/simple-hint.css' %}"/>
-<link rel="stylesheet" href="{% static 'codemirror/addon/hint/show-hint.css' %}"/>
-<script src="{% static 'codemirror/addon/hint/simple-hint.js' %}"></script>
-<script src="{% static 'codemirror/addon/hint/show-hint.js' %}"></script>
-<script src="{% static 'codemirror/addon/hint/python-hint.js' %}"></script>
-<style>
-    .btn:hover {
-        background-color: #388e3c;
-    }
+    <script src="{% static 'codemirror/addon/edit/closebrackets.js' %}"></script>
+    <script src="{% static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
+    <!-- CodeMirror Autocomplete-->
+    <link rel="stylesheet" href="{% static 'codemirror/addon/hint/simple-hint.css' %}"/>
+    <link rel="stylesheet" href="{% static 'codemirror/addon/hint/show-hint.css' %}"/>
+    <script src="{% static 'codemirror/addon/hint/simple-hint.js' %}"></script>
+    <script src="{% static 'codemirror/addon/hint/show-hint.js' %}"></script>
+    <script src="{% static 'codemirror/addon/hint/python-hint.js' %}"></script>
+    <style>
+        .btn:hover {
+            background-color: #388e3c;
+        }
 
-    .collection .collection-item.active .secondary-content {
-        color: #1a237e;
-    }
+        .collection .collection-item.active .secondary-content {
+            color: #1a237e;
+        }
 
-    .secondary-content {
-        color: #b71c1c;
-    }
+        .secondary-content {
+            color: #b71c1c;
+        }
 
-    span.badge.new {
-        font-weight: 300;
-        font-size: 1.25rem;
-        color: #fff176;
-        background-color: #1a237e;
-        border-radius: 20px;
-    }
+        span.badge.new {
+            font-weight: 300;
+            font-size: 1.25rem;
+            color: #fff176;
+            background-color: #1a237e;
+            border-radius: 20px;
+        }
 
-    blockquote {
-        margin: 20px 0;
-        padding-left: 1.5rem;
-        border-left: 10px solid #fff176;
+        blockquote {
+            margin: 20px 0;
+            padding-left: 1.5rem;
+            border-left: 10px solid #fff176;
             border-left-width: 10px;
             border-left-style: solid;
             border-left-color: rgb(255, 241, 118);
-    }
-</style>
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<div class="col s12 m9 l10 pad">
-    <div class="row z-depth-1 section padding-section">
-        <div class="pad row col s12 m12 l12 ">
-            <div class="pad col s12 m3 l3 ">
-                <ul class="collection with-header">
-                    <li class="collection-header"><h4 class="indigo-text darken-4">Vos Scripts</h4></li>
-                    {% for script in scripts %}
-                    <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
-                        <div class="indigo-text darken-4">
-                            {{ script.name|truncatechars:16 }}
-                            <a href="{% url 'backend:editor' %}?script={{ script.pk }}"
-                               class="script-1 secondary-content tooltipped" data-position="right" data-delay="50"
-                               data-tooltip="Charger le script"><i class="fa fa-share-square-o fa-lg"></i></a>
-                        </div>
-                    </li>
-                    {% endfor %}
-                    {% if scripts_count < 5 %}
-                    <li class="collection-item {{ addnew }}">
-                        <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped indigo-text darken-4"
-                           data-position="bottom" data-delay="50" data-tooltip="Ajouter un script"><i class="fa fa-plus"
-                                                                                                      aria-hidden="true"></i></a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
 
-            <form id="code" action="{% url 'backend:editor' %}" method="post">
-                {% csrf_token %}
-                <div class="pad col s12 m9 l9 ">
-                    Nom de ton IA:
-                    <div class="input-field inline">
-                        <input type="text" name="ai_name"
-                               value="{% if temporary_name %}{{ temporary_name }}{% else %}{{ selected.name }}{% endif %}"
-                               placeholder="Nom de IA"/>
-
+    <div class="col s2 m4 l3">
+        <ul class="collection with-header">
+            <li class="collection-header"><h4 class="indigo-text darken-4">Vos Scripts</h4></li>
+            {% for script in scripts %}
+                <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
+                    <div class="indigo-text darken-4">
+                        {{ script.name|truncatechars:16 }}
+                        <a href="{% url 'backend:editor' %}?script={{ script.pk }}"
+                           class="script-1 secondary-content tooltipped" data-position="right"
+                           data-delay="50"
+                           data-tooltip="Charger le script"><i class="fas fa-exchange-alt fa-lg"></i></a>
                     </div>
-                    <span class="new badge" data-badge-caption="{{ active_script.name }}">Active AI: </span>
-                    <nav>
-                        <div class="nav-wrapper yellow lighten-2">
-                            <a href="#" data-activates="mobile-demo" class="button-collapse"><i
-                                    class="material-icons">menu</i></a>
-                            <ul class="left hide-on-med-and-down">
-                                <li class="save hoverable">
-                                    <input type="submit" class="btn-flat indigo-text darken-4" name="action"
-                                           value="Sauvgarder">
-                                </li>
-                                <li class="save hoverable">
-                                    <input type="submit" class="btn-flat indigo-text darken-4" name="action"
-                                           value="Activer">
-                                </li>
-                                <li>
-                                    <a class="indigo-text darken-4" href="{% url 'backend:testcpu' %}">TESTER</a>
-                                </li>
-                            </ul>
-                            <ul class="side-nav" id="mobile-demo">
-                                <li class="save"><a class="waves-effect" href="#"><i
-                                        class="material-icons left">save</i>Sauvgarder</a></li>
-                                <li><a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
+                </li>
+            {% endfor %}
 
-                    <textarea name="ia" id="ia" cols="40" rows="10">{% if temporary_text %}{{ temporary_text }}{% else %}{{ selected.text }}{% endif %}</textarea>
-
-                    {% if addnew %}
-                    <input type="hidden" name="addnew_flag" value="yes"/>
-                    {% else %}
-                    <input type="hidden" name="selected_pk" value="{{ selected.pk }}"/>
-                    {% endif %}
-
-                    <!--p><strong style="font-weight: bold">Active AI:</strong> {{ active_script.name }}</p>-->
-                    <blockquote>
-                        <i class="fa fa-sticky-note fa-lg tooltipped" data-position="left" data-delay="50" data-tooltip="Notes" aria-hidden="true"></i> Appuyez '<i>Ctrl + Space</i>' (Windows) <strong>OU</strong> '<i>Option + Space</i>' (Apple) pour utliser l'autocomplétion
-                        à tout moment. Veillez bien à remplacer ce qu'il y a entre trois cotes (''') par une valeur/variable qui correspond.
-                        <br><i class="fa fa-info fa-lg tooltipped" data-position="left" data-delay="50" data-tooltip="Informations" aria-hidden="true"></i>
-                        Le <a style="cursor:pointer" onclick="window.location.href='/tutoriels'">Drag'n'drop</a> est disponible pour importer un fichier que vous aurez préalablement taper dans votre espace de travail.
-                        <br><i class="fa fa-exclamation-triangle fa-lg tooltipped" data-position="left" data-delay="50" data-tooltip="Attention" aria-hidden="true"></i> S'il venait à y avoir une erreur, veillez à
-                        bien vérifier que vous avez un script actif.
-                    </blockquote>
-                </div>
-            </form>
-        </div>
+            {% if scripts_count < 5 %}
+                <li class="collection-item {{ addnew }}">
+                    <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped indigo-text darken-4"
+                       data-position="bottom" data-delay="50" data-tooltip="Ajouter un script"><i
+                            class="fas fa-download fa-lg"></i></a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
-</div>
+
+    <div class="col s10 m8 l9">
+
+        <form id="code" action="{% url 'backend:editor' %}" method="post">
+            {% csrf_token %}
+
+            <div class="col s12 m12 l12 ">
+                Nom de ton IA:
+                <div class="input-field inline">
+                    <input type="text" name="ai_name"
+                           value="
+                                   {% if temporary_name %}{{ temporary_name }}{% else %}{{ selected.name }}{% endif %}"
+                           placeholder="Nom de IA"/>
+
+                </div>
+                <span class="new badge" data-badge-caption="{{ active_script.name }}">Active AI: </span>
+
+                <nav>
+                    <div class="nav-wrapper yellow lighten-2">
+                        <a href="#" data-activates="mobile-demo" class="button-collapse"><i
+                                class="material-icons">menu</i></a>
+                        <ul class="left hide-on-med-and-down">
+                            <li class="save hoverable">
+                                <input type="submit" class="btn-flat indigo-text darken-4" name="action"
+                                       value="Sauvgarder">
+                            </li>
+                            <li class="save hoverable">
+                                <input type="submit" class="btn-flat indigo-text darken-4" name="action"
+                                       value="Activer">
+                            </li>
+                            <li>
+                                <a class="indigo-text darken-4" href="{% url 'backend:testcpu' %}">TESTER</a>
+                            </li>
+                        </ul>
+                        <ul class="side-nav" id="mobile-demo">
+                            <li class="save"><a class="waves-effect" href="#"><i
+                                    class="material-icons left">save</i>Sauvgarder</a></li>
+                            <li><a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <textarea name="ia" id="ia" cols="40" rows="10">{% if temporary_text %}
+                    {{ temporary_text }}{% else %}{{ selected.text }}{% endif %}</textarea>
+                <label for="ia">Code</label>
+
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Fichier</span>
+                        <input type="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+
+                {% if addnew %}
+                    <input type="hidden" name="addnew_flag" value="yes"/>
+                {% else %}
+                    <input type="hidden" name="selected_pk" value="{{ selected.pk }}"/>
+                {% endif %}
+
+                <!--p><strong style="font-weight: bold">Active AI:</strong> {{ active_script.name }}</p>-->
+                <blockquote>
+                    <i class="fa fa-sticky-note fa-lg tooltipped" data-position="left" data-delay="50"
+                       data-tooltip="Notes" aria-hidden="true"></i> Appuyez '<i>Ctrl + Space</i>' (Windows)
+                    <strong>OU</strong> '<i>Option + Space</i>' (Apple) pour utliser l'autocomplétion
+                    à tout moment. Veillez bien à remplacer ce qu'il y a entre trois cotes (''') par une
+                    valeur/variable qui correspond.
+                    <br><i class="fa fa-info fa-lg tooltipped" data-position="left" data-delay="50"
+                           data-tooltip="Informations" aria-hidden="true"></i>
+                    Le <a style="cursor:pointer" onclick="window.location.href='/tutoriels'">Drag'n'drop</a> est
+                    disponible pour importer un fichier que vous aurez préalablement taper dans votre espace de
+                    travail.
+                    <br><i class="fa fa-exclamation-triangle fa-lg tooltipped" data-position="left"
+                           data-delay="50" data-tooltip="Attention" aria-hidden="true"></i> S'il venait à y
+                    avoir une erreur, veillez à
+                    bien vérifier que vous avez un script actif.
+                </blockquote>
+            </div>
+        </form>
+    </div>
+
 {% endblock %}
 
 {% block custom_js %}
-<script src="{% static 'js/editor.js' %}"></script>
+    <script src="{% static 'js/editor.js' %}"></script>
 {% endblock %}
