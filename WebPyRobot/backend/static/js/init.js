@@ -1,39 +1,34 @@
 (function ($) {
     $(function () {
 
-        $('.button-collapse').sideNav();
-
-        $('.carousel').carousel();
-
-        $('.carousel.carousel-slider').carousel();
-
-        $(document).ready(function () {
-            $('.modal').modal();
-        });
-
-        $('.scrollspy').scrollSpy();
-
-        $(document).ready(function () {
-            $('.parallax').parallax();
-        });
-        $(document).ready(function () {
-            $('.materialboxed').materialbox();
-        });
-        $('.toc-wrapper').pushpin({
-            offset: 100
-        });
-
-
         $(document).ready(function () {
             $('.collapsible').collapsible();
+
             $('#alert_close').click(function () {
                 $("#alert_box").fadeOut("slow", function () {
                 });
             });
-        });
 
-        $(document).ready(function () {
+            $('.button-collapse').sideNav();
+
             $('.carousel').carousel();
+
+            $('.scrollspy').scrollSpy();
+
+            $('.carousel.carousel-slider').carousel();
+
+            $('.modal').modal();
+
+            $('.parallax').parallax();
+
+            $('.materialboxed').materialbox();
+
+            $('.toc-wrapper').pushpin({
+                offset: 100
+            });
+
+            $('select').material_select();
+
         });
 
 
