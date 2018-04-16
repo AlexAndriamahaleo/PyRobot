@@ -1,48 +1,60 @@
 {% load static %}
 
 <header class="navbar-fixed">
-    <!--<nav class="indigo darken-4" role="navigation">
-        <div class="nav-wrapper container"><a id="logo-container" style="cursor:pointer" onclick="window.location.href='/'" class="brand-logo yellow-text ">
-            <img class="img-logo" src="{% static 'img/svg_tank/tank.svg' %}"> MaturePyRobot</a>
+    <ul id="index1" class="dropdown-content center">
+            <li><a style="cursor:pointer" onclick="window.location.href='/'"
+           class="indigo-text darken-4 collection-item {% if page == 'accueil' %}active{% endif %}">Accueil</a></li>
 
-            <ul class="right hide-on-med-and-down">
-                <li><a class="yellow-text " href="#">Combat <span class="new badge red pulse" data-badge-caption="nouveaux combats">2</span></a></li>
-                <li><a class="yellow-text " href="#">{{ moneyIn }} <i class="fa fa-eur" aria-hidden="true"></i></a></li>
-                <li><a class="yellow-text " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a></li>
-                <li>
-                    <a class="yellow-text  tooltipped" data-position="bottom" data-delay="50" data-tooltip="Changer le mot de passe" style="cursor:pointer" onclick="window.location.href='/parameter'">
-                        <i class="fa fa-key" aria-hidden="true"></i>
-                    </a>
-                </li>
-                <li>
-                    <a class="yellow-text  tooltipped" data-position="bottom" data-delay="50" data-tooltip="Déconnexion" style="cursor:pointer" onclick="window.location.href='/logout'">
-                        <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    </a>
-                </li>
-            </ul>
 
-            <ul id="nav-mobile" class="side-nav">
-                <li>
-                    <div class="userView">
-                        <a href="#!name"><span class="white-text name">{{ user }}</span></a>
-                        <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
-                    </div>
-                </li>
-                <li><a class="yellow-text " href="#">Combats <span class="new badge red pulse" data-badge-caption="nouveaux combats">2</span></a></li>
-                <li><a class="yellow-text " href="#">{{ moneyIn }} <i class="fa fa-eur" aria-hidden="true"></i></a></li>
-                <li><a class="yellow-text " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a></li>
-                <li><a class="yellow-text " style="cursor:pointer" onclick="window.location.href='/parameter'"><i class="material-icons">settings</i></a></li>
-                <li><a class="yellow-text " style="cursor:pointer" onclick="window.location.href='/logout'"><i class="material-icons">power_settings_new</i></a></li>
-                <li>
-                    <div class="divider"></div>
-                </li>
 
-                {% include 'backend/mobilNav_Link.html' %}
+            <!--
 
-            </ul>
-            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-        </div>
-    </nav>-->
+        FUTURE FEATURES WAITING FOR UPDATE
+
+            <a style="cursor:pointer" onclick="window.location.href='/recherche'"
+            class="collection-item {% if page == 'recherche' %}active{% endif %} tooltipped" data-position="left" data-delay="50" data-tooltip="Prochainement">Recherche</a>
+
+            <a style="cursor:pointer" onclick="window.location.href='/developpement'"
+            class="collection-item {% if page == 'developpement' %}active{% endif %} tooltipped" data-position="left" data-delay="50" data-tooltip="Prochainement">Développement</a>
+
+
+            -->
+
+            <li><a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
+            class="indigo-text darken-4 collection-item {% if page == 'battle_histories' %}active{% endif %}">Historique <br>de combat</a></li>
+
+            <li><a style="cursor:pointer" onclick="window.location.href='/market'"
+            class="indigo-text darken-4 collection-item {% if page == 'market' %}active{% endif %}"><i class="fa fa-shopping-cart fa-fw" ></i> Boutique</a></li>
+
+        </ul>
+    <ul id="index2" class="dropdown-content center">
+        <li>
+            <a class="indigo-text darken-4"
+               onclick="window.location.href='/parameter'">
+                <i class="fa fa-key " aria-hidden="true"></i>Changer le mot de passe
+            </a>
+        </li>
+        <li>
+            <a class="indigo-text darken-4" onclick="window.location.href='/logout'">
+                <i class="fa fa-sign-out " aria-hidden="true">Déconnexion</i>
+            </a>
+        </li>
+    </ul>
+    <ul id="index3" class="dropdown-content center">
+        <li>
+            <a onclick="window.open('/documentation', 'Documentation','width=1080, height=720')"
+            class="indigo-text darken-4 collection-item {% if page == 'documentation' %}active{% endif %}">Documentation</a>
+        </li>
+
+        <li>
+            <a onclick="window.open('/faq', 'Foire au questions','width=1080, height=720')"
+            class="indigo-text darken-4 collection-item {% if page == 'faq' %}active{% endif %}">FAQ</a>
+        </li>
+        <li>
+            <a style="cursor:pointer" onclick="window.location.href='/tutoriels'"
+            class="indigo-text darken-4 collection-item {% if page == 'tutoriels'  %}active{% endif %}">Tutoriels</a>
+        </li>
+    </ul>
     <ul id="slide-out" class="side-nav">
         <li>
             <div class="user-view">
@@ -66,25 +78,19 @@
         <div class="container nav-wrapper">
             <a href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">MaturePyRobot</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <!--<li><a class="yellow-text " href="#">Combats <span class="new badge red pulse" data-badge-caption="nouveaux combats">2</span></a>
-                </li>-->
                 <li>
-                    <a class="yellow-text " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a>
-                </li>
-                <li>
-                    <a class="yellow-text " href="#">{{ moneyIn }} <i class="fa fa-eur fa-fw" aria-hidden="true"></i></a>
-                </li>
-                <li>
-                    <a class="yellow-text tooltipped" data-position="bottom" data-delay="50"
-                       data-tooltip="Changer le mot de passe" style="cursor:pointer"
-                       onclick="window.location.href='/parameter'">
-                        <i class="fa fa-key fa-2x" aria-hidden="true"></i></a>
-                </li>
-                <li>
-                    <a class="yellow-text  tooltipped" data-position="bottom" data-delay="50"
-                       data-tooltip="Déconnexion" style="cursor:pointer" onclick="window.location.href='/logout'">
-                        <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                    <a class="dropdown-button yellow-text" href="#" data-beloworigin="true" data-activates="index1">Menu
+                        <i class="material-icons right">arrow_drop_down</i>
                     </a>
+                </li>
+                <li>
+                    <a class="yellow-text dropdown-button " href="#" data-beloworigin="true" data-activates="index3">
+                        <i class="fa fa-question-circle fa-fw" ></i>
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                </li>
+                <li>
+                    <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
                 </li>
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
