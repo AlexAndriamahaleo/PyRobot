@@ -14,55 +14,24 @@
 </head>
 <body>
 
-<div class="navbar-fixed">
-    <nav class="indigo darken-4" role="navigation">
-        <div class="nav-wrapper container">
-            <a id="logo-container" href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">MPR</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+<nav class="indigo darken-4" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">MPR</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+ Connexion</a></li>
+            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+ Inscription</a></li>
+        </ul>
 
-            <ul class="right hide-on-med-and-down">
-                <li>
-                    <a class="modal-trigger yellow-text" href="#modalConnexion">
-                        <i class="fa fa-sign-in" aria-hidden="true"></i> Connexion
-                    </a>
-                </li>
-                <li>
-                    <a class="modal-trigger yellow-text" href="#modalInscription">
-                        <i class="fa fa-hand-o-up" aria-hidden="true"></i> Inscription
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</div>
-
-<ul id="mobile-demo" class="sidenav">
-    <li>
-        <div class="user-view">
-            <div class="background">
-                <img src="{% static 'img/black_wall.jpg' %}">
-            </div>
-            <a href="#"><img class="circle" src="{% static 'img/black_wall.jpg' %}"></a>
-            <a href="#"><span class="white-text name">MaturePyRobot</span></a>
-            <a href="#"><span class="white-text email">contactmaturepyrobot@gmail.com</span></a>
-        </div>
-    </li>
-    <li>
-        <a class="modal-trigger yellow-text" href="#modalConnexion">
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
-            Connexion
-        </a>
-    </li>
-    <li>
-        <div class="divider"></div>
-    </li>
-    <li>
-        <a class="modal-trigger yellow-text" href="#modalInscription">
-            <i class="fa fa-hand-o-up" aria-hidden="true"></i>
-            Inscription
-        </a>
-    </li>
-</ul>
+        <ul id="nav-mobile" class="side-nav">
+            <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+ Connexion</a></li>
+            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+ Inscription</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
 
 
 <!-- MODAL  -->
@@ -73,7 +42,7 @@
             <div class="row">
                 {% csrf_token %}
                 <div class="input-field col s12">
-                    <input placeholder="Joueur_1" id="username" name="username" type="text" class="validate">
+                    <input placeholder="BananiaStyle" id="username" name="username" type="text" class="validate">
                     <label for="first_name">Pseudo</label>
                 </div>
                 <div class="input-field col s12">
@@ -81,18 +50,15 @@
                     <label for="password">Mot de Passe</label>
                 </div>
                 <div class="modal-footer">
-                    <input id="btnindex" type="submit" value="Se Connecter"
-                           class="modal-action waves-effect indigo darken-4 btn test">
+                    <input type="submit" value="Se Connecter" class=" modal-action waves-effect indigo darken-4 btn">
                 </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <p></p>
+      <p> </p>
     </div>
 </div>
-
-
 <div id="modalInscription" class="modal">
     <div class="modal-content">
         <form action="{% url 'backend:signUp' %}" method="post">
@@ -115,19 +81,18 @@
             </div>
 
             <div class="modal-footer">
-                <input id="btnindex" type="submit" value="S'inscrire"
-                       class=" modal-action waves-effect indigo darken-4 btn">
+                <input type="submit" value="S'inscrire" class=" modal-action waves-effect indigo darken-4 btn">
             </div>
         </form>
     </div>
 </div>
 
-<div id="index-banner" class="parallax-container" style="height: 100%; width: 100%;">
+<div id="index-banner" class="parallax-container" style="height: 1000px; width: 100%;">
     <div class="section no-pad-bot">
         <div class="container">
+
             <h1 class="header center yellow-text bienvenue">Bienvenue sur MaturePyRobot</h1>
-            <br>
-            <br>
+            <br><br>
             <div class="section">
                 <div class="row white-text lighten-5">
                     <div class="col s12 m12 l12">
@@ -169,9 +134,7 @@
 
 <script>
     {% if error %}
-        document.onload = setTimeout(function () {
-            alertify.alert("{{ error }}");
-        }, 1000);
+        document.onload = setTimeout(function () { alertify.alert("{{ error }}"); }, 1000);
     {% endif %}
 </script>
 
