@@ -15,6 +15,10 @@
         body {
             background-color: #455a64;
         }
+
+        .card .card-image img {
+
+        }
     </style>
 
 {% endblock %}
@@ -23,7 +27,7 @@
 
 {% block content %}
 
-    <div class="col s12 m5 l12">
+    <!--<div class="col s12 m12 l12">
         <div class="card horizontal">
             <div class="card-image">
                 <img src="{% static 'img/test.jpg' %}">
@@ -41,7 +45,7 @@
         </div>
     </div>
 
-    <div class="col s12 m5 l12">
+    <div class="col s12 m12 l12">
         <div class="card horizontal">
             <div class="card-image">
 
@@ -50,8 +54,6 @@
                 {% else %}
                     <img src="user.avatar"/>
                 {% endif %}
-
-                <!--<img src="{% static 'img/circle_blue.jpg' %}">-->
             </div>
             <div class="card-stacked">
                 <div class="card-content">
@@ -109,7 +111,7 @@
         </div>
     </div>
 
-    <div class="col s12 m5 l12">
+    <div class="col s12 m12 l12">
         <div class="card horizontal">
             <div class="card-image">
                 <img src="{% static 'img/trophy.jpg' %}">
@@ -123,6 +125,67 @@
                     <a class="waves-effect red accent-4 waves-red btn-large"
                        href="{% url 'backend:fight' %}">Combattre</a>
                 </div>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="col s12 m12 l4">
+        <div class="card sticky-action">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="{% static 'img/test.jpg' %}">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-action">
+                <p><a href="#">This is a link</a><a href="#">This is a link</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4"><i
+                        class="material-icons right">close</i>Card Title</span>
+                <p>Here is some more information about this product that is only revealed once clicked on.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l4">
+        <div class="card sticky-action">
+            <div class="card-image waves-effect waves-block waves-light">
+
+                {% if user.avatar == None %}
+                    <img class="activator" src="{% static 'img/user_avatar/default.png' %}"/>
+                {% else %}
+                    <img class="activator" src="user.avatar"/>
+                {% endif %}
+
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-action">
+                <p><a href="#">This is a link</a><a href="#">This is a link</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4"><i
+                        class="material-icons right">close</i>Card Title</span>
+                <p>Here is some more information about this product that is only revealed once clicked on.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l4">
+        <div class="card sticky-action">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="{% static 'img/trophy.jpg' %}">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-action">
+                <p><a href="#">This is a link</a><a href="#">This is a link</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4"><i
+                        class="material-icons right">close</i>Card Title</span>
+                <p>Here is some more information about this product that is only revealed once clicked on.</p>
             </div>
         </div>
     </div>
