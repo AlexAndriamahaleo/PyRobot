@@ -2,18 +2,12 @@
 
 <header class="navbar-fixed">
     <ul id="index1" class="dropdown-content center">
-        <li>
-            <a style="cursor:pointer" onclick="window.location.href='/'"
-               class="indigo-text darken-4 collection-item ">
-                Accueil
-            </a>
-        </li>
 
         <li>
             <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
                class="indigo-text darken-4 collection-item ">
                 Historique
-            <br>de combat
+                <br>de combat
             </a>
         </li>
     </ul>
@@ -24,6 +18,11 @@
                 <i class="fab fa-keycdn fa-lg"></i> Changer le mot de passe
             </a>
         </li>
+        <li>
+            <a class="indigo-text darken-4 waves-effect waves-light modal-trigger" href="#league"><i
+                    class="fas fa-trophy"></i> Changer de championnat</a>
+        </li>
+        <li class="divider"></li>
         <li>
             <a class="indigo-text darken-4" onclick="window.location.href='/logout'">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
@@ -62,7 +61,8 @@
                     </a>
                 </li>
                 <li>
-                    <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
+                    <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i
+                            class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
                 </li>
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -80,15 +80,134 @@
             <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
         </div>
     </li>
-    <li><a class="indigo-text darken-4 " href="#"><i class="fa fa-user" aria-hidden="true"></i> {{ user }}</a></li>
-    <li><a class="indigo-text darken-4 " href="#">{{ moneyIn }} <i class="fa fa-eur" aria-hidden="true"></i></a></li>
+    <li><a class="indigo-text darken-4 " href="#"><i class="fas fa-user-circle"></i> {{ user }}</a></li>
+    <li><a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50" data-tooltip="vos points" href="#">{{ moneyIn }} <i class="fab fa-pinterest-p"></i></a></li>
     <li><a class="indigo-text darken-4 " style="cursor:pointer" onclick="window.location.href='/parameter'"><i
-            class="fa fa-key" aria-hidden="true"></i> Modifier Mot de Passe</a></li>
+            class="fab fa-keycdn"></i> Modifier Mot de Passe</a></li>
+    <li>
+        <a class="indigo-text darken-4 waves-effect waves-light modal-trigger" href="#league"><i
+                class="fas fa-trophy"></i> Changer de championnat</a>
+    </li>
     <li><a class="indigo-text darken-4 " style="cursor:pointer" onclick="window.location.href='/logout'"><i
-            class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
+            class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
     <li>
         <div class="divider"></div>
     </li>
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header">Menu<i class="material-icons">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li><a style="cursor:pointer" class="waves-effect indigo-text darken-4"
+                               onclick="window.location.href='/battle-histories'">Historique de combat</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header">Memento<i class="material-icons">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li>
+                            <a onclick="window.open('/documentation', 'Documentation','width=1080, height=720')"
+                               class="indigo-text darken-4 collection-item">Documentation</a>
+                        </li>
 
-    {% include 'backend/mobilNav_Link.html' %}
+                        <li>
+                            <a onclick="window.open('/faq', 'Foire au questions','width=1080, height=720')"
+                               class="indigo-text darken-4 collection-item ">FAQ</a>
+                        </li>
+                        <li>
+                            <a style="cursor:pointer" onclick="window.location.href='/tutoriels'"
+                               class="indigo-text darken-4 collection-item ">Tutoriels</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
 </ul>
+
+<div id="league" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>Liste des championnats disponible</h4>
+        <ul>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+            <li><p>Ici [form] request.POST pour changement de championnat <span class="badge"><a
+                    class="modal-trigger btn-floating red" href="#confirmleague"><i
+                    class="fas fa-chevron-right"></i></a></span></p></li>
+        </ul>
+    </div>
+    <!--<div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmer</a>
+    </div>-->
+</div>
+
+<div id="confirmleague" class="modal">
+    <div class="modal-content">
+        <h4>Confirmation</h4>
+        <p>Vous êtes sur le point de changer de championnat. Vous allez rejoindre le championnat [nom du championnat].
+            Voulez-vous confirmer votre choix ?</p>
+    </div>
+    <div class="modal-footer">
+        <a href="/" class="modal-action modal-close waves-effect waves-green btn-flat">Oui</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Non</a>
+    </div>
+</div>

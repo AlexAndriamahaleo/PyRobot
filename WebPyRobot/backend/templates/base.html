@@ -32,7 +32,7 @@
 {% block header %}
 {% include 'backend/header.html' with moneyIn=request.user.userprofile.money user=request.user.username%}
 {% endblock %}
-<main>
+<main class="contain">
     <div class="section">
         {% for message in messages %}
             <div id="alert_box" class="card-panel {% if message.tags %}{{ message.tags }}{% endif %}">

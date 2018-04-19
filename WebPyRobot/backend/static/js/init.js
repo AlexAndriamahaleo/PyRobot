@@ -29,6 +29,10 @@
 
             $('select').material_select();
 
+            $('.chips').material_chip();
+
+            $('ul.tabs').tabs();
+
         });
 
 

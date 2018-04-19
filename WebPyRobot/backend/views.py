@@ -39,7 +39,8 @@ def index(request):
                    'username' : request.user,
                    'pageIn' : 'accueil' ,
                    'agression': UserProfile.objects.get(user=request.user).agression,
-                   'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))}
+                   'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
+                   'scripts' : request.user.userprofile.ia_set.all()}
         return render(request, "backend/accueil.html", context)
     else:
         form = SignUpForm()
