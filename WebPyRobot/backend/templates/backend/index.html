@@ -82,16 +82,16 @@
                     <label for="{{ form.password.label }}">{{ form.password.label }}</label>
                 </div>
                 <div class="input-field col s12">
-                    <select disabled id="ch1">
+                    <!--<select disabled id="ch1">
                         <option value="" disabled selected>Choisir un championnat</option>
                         <option value="1">Championnat 1</option>
                         <option value="2">Championnat 2</option>
                         <option value="3">Championnat 3</option>
-                    </select>
-                    <label for="ch1">
-                        Championnat
-                    </label>
+                    </select>-->
+                    {{ form.championnat }}
+                    <label for="{{ form.championnat.label }}">{{ form.championnat.label }}</label>
                 </div>
+
             </div>
 
             <div class="modal-footer">
