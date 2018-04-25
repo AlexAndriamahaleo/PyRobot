@@ -2,15 +2,29 @@
 
 <header class="navbar-fixed">
     <ul id="index1" class="dropdown-content center">
-
+        <li>
+            <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50" data-tooltip="vos points"
+               href="#">
+                {{ point }}
+                <i class="fab fa-pinterest-p"></i>
+            </a>
+        </li>
+        <li>
+            <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50"
+               data-tooltip="{{ championnat }}" href="#">
+                <i class="fas fa-trophy"></i>
+                {{ championnat|truncatechars:50 }}
+            </a>
+        </li>
         <li>
             <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
                class="indigo-text darken-4 collection-item ">
-                Historique
-                <br>de combat
+                <i class="fas fa-list"></i>
+                Historique de combat
             </a>
         </li>
     </ul>
+
     <ul id="index2" class="dropdown-content center">
         <li>
             <a class="indigo-text darken-4"
@@ -29,101 +43,142 @@
             </a>
         </li>
     </ul>
+
     <ul id="index3" class="dropdown-content center">
         <li>
             <a onclick="window.open('/documentation', 'Documentation','width=1080, height=720')"
-               class="indigo-text darken-4 collection-item">Documentation</a>
+               class="indigo-text darken-4 collection-item">
+                <i class="fas fa-book"></i>
+                Documentation</a>
         </li>
 
         <li>
             <a onclick="window.open('/faq', 'Foire au questions','width=1080, height=720')"
-               class="indigo-text darken-4 collection-item ">FAQ</a>
+               class="indigo-text darken-4 collection-item ">
+                <i class="fas fa-question"></i>
+                FAQ</a>
         </li>
         <li>
-            <a style="cursor:pointer" onclick="window.location.href='/tutoriels'"
-               class="indigo-text darken-4 collection-item ">Tutoriels</a>
+            <a onclick="window.open('/tutoriels', 'Tutoriels', 'width=1080, height=720')"
+               class="indigo-text darken-4 collection-item ">
+                <i class="fas fa-desktop"></i>
+                Tutoriels</a>
         </li>
     </ul>
 
     <nav class="indigo darken-4" role="navigation">
         <div class="container nav-wrapper">
-            <a href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">MaturePyRobot</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>
-                    <a class="dropdown-button yellow-text" href="#" data-beloworigin="true" data-activates="index1">Menu
-                        <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                </li>
-                <li>
-                    <a class="yellow-text dropdown-button " href="#" data-beloworigin="true" data-activates="index3">
-                        <i class="far fa-question-circle fa-lg"></i> Memento
-                        <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                </li>
-                <li>
-                    <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i
-                            class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
-                </li>
-            </ul>
-            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+            <a href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">PyRobot</a>
+            {% if pageIn != 'documentation' and pageIn != 'faq' and pageIn != 'tutoriels' %}
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a class="dropdown-button yellow-text" href="#" data-beloworigin="true" data-activates="index1">Menu
+                            <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="yellow-text dropdown-button " href="#" data-beloworigin="true"
+                           data-activates="index3">
+                            <i class="far fa-question-circle fa-lg"></i> Aide
+                            <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i
+                                class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                </ul>
+                <a href="#" data-activates="main_menu" class="button-collapse"><i class="material-icons">menu</i></a>
+            {% endif %}
         </div>
     </nav>
 </header>
 
-<ul id="slide-out" class="side-nav">
+<ul id="main_menu" class="side-nav">
     <li>
         <div class="user-view">
             <div class="background">
                 <img src="{% static 'img/black_wall.jpg' %}">
             </div>
             <a href="#!name"><span class="white-text name">{{ user }}</span></a>
-            <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
+            <a href="#!email"><span class="white-text email">{{ mail }}</span></a>
         </div>
     </li>
-    <li><a class="indigo-text darken-4 " href="#"><i class="fas fa-user-circle"></i> {{ user }}</a></li>
-    <li><a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50" data-tooltip="vos points" href="#">{{ moneyIn }} <i class="fab fa-pinterest-p"></i></a></li>
-    <li><a class="indigo-text darken-4 " style="cursor:pointer" onclick="window.location.href='/parameter'"><i
-            class="fab fa-keycdn"></i> Modifier Mot de Passe</a></li>
-    <li>
-        <a class="indigo-text darken-4 waves-effect waves-light modal-trigger" href="#league"><i
-                class="fas fa-trophy"></i> Changer de championnat</a>
-    </li>
-    <li><a class="indigo-text darken-4 " style="cursor:pointer" onclick="window.location.href='/logout'"><i
-            class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="indigo-text darken-4 collapsible-header"><i class="fas fa-user-circle"></i> {{ user }}<i
+                        class="material-icons">arrow_drop_down</i> </a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li><a class="indigo-text darken-4 " style="cursor:pointer"
+                               onclick="window.location.href='/parameter'"><i
+                                class="fab fa-keycdn"></i> Modifier Mot de Passe</a></li>
+                        <li>
+                            <a class="indigo-text darken-4 waves-effect waves-light modal-trigger" href="#league"><i
+                                    class="fas fa-trophy"></i> Changer de championnat</a>
+                        </li>
+                        <li>
+                            <a class="indigo-text darken-4 " style="cursor:pointer"
+                               onclick="window.location.href='/logout'"><i
+                                    class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                        </li>
+                    </ul>
+            </li>
+        </ul>
     <li>
         <div class="divider"></div>
     </li>
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>
-                <a class="collapsible-header">Menu<i class="material-icons">arrow_drop_down</i></a>
+                <a class="indigo-text darken-4  collapsible-header">Menu<i
+                        class="material-icons">arrow_drop_down</i></a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a style="cursor:pointer" class="waves-effect indigo-text darken-4"
-                               onclick="window.location.href='/battle-histories'">Historique de combat</a></li>
+                        <li>
+                            <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50"
+                               data-tooltip="vos points" href="#">{{ point }} <i class="fab fa-pinterest-p"></i></a>
+                        </li>
+                        <li>
+                            <a style="cursor:pointer" class="waves-effect indigo-text darken-4"
+                               onclick="window.location.href='/battle-histories'">
+                                <i class="fas fa-list"></i>
+                                Historique de combat</a>
+                        </li>
                     </ul>
                 </div>
             </li>
         </ul>
     </li>
+    <li>
+        <div class="divider"></div>
+    </li>
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>
-                <a class="collapsible-header">Memento<i class="material-icons">arrow_drop_down</i></a>
+                <a class="indigo-text darken-4  collapsible-header">Memento<i class="material-icons">arrow_drop_down</i></a>
                 <div class="collapsible-body">
                     <ul>
                         <li>
                             <a onclick="window.open('/documentation', 'Documentation','width=1080, height=720')"
-                               class="indigo-text darken-4 collection-item">Documentation</a>
+                               class="indigo-text darken-4 collection-item">
+                                <i class="fas fa-book"></i>
+                                Documentation</a>
                         </li>
 
                         <li>
                             <a onclick="window.open('/faq', 'Foire au questions','width=1080, height=720')"
-                               class="indigo-text darken-4 collection-item ">FAQ</a>
+                               class="indigo-text darken-4 collection-item ">
+                                <i class="fas fa-question"></i>
+                                FAQ</a>
                         </li>
                         <li>
-                            <a style="cursor:pointer" onclick="window.location.href='/tutoriels'"
-                               class="indigo-text darken-4 collection-item ">Tutoriels</a>
+                            <a onclick="window.open('/tutoriels', 'Tutoriels', 'width=1080, height=720')"
+                               class="indigo-text darken-4 collection-item ">
+                                <i class="fas fa-desktop"></i>
+                                Tutoriels</a>
                         </li>
                     </ul>
                 </div>
@@ -203,7 +258,8 @@
 <div id="confirmleague" class="modal">
     <div class="modal-content">
         <h4>Confirmation</h4>
-        <p>Vous êtes sur le point de changer de championnat. Vous allez rejoindre le championnat [nom du championnat].
+        <p>Vous êtes sur le point de changer de championnat. Vous allez rejoindre le championnat [nom du
+            championnat].
             Voulez-vous confirmer votre choix ?</p>
     </div>
     <div class="modal-footer">

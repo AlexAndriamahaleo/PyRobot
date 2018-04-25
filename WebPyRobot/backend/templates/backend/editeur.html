@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block title %}
-    MaturePyRobot - Editeur
+    PyRobot - Editeur
 {% endblock %}
 
 {% block custom_css %}
@@ -80,6 +80,14 @@
                 </li>
             {% endif %}
         </ul>
+        <ul class="collection with-header">
+            <li class="collection-header"><h5>Informations</h5></li>
+            <li class="collection-item">Attaque = {{ tank.weapon.attackValue }}</li>
+            <li class="collection-item">Défense = {{ tank.armor.armorValue }}</li>
+            <li class="collection-item">Points de Vie = {{ tank.hp_value }}</li>
+            <li class="collection-item">PM = {{ tank.caterpillar.moveValue }} </li>
+            <li class="collection-item">PA = {{ tank.navSystem.actionValue }} </li>
+        </ul>
     </div>
 
     <div class="col s12 m8 l9">
@@ -91,8 +99,7 @@
                 Nom de ton IA:
                 <div class="input-field inline">
                     <input type="text" name="ai_name"
-                           value="
-                                   {% if temporary_name %}{{ temporary_name }}{% else %}{{ selected.name }}{% endif %}"
+                           value="{% if temporary_name %}{{ temporary_name }}{% else %}{{ selected.name }}{% endif %}"
                            placeholder="Nom de IA"/>
 
                 </div>
@@ -112,11 +119,16 @@
                             <li>
                                 <a class="indigo-text darken-4" href="{% url 'backend:testcpu' %}">TESTER</a>
                             </li>
+                            <li>
+                                <a class="indigo-text darken-4" onclick="window.location.href='/combat'">COMBATTRE</a>
+                            </li>
                         </ul>
                         <ul class="side-nav" id="mobile-demo">
-                            <li class="save"><a class="waves-effect" href="#"><i
+                            <li class="save">
+                                <a class="waves-effect" href="#"><i
                                     class="material-icons left">save</i>Sauvgarder</a></li>
-                            <li><a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
+                            <li>
+                                <a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
                             </li>
                         </ul>
                         <a href="#" data-activates="mobile-demo" class="button-collapse"><i
@@ -128,7 +140,7 @@
                     {{ temporary_text }}{% else %}{{ selected.text }}{% endif %}</textarea>
                 <label for="ia">Code</label>
 
-                <div class="file-field input-field">
+                <!--<div class="file-field input-field">
                     <div class="btn">
                         <span>Fichier</span>
                         <input type="file">
@@ -136,7 +148,7 @@
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
                     </div>
-                </div>
+                </div>-->
 
                 {% if addnew %}
                     <input type="hidden" name="addnew_flag" value="yes"/>

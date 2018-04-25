@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block title %}
-    MaturePyRobot - Accueil
+    PyRobot - Accueil
 {% endblock %}
 
 {% block custom_css %}
@@ -26,12 +26,18 @@
 
 
 {% block content %}
+    <div class="col s12 m12 l12">
+        <br/>
+        <br/>
+    </div>
 
     <div class="col s12 m12 l4">
         <div class="card sticky-action">
 
-            <div class="card-image waves-effect waves-block waves-light" onclick="window.location.href='/testcpu'">
-                <img class="activator" src="{% static 'img/test.jpg' %}">
+            <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
+                <a class="waves-effect waves-light modal-trigger" href="#versus">
+                    <img class="activator" src="{% static 'img/icons/training.png' %}">
+                </a>
             </div>
             <!--<div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
@@ -47,9 +53,10 @@
         </div>
     </div>
     <div class="col s12 m12 l4">
-        <div class="card sticky-action">
-            <div class="card-image waves-effect waves-block waves-light">
-                <img class="activator" src="{% static 'img/code_default.jpg' %}">
+        <div class="card sticky-action tooltipped" data-position="bottom" data-delay="50"
+             data-tooltip="Code actif: {{ active_script.name }}">
+            <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
+                <img class="activator" src="{% static 'img/icons/code.png' %}">
 
             </div>
 
@@ -82,8 +89,10 @@
                         </div>-->
 
                         <li>
-                            {{ script.name|truncatechars:22 }}
-                            <a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>
+                            <p>
+                                {{ script.name|truncatechars:22 }}
+                                <a class="btn-flat right" onclick="window.location.href='/editor/?script={{ script.pk }}'">Éditer</a>
+                            </p>
                         </li>
 
                     {% endfor %}
@@ -93,8 +102,10 @@
     </div>
     <div class="col s12 m12 l4">
         <div class="card sticky-action">
-            <div class="card-image waves-effect waves-block waves-light" onclick="window.location.href='/combat'">
-                <img class="activator" src="{% static 'img/trophy.jpg' %}">
+            <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
+                <a class="waves-effect waves-light modal-trigger" href="#championnat">
+                    <img class="activator" src="{% static 'img/icons/championnat.png' %}">
+                </a>
             </div>
             <!--<div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
@@ -107,6 +118,78 @@
                         class="material-icons right">close</i>Card Title</span>
                 <p>Here is some more information about this product that is only revealed once clicked on.</p>
             </div>-->
+        </div>
+    </div>
+
+    <div id="versus" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Mode versus</h4>
+            <p>Liste des scripts disponible pour un entrainement</p>
+            <h4>Joueurs du championnat</h4>
+            <div style="max-height: 350px; overflow: auto;">
+                <ul class="collapsible" data-collapsible="accordion">
+                {% for player in players %}
+                    <li>
+                        <div class="collapsible-header" onclick="window.location.href='/versus/{{ player.pk }}'">
+                            <i class="fas fa-street-view fa-2x"></i>
+                             ~ {{ player.user }} avec {{ player.exp }} points
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <h4>Code Ordinateur</h4>
+
+              <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                  <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 1 - Facile</div>
+                </li>
+                <li>
+                  <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 2 - Intermédiaire</div>
+                </li>
+                <li>
+                  <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 3 - Difficile</div>
+                </li>
+              </ul>
+
+            <h4>Vos codes</h4>
+            <ul>
+                {% for script in scripts %}
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="far fa-file-alt fa-2x"></i> - {{ script.name|truncatechars:22 }}
+                        </div>
+                        <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <a onclick="window.location.href='/versus'"
+               class="modal-action modal-close waves-effect waves-green btn-flat">Random in championship</a>
+        </div>
+    </div>
+
+    <div id="championnat" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Championnat</h4>
+            <p>Liste des joueur du championnat et leur classement</p>
+            <ul>
+                {% for player in classement %}
+
+                    {% if player.user == user %}
+                    <li><div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ] - {{ player.user }} avec {{ player.exp }} points ({{ player.pk }})</div> </li>
+                    {% else %}
+                        <li><div class="collapsible-header grey lighten-2" onclick="window.location.href='/combat/{{ player.pk }}'">[ {{ forloop.counter }} ] - {{ player.user }} avec {{ player.exp }} points ({{ player.pk }})</div> </li>
+                    {% endif %}
+
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <a onclick="window.location.href='/combat'"
+               class="modal-action modal-close waves-effect waves-green btn-flat">Random in championship</a>
         </div>
     </div>
 

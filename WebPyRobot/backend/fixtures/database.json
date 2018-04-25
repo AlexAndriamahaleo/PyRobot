@@ -5,8 +5,8 @@
     "fields": {
       "name": "Canon niv.1",
       "price": "500",
-      "attackValue": "20",
-      "range": "15",
+      "attackValue": "40",
+      "range": "20",
       "pathIcon" : "canon_1.png",
       "attackCost" : 1
 
@@ -44,7 +44,7 @@
     "fields": {
       "name": "Blindage niv.1",
       "price": "500",
-      "armorValue": "10",
+      "armorValue": "30",
       "pathIcon" : "shield_1.png"
     }
   },
@@ -76,7 +76,7 @@
     "fields": {
       "name": "Chenille niv.1",
       "price": "500",
-      "moveValue": "2",
+      "moveValue": "3",
       "pathIcon" : "cater_1.png"
     }
   },
@@ -107,7 +107,7 @@
     "fields": {
       "name": "Processeur niv.1",
       "price": "500",
-      "actionValue": "2",
+      "actionValue": "3",
       "pathIcon" : "circuit_1.png"
     }
   },

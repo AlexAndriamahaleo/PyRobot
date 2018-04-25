@@ -2,9 +2,10 @@
 
 {% load static %}
 
-{% block title %} MaturePyRobot - Combat {% endblock %}
+{% block title %} PyRobot - Combat {% endblock %}
 
 {% block content %}
+    <div class="container">
     {% if battle_err %}
         <div class="col s12 m9 l10 pad">
             <div class="row z-depth-1 section padding-section" id="show_str"></div>
@@ -44,6 +45,7 @@
             </div>
         </div>
     {% endif %}
+    </div>
 {% endblock %}
 
 {% block custom_js %}
@@ -57,7 +59,7 @@
             var opponent_x = {{ opponent_x }};
             var opponent_y = {{ opponent_y }};
             var step_index = {{ step }};
-            var map_name = "{{ map_name }}"
+            var map_name = "{{ map_name }}";
             var is_replay = "{{ is_replay }}"
         </script>
         {% include 'backend/headAnimation.html' %}

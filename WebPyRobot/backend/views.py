@@ -35,12 +35,21 @@ from .utils import validate_ai_script
 
 def index(request):
     if request.user.is_authenticated:
+
+        current_user = UserProfile.objects.get(user=request.user)
+
+
         context = {'money' : UserProfile.objects.get(user=request.user).money,
                    'username' : request.user,
                    'pageIn' : 'accueil' ,
+                   #'point' : UserProfile.objects.get(user=request.user).exp,
                    'agression': UserProfile.objects.get(user=request.user).agression,
                    'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
-                   'scripts' : request.user.userprofile.ia_set.all()}
+                   'scripts' : request.user.userprofile.ia_set.all(),
+                   'active_script' : request.user.userprofile.get_active_ai_script(),
+                   'players' : UserProfile.objects.exclude(pk=current_user.pk),
+                   'classement' : UserProfile.objects.order_by('-exp')}
+                   #'championnat' : 'New Championship'}
         return render(request, "backend/accueil.html", context)
     else:
         form = SignUpForm()
@@ -104,7 +113,7 @@ class SignUp (FormView):
             user = User.objects.create_user(username, email, password)
 
             #create User
-            UserProfile(user=user, money=0, next_level_exp=int(1/settings.EXP_CONSTANT)).save()
+            UserProfile(user=user, money=0, next_level_exp=int(1/settings.EXP_CONSTANT), agression=True).save()
 
             #create ia file default
             userProfile = UserProfile.objects.get(user=user)
@@ -148,7 +157,7 @@ def thanks(request):
 
 
 @login_required
-def fight(request):
+def fight(request, player_pk=''):
     """
     Process a battle
     """
@@ -167,7 +176,10 @@ def fight(request):
             }
             return render(request, "backend/fight.html", context)
         # Get opponent by a random choice from the list above
-        user2 = random.choice(list(users))
+        if player_pk == '':
+            user2 = random.choice(list(users))
+        else:
+            user2 = UserProfile.objects.get(pk=player_pk)
 
         # Send realtime notification to the opponent if he's online
         notify = NotificationMessage()
@@ -231,26 +243,40 @@ def fight(request):
 
 
 @login_required
-def testcpu(request):
+def testcpu(request, player_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
+
+    print("player_pk: ", player_pk)
 
     battle = user1.get_running_battle()
     if not battle:
         users1 = UserProfile.objects.exclude(pk=user1.pk)
         users = users1.exclude(agression=False)
+
         if not users:
-            messages.error(request, "There is no user available for battle")
+            messages.error(request, "Aucun joueur disponible pour le training battle")
             context = {
                 "battle_err": True
             }
             return render(request, "backend/fight.html", context)
         #user2 = UserProfile.objects.get(user=request.user)
 
-        tank1 = Tank.objects.get(owner=user1)
-        tank2 = Tank.objects.get(owner=user1)
+        if player_pk != '':
+            user2 = UserProfile.objects.get(pk=player_pk)
+            opponent = user2.user
+            tank1 = Tank.objects.get(owner=user1)
+            tank2 = Tank.objects.get(owner=user2)
+            ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+            ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+            print("choix: ", user2.user, ia2.name)
+        else:
+            user2 = random.choice(list(users))
+            opponent = user2.user
+            tank1 = Tank.objects.get(owner=user1)
+            tank2 = Tank.objects.get(owner=user2)
+            ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+            ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
 
-        ia1 = user1.get_active_ai_script()  #Ia.objects.get(owner=user1)
-        ia2 = user1.get_active_ai_script() #Ia.objects.get(owner=CPU)
 
         game = Game(tank1, tank2, ia1, ia2)
 
@@ -260,7 +286,7 @@ def testcpu(request):
             is_victorious = "yes"
         else:                                   #launcher LOSE
             is_victorious = "no"
-        opponent = "CPU"
+        # opponent = "CPU"
         player_x = 0
         player_y = 0
         opponent_x = 31
@@ -276,7 +302,7 @@ def testcpu(request):
             print ("ValueError - battle result: %s" % res_stats)
             res = []
 
-        opponent = "CPU"
+        opponent = "CPU_error"
         is_victorious = "no"
         if battle.is_victorious:
             is_victorious = "yes"
@@ -394,7 +420,8 @@ def editor(request):
         'username': request.user,
         'pageIn': 'editor',
         'code': ia.text,
-        'name': request.user
+        'name': request.user,
+        'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))
     }
     return render(request, 'backend/editeur.html', context)
 
@@ -637,6 +664,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
         context['scripts'] = self.request.user.userprofile.ia_set.all()
         context['active_script'] = self.request.user.userprofile.get_active_ai_script()
         context['scripts_count'] = self.request.user.userprofile.ia_set.count()
+        context['tank'] = Tank.objects.get(owner=UserProfile.objects.get(user=self.request.user))
 
         selected_script_id = self.request.GET.get('script')
         try:
@@ -708,7 +736,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                         selected.save()
                         messages.success(request, "L'Intelligence Artificielle [%s] a été mise à jour" % ia_name)
                     except:
-                        messages.error(request, "Invalid AI")
+                        messages.error(request, "Invalid AI (validate)")
             else:
                 # If the valiation is failed, return user's entered data to him
                 kwargs['temporary_text'] = text
@@ -726,7 +754,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 messages.success(request, "L'Intelligence Artificielle [%s] a bien été activée" % selected.name)
             except:
                 import traceback; print (traceback.format_exc())
-                messages.error(request, "Invalid AI")
+                messages.error(request, "Invalid AI (active)")
         # Other action is invalid, just pass through
         else:
             pass

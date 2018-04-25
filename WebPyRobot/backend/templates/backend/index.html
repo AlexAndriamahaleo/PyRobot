@@ -6,9 +6,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>Bienvenue Sur MaturePyRobot</title>
+    <title>Bienvenue sur PyRobot</title>
 
     {% include 'backend/head.html' %}
+
+    <style>
+        body {
+            background-color: #263238;
+        }
+    </style>
 
 
 </head>
@@ -16,12 +22,12 @@
 
 <nav class="indigo darken-4" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo yellow-text"
-                                          onclick="window.location.href='/'">MPR</a>
+                                          onclick="window.location.href='/'">PyRobot</a>
         <ul class="right hide-on-med-and-down">
             <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fas fa-sign-in-alt fa-lg"></i>
                 Connexion</a></li>
-            <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fas fa-user-plus fa-lg"></i>
-                Inscription</a></li>
+            <!--<li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fas fa-user-plus fa-lg"></i>
+                Inscription</a></li>-->
         </ul>
 
 
@@ -30,9 +36,9 @@
 </nav>
 
 <ul id="nav-mobile" class="side-nav">
-    <li><a class="modal-trigger yellow-text" href="#modalConnexion"><i class="fa fa-sign-in" aria-hidden="true"></i>
+    <li><a class="modal-trigger indigo-text darken-4" href="#modalConnexion"><i class="fas fa-sign-in-alt fa-lg"></i>
         Connexion</a></li>
-    <li><a class="modal-trigger yellow-text" href="#modalInscription"><i class="fa fa-hand-o-up" aria-hidden="true"></i>
+    <li><a class="modal-trigger indigo-text darken-4" href="#modalInscription"><i class="fas fa-user-plus fa-lg"></i>
         Inscription</a></li>
 </ul>
 
@@ -81,16 +87,6 @@
                     {{ form.password }}
                     <label for="{{ form.password.label }}">{{ form.password.label }}</label>
                 </div>
-                <div class="input-field col s12">
-                    <!--<select disabled id="ch1">
-                        <option value="" disabled selected>Choisir un championnat</option>
-                        <option value="1">Championnat 1</option>
-                        <option value="2">Championnat 2</option>
-                        <option value="3">Championnat 3</option>
-                    </select>-->
-                    {{ form.championnat }}
-                    <label for="{{ form.championnat.label }}">{{ form.championnat.label }}</label>
-                </div>
 
             </div>
 
@@ -105,11 +101,30 @@
     <div class="section no-pad-bot">
         <div class="container">
 
-            <h1 class="header center yellow-text bienvenue">Bienvenue sur MaturePyRobot</h1>
+            <h1 class="header center yellow-text bienvenue">Bienvenue sur PyRobot</h1>
             <br><br>
             <div class="section">
                 <div class="row white-text lighten-5">
-                    <div class="col s12 m12 l12">
+                     <div class="col s12 m12 l12">
+                         <h5>
+                            Sur notre site nous vous proposons de programmer, en langage Python,
+                            le comportement d'un tank. Pour pimenter votre expérience, mesurez vous aux autres
+                            utilisateurs de notre site et voyez le fruit de votre travail par le biais de
+                            combats. Vos tanks seront placés dans une arène où se livrera un combat sans merci.
+                        </h5>
+                         <br><br>
+                        <h5>
+                            Le joueur qui aura programmé le meilleur tank gagnera la partie et
+                            se verra octroyer des points de victoire le faisant monter au classement dans la ligue
+                            choisie.<br><br>
+
+                            La bataille est déjà lancée !!
+                            <br><br>Que le meilleur programmeur gagne !!
+                        </h5>
+                         <br><br><br><br><br><br>
+                     </div>
+                    <div class="col s12 m12 l12 center-align">
+                        <!--
                         <h5>
                             Envie d'apprendre un langage de programmation ? S'initier à la programmation ?
                             Vous êtes au bon endroit ! Pour vous, nous avons choisis la méthode d'apprentissage
@@ -135,12 +150,16 @@
                             La bataille est déjà lancée !!
                             <br><br>Que le meilleur programmeur gagne !!
                         </h5>
+                        -->
+
+                        <a class="waves-effect indigo darken-4 waves-light btn-large modal-trigger yellow-text" href="#modalInscription"><i class="fas fa-play"></i> jouer</a>
+
                     </div>
                 </div>
             </div>
         </div>
         <div class="parallax">
-            <img src="{% static 'img/black_wall.jpg' %}" alt="Unsplashed background img 1">
+            <img src="{% static 'img/armour.png' %}" alt="Unsplashed background img 1">
         </div>
     </div>
 </div>
