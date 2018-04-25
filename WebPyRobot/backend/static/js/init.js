@@ -9,7 +9,11 @@
                 });
             });
 
-            $('.button-collapse').sideNav();
+            $('.button-collapse').sideNav({
+                menuWidth: 350,
+                closeOnClick: true,
+                draggable: true
+            });
 
             $('.carousel').carousel();
 
