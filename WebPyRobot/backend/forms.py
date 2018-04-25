@@ -5,7 +5,7 @@ class SignUpForm (forms.Form):
     email = forms.EmailField(label='Email', required=True, widget=forms.TextInput(attrs={'class':'validate'}))
     username = forms.CharField(label='Pseudo', required=True, widget=forms.TextInput(attrs={'class':'validate'}))
     password = forms.CharField(label='Password', required=True, widget=forms.PasswordInput)
-    championnat = forms.ChoiceField(label='Championnat', required=True, widget=forms.Select())
+    # championnat = forms.ChoiceField(label='Championnat', required=True, widget=forms.Select())
 
 class ChangeDataForm(forms.Form):
     email = forms.EmailField(label='Email', required=True, disabled=True, widget=forms.TextInput(attrs={'class':'validate'}))
