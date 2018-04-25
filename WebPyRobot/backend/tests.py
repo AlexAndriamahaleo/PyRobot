@@ -15,3 +15,5 @@ class SimpleTest(unittest.TestCase):
         # Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
 
+
+# TODO: TESTS UNITAIRE
