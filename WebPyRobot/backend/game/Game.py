@@ -199,7 +199,7 @@ class Game(object):
                     return True
         return False
 
-    def set_history(self, map_name):
+    def set_history(self, map_name, is_training):
         """
         Save history of a battle
         :return: ID of BattleHistory object
@@ -218,7 +218,8 @@ class Game(object):
                 is_victorious = self.is_victorious(),
                 result_stats = json.dumps(self.__result),
                 max_step = len(self.__result),
-                map_name = map_name
+                map_name = map_name,
+                mode = is_training
             )
         return bh.pk
 

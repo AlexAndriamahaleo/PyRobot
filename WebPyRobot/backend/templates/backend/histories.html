@@ -16,6 +16,7 @@
                 <thead>
                 <tr>
                     <th>Date</th>
+                    <th>Mode</th>
                     <th>Adversaire</th>
                     <th>Votre code</th>
                     <th>Résultat</th>
@@ -27,6 +28,13 @@
                 {% for history in page_obj.object_list %}
                     <tr>
                         <td>{{ history.timestamp }}</td>
+                        <td>
+                            {% if history.mode %}
+                                VERSUS
+                            {% else %}
+                                CHAMPIONNAT
+                            {% endif %}
+                        </td>
                         {% if  history.opponent.username != request.user.username %}
                             <td>{{ history.opponent.username }}</td>
                             <td>{{ history.used_script.name }}</td>

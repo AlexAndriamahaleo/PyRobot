@@ -208,7 +208,7 @@ def fight(request, player_pk=''):
         opponent_y = settings.OPPONENT_INITIAL_POS_Y
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
-        bh_pk = game.set_history(map_name)
+        bh_pk = game.set_history(map_name, False)
     # Continue current battle
     else:
         res_stats = battle.result_stats
@@ -293,7 +293,7 @@ def testcpu(request, player_pk=''):
         opponent_y = 31
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
-        bh_pk = game.set_history(map_name)
+        bh_pk = game.set_history(map_name, True)
     else:
         res_stats = battle.result_stats
         try:

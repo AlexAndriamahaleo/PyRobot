@@ -279,6 +279,7 @@ class BattleHistory(models.Model):
     map_name = models.CharField(max_length=10, default="terre")
     timestamp = models.DateTimeField(auto_now_add=True)
     difficult_level = models.CharField(max_length=10, default="normal")
+    mode = models.BooleanField(null=False, default=False)
 
     def player_name(self):
         return self.user.username
