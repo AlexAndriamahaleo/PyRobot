@@ -1,34 +1,39 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block title %}
-PyRobot - Tutoriels
+    PyRobot - Tutoriels
 {% endblock %}
 
 {% block content %}
-<div class="col s12 m10 l10">
+    <div class="col s12 m10 l10">
 
-    <ul class="collapsible" data-collapsible="accordion">
-        <li>
-            <div class="collapsible-header active"><i class="material-icons">child_care</i>Débuter sur MaturePyRobot (mettre en plein écran)</div>
-            <div class="collapsible-body">
-                <iframe style="border: 0 none; min-width: 100%"
-                            src="https://www.iorad.com/player/96255/Untitled-Tutorial?src=iframe" width="100%"
-                            height="500px"
-                            allowfullscreen="true"></iframe>
-            </div>
-        </li>
-        <li>
-            <div class="collapsible-header"><i class="material-icons">file_download</i>Drag'n'Drop ?</div>
-            <div class="collapsible-body"><span>Voulez-vous un tuto pour Glisser Déposer ?</span></div>
-        </li>
-        <li>
-            <div class="collapsible-header"><i class="material-icons">pause</i>Pause battle ?</div>
-            <div class="collapsible-body"><span>Voulez-vous un tuto pour le Bouton "Pause" ?</span></div>
-        </li>
-        <li>
-            <div class="collapsible-header"><i class="material-icons">visibility</i>Visualisation du champ de bataille</div>
-            <div class="collapsible-body"><span>En cours de construction</span></div>
-        </li>
-    </ul>
-</div>
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>
+                <div class="collapsible-header active"><i class="material-icons">child_care</i>Débuter sur MaturePyRobot
+                </div>
+                <div class="collapsible-body">
+                    <video class="responsive-video materialboxed" controls>
+                        <source src="{% static 'img/tutoriel/tuto_accueil_pyrobot.mp4' %}" type="video/mp4">
+                        Votre navigateur internet ne supporte pas la balise vidéo HTML version 5
+                    </video>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">file_download</i>Drag'n'Drop ?</div>
+                <div class="collapsible-body"><span>Voulez-vous un tuto pour Glisser Déposer ?</span></div>
+            </li>
+            <!--<li>
+                <div class="collapsible-header"><i class="material-icons">pause</i>Pause battle ?</div>
+                <div class="collapsible-body"><span>Voulez-vous un tuto pour le Bouton "Pause" ?</span></div>
+            </li>-->
+            <li>
+                <div class="collapsible-header"><i class="material-icons">visibility</i>Visualisation du champ de
+                    bataille
+                </div>
+                <div class="collapsible-body"><span>En cours de construction</span></div>
+            </li>
+        </ul>
+    </div>
 {% endblock %}
