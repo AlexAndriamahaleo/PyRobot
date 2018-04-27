@@ -18,21 +18,26 @@
             $("#code").submit();
         });
 
+        $("#entrer").click(function (e) {
+            var file = document.getElementById('myfile');
+
+            //console.log(file.files[0].name);
+
+            if(file.files.length)
+            {
+                var reader = new FileReader();
+                reader.onload = function(e)
+                {
+                    document.getElementById('code_name').setAttribute('value',file.files[0].name);
+                    editor.getDoc().setValue(e.target.result);
+                };
+
+                reader.readAsBinaryString(file.files[0]);
+            }
+        });
+
         $("#code").submit(function () {
             editor.save();
-        });
-
-        $(".script-1").click(function (e) {
-            console.log("script-1");
-            $("#code").submit();
-        });
-
-        $(".script-2").click(function (e) {
-            console.log("script-2")
-        });
-
-        $(".script-3").click(function (e) {
-            console.log("script-3")
         });
 
     });
