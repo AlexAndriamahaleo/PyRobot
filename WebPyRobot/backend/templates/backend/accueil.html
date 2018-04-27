@@ -91,7 +91,8 @@
                         <li>
                             <p>
                                 {{ script.name|truncatechars:22 }}
-                                <a class="btn-flat right" onclick="window.location.href='/editor/?script={{ script.pk }}'">Éditer</a>
+                                <a class="btn-flat right"
+                                   onclick="window.location.href='/editor/?script={{ script.pk }}'">Éditer</a>
                             </p>
                         </li>
 
@@ -128,29 +129,29 @@
             <h4>Joueurs du championnat</h4>
             <div style="max-height: 350px; overflow: auto;">
                 <ul class="collapsible" data-collapsible="accordion">
-                {% for player in players %}
-                    <li>
-                        <div class="collapsible-header" onclick="window.location.href='/versus/{{ player.pk }}'">
-                            <i class="fas fa-street-view fa-2x"></i>
-                             ~ {{ player.user }} avec {{ player.exp }} points
-                        </div>
-                    </li>
-                {% endfor %}
+                    {% for player in players %}
+                        <li>
+                            <div class="collapsible-header" onclick="window.location.href='/versus/{{ player.pk }}'">
+                                <i class="fas fa-street-view fa-2x"></i>
+                                ~ {{ player.user }} avec {{ player.exp }} points
+                            </div>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
             <h4>Code Ordinateur</h4>
 
-              <ul class="collapsible" data-collapsible="accordion">
+            <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                  <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 1 - Facile</div>
+                    <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 1 - Facile</div>
                 </li>
                 <li>
-                  <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 2 - Intermédiaire</div>
+                    <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 2 - Intermédiaire</div>
                 </li>
                 <li>
-                  <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 3 - Difficile</div>
+                    <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 3 - Difficile</div>
                 </li>
-              </ul>
+            </ul>
 
             <h4>Vos codes</h4>
             <ul>
@@ -175,17 +176,43 @@
         <div class="modal-content">
             <h4>Championnat</h4>
             <p>Liste des joueur du championnat et leur classement</p>
-            <ul>
-                {% for player in classement %}
+            <div style="max-height: 350px; overflow: auto;">
 
-                    {% if player.user == user %}
-                    <li><div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ] - {{ player.user }} avec {{ player.exp }} points ({{ player.pk }})</div> </li>
-                    {% else %}
-                        <li><div class="collapsible-header grey lighten-2" onclick="window.location.href='/combat/{{ player.pk }}'">[ {{ forloop.counter }} ] - {{ player.user }} avec {{ player.exp }} points ({{ player.pk }})</div> </li>
-                    {% endif %}
+                <ul>
+                    {% for player in classement %}
 
-                {% endfor %}
-            </ul>
+                        {% if player.user == user %}
+                            <li>
+                                <div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ]
+                                    - {{ player.user }} avec {{ player.exp }} points (pk={{ player.pk }})
+                                </div>
+                            </li>
+                        {% else %}
+                            <li>
+                                <div class="collapsible-header grey lighten-2"
+                                     onclick="window.location.href='/combat/{{ player.pk }}'">[ {{ forloop.counter }} ]
+                                    - {{ player.user }} avec {{ player.exp }} points (pk={{ player.pk }})
+                                </div>
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <h4>Votre classement</h4>
+                <ul>
+                    {% for player in classement %}
+                        {% if player.user == user %}
+                            <li>
+                                <div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ]
+                                    - {{ player.user }} avec {{ player.exp }} points (pk={{ player.pk }})
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <div class="modal-footer">
             <a onclick="window.location.href='/combat'"

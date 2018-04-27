@@ -36,15 +36,19 @@ def calc_user_level(win, lose):
             return 2, 200
         return 1, 150
 
-def award_battle(winner, loser):
+def award_battle(winner, loser, mode):
     """
     Increase players exp, money, level, tank hp if possible
     :param winner: UserProfile of winner
     :param loser: UserProfile of loser
+    :parem mode: yes [VERSUS] - no [CHAMPIONNAT]
     :return: void
     """
     w_exp, w_money = calc_user_level(winner.level, loser.level)
-    winner.exp += w_exp
+
+    if mode == 'no':
+        winner.exp += w_exp
+
     if winner.exp >= winner.next_level_exp:
         winner.level += 1
         winner.calc_next_level_exp()
@@ -54,7 +58,9 @@ def award_battle(winner, loser):
     winner.money += w_money
     winner.save()
 
-    loser.exp += 1
+    if mode == 'no':
+        loser.exp += 1
+
     if loser.exp >= loser.next_level_exp:
         loser.level += 1
         loser.calc_next_level_exp()

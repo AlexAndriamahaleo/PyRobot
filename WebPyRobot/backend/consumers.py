@@ -52,6 +52,9 @@ def ws_receive(message):
             log.debug("ws message isn't json")
             return
 
+
+        mode = data.get('is_versus')
+
         # Battle data from the frontend side
         if data.get('msg_type') == "battle_step":
             username = data.get("username")
@@ -68,9 +71,9 @@ def ws_receive(message):
                 battle.is_finished = True
                 battle.save()
                 if battle.is_victorious:
-                    award_battle(battle.user.userprofile, battle.opponent.userprofile)
+                    award_battle(battle.user.userprofile, battle.opponent.userprofile, mode)
                 else:
-                    award_battle(battle.opponent.userprofile, battle.user.userprofile)
+                    award_battle(battle.opponent.userprofile, battle.user.userprofile, mode)
                 return
 
             step = int(data.get("step", 0))

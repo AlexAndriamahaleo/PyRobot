@@ -237,7 +237,8 @@ def fight(request, player_pk=''):
         'opponent_y': opponent_y,
         'step': step,
         'map_name': map_name,
-        'history_pk': bh_pk
+        'history_pk': bh_pk,
+        'is_versus': 'no'
     }
     return render(request, "backend/fight.html", context)
 
@@ -325,7 +326,8 @@ def testcpu(request, player_pk=''):
         'opponent_y': opponent_y,
         'step': step,
         'map_name': map_name,
-        'history_pk': bh_pk
+        'history_pk': bh_pk,
+        'is_versus' : 'yes'
     }
     return render(request, "backend/fight.html", context)
 
@@ -678,7 +680,8 @@ class AIScriptView(LoginRequiredMixin, ListView):
             selected = None
             context['addnew'] = "active"
             if addnew == "yes":
-                context['temporary_text'] = DefaultIa.objects.all()[0].text
+                # context['temporary_text'] = DefaultIa.objects.all()[0].text
+                context['temporary_text'] = '# Votre code ici \n # Vous pouvez aussi charger un fichier depuis votre ordinateur'
 
         context['selected'] = selected
         return context
