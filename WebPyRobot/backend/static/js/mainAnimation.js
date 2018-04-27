@@ -94,7 +94,8 @@ var deadPlayer = function(player){
     else
         document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
 
-    document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn\" type=\"submit\" value=\"Voir l\'historique\"/>"
+    document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" value=\"Voir l\'historique\"/>";
+    document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Éditer</a>";
 
     if (is_replay != "yes"){
         var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
@@ -103,7 +104,8 @@ var deadPlayer = function(player){
             var message = {
                 msg_content: "Le combat contre " + playername + " est terminé",
                 msg_type: "notification",
-                msg_class: "success"
+                msg_class: "success",
+                is_versus: is_versus
             };
             socket.send(JSON.stringify(message));
         };
@@ -115,7 +117,8 @@ var deadPlayer = function(player){
                 msg_type: "battle_step",
                 msg_class: "success",
                 finished: "yes",
-                username: playername
+                username: playername,
+                is_versus: is_versus
             };
             socket2.send(JSON.stringify(message));
         };
@@ -202,6 +205,13 @@ window.onload = function() {
     var i = 0;
     var k = 0;
 
+    if(is_versus == "yes"){
+        console.log("MODE VERSUS: "+ is_versus)
+    }
+    else {
+        console.log("MODE CHAMPIONNAT: "+ is_versus)
+    }
+
     suprStr(stringReceive);
     initAnimation();
 
@@ -227,6 +237,7 @@ window.onload = function() {
                         player_y: player1.y,
                         opponent_y: player2.y,
                         map: map_name,
+                        is_versus: is_versus
                     };
                     socket.send(JSON.stringify(message));
                 }
