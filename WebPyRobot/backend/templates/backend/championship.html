@@ -29,9 +29,13 @@
                 <ul>
                     {% for champ in all_championship %}
                         <li>
-                            <p>{{ champ.name }} - (pk={{ champ.pk }})<span class="badge"><a
-                                    class="modal-trigger btn-floating red" href="#confirmleague"><i
-                                    class="fas fa-chevron-right"></i></a></span></p>
+                            <p>{{ champ.name }} avec {{ champ.players.all|length }} joueur(s)
+                                <span class="badge">
+                                    <a class=" modal-trigger btn-floating red" href="#confirmleague"  data-champpk="{{ champ.pk }}">
+                                        <i id="{{ champ.name }}" class="championship large material-icons">chevron_right</i>
+                                    </a>
+                                </span>
+                            </p>
                         </li>
                     {% endfor %}
                 </ul>
@@ -55,22 +59,20 @@
         <div id="confirmleague" class="modal">
             <div class="modal-content">
                 <h4>Confirmation</h4>
-                <p>Vous êtes sur le point de changer de championnat. Vous allez rejoindre le championnat [nom du
-                    championnat].
-                    Voulez-vous confirmer votre choix ?</p>
+                <p id="modalconfirmation"></p>
             </div>
             <div class="modal-footer">
-                <a href="/" class="modal-action modal-close waves-effect waves-green btn-flat">Oui</a>
-                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Non</a>
+                <form action="{% url 'backend:change_championship' %}" method="POST">
+                    {% csrf_token %}
+                    <input id="modalconfirmation2" type="hidden" name="champ_name" />
+                    <input type="submit" class="modal-action modal-close waves-effect waves-green btn-flat" value="Oui"/>
+                    <a class="modal-action modal-close waves-effect waves-green btn-flat">Non</a>
+                </form>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block custom_js %}
-    <script type="text/javascript">
-        var title = "{{ pageIn }}";
-        var error = "{{ error }}";
-    </script>
 
 {% endblock %}

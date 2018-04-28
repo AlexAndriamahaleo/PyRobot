@@ -808,7 +808,7 @@ def finish_battle(request):
 class CreateChampionship(FormView):
     template_name = 'backend/championship.html'
     form_class = ChampionshipForm
-    success_url = '/championnat'
+    success_url = '/'
 
     def get_context_data(self, **kwargs):
         context = super(CreateChampionship, self).get_context_data(**kwargs)
@@ -819,15 +819,53 @@ class CreateChampionship(FormView):
 
     def form_valid(self, form):
         name = form.cleaned_data['name']
+        current_user = UserProfile.objects.get(user=self.request.user)
 
         try:
             new_name = Championship.objects.get(name=name)
-            print(new_name)
+            # print(new_name)
 
         except ObjectDoesNotExist:
             Championship(name=name).save()
-            messages.success(self.request, "Le championnat [%s] a bien été activée" % name)
+            old_champ_name = current_user.championship_set.all()[0].name
+
+            Championship.objects.get(name=name).players.add(current_user)
+            Championship.objects.get(name=old_champ_name).players.remove(current_user)
+
+            messages.success(self.request, "Le championnat [%s] a bien été créé" % name)
             return super(CreateChampionship,self).form_valid(form)
 
         messages.error(self.request, "Championnat déjà existant, veuillez en créer un autre. Merci")
         return super(CreateChampionship, self).form_valid(form)
+
+@login_required
+def change_championship(request):
+    if request.method == "POST":
+
+        try:
+            new_champ_name = request.POST.get("champ_name")
+            # print(new_champ_name)
+
+            champ_pk = Championship.objects.get(name=new_champ_name).pk
+            # print(champ_pk)
+
+            current_user = UserProfile.objects.get(user=request.user)
+            # print(current_user)
+
+            old_champ_name = current_user.championship_set.all()[0].name
+            # print(old_champ_name)
+
+
+            Championship.objects.get(name=new_champ_name).players.add(current_user)
+            Championship.objects.get(name=old_champ_name).players.remove(current_user)
+
+            current_champ_name = current_user.championship_set.all()[0].name
+            print(current_champ_name)
+
+            messages.success(request, "Vous avez rejoint %s" % new_champ_name)
+        except:
+            messages.error(request, "Erreur changement de championnat")
+
+
+
+    return redirect("backend:index")

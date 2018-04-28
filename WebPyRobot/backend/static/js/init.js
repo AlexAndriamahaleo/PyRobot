@@ -37,6 +37,18 @@
 
             $('ul.tabs').tabs();
 
+            $('i.championship').click(function(event) {
+                var modal1 = document.getElementById('modalconfirmation');
+                var modal = document.getElementById('modalconfirmation2');
+                modal.setAttribute('value', event.target.id);
+
+                modal1.innerHTML = "Vous êtes sur le point de changer de championnat. \n";
+                modal1.innerHTML += "Vous allez rejoindre le championnat " ;
+                modal1.innerHTML += event.target.id ;
+                modal1.innerHTML += ". Voulez-vous continuer ?" ;
+                //console.log(event.target.id);
+            });
+
         });
 
 
