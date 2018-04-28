@@ -129,14 +129,25 @@
             <h4>Joueurs du championnat</h4>
             <div style="max-height: 350px; overflow: auto;">
                 <ul class="collapsible" data-collapsible="accordion">
-                    {% for player in players %}
+                    {% if classement|length == 1 %}
                         <li>
-                            <div class="collapsible-header" onclick="window.location.href='/versus/{{ player.pk }}'">
-                                <i class="fas fa-street-view fa-2x"></i>
-                                ~ {{ player.user }} avec {{ player.exp }} points
-                            </div>
-                        </li>
-                    {% endfor %}
+                        <div class="collapsible-header">
+                            Vous êtes seul(e) dans ce championnat
+                        </div>
+                    </li>
+                    {% else %}
+                        {% for player in classement %}
+                            {% if player.user != user %}
+                                <li>
+                                    <div class="collapsible-header"
+                                         onclick="window.location.href='/versus/{{ player.pk }}'">
+                                        <i class="fas fa-street-view fa-2x"></i>
+                                        ~ {{ player.user }} avec {{ player.exp }} points
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </ul>
             </div>
             <h4>Code Ordinateur</h4>
@@ -174,7 +185,7 @@
 
     <div id="championnat" class="modal modal-fixed-footer">
         <div class="modal-content">
-            <h4>Championnat</h4>
+            <h4>{{ championnat|truncatechars:50 }}</h4>
             <p>Liste des joueur du championnat et leur classement</p>
             <div style="max-height: 350px; overflow: auto;">
 
@@ -225,5 +236,9 @@
 
 {% block custom_js %}
     <script src="{% static 'js/accueil.js' %}"></script>
+    <script>
+        var champ = [{{ championnat }}];
+        console.log(champ)
+    </script>
 {% endblock %}
 

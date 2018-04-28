@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^developpement/$', views.developpement, name='developpement'),
 
     url(r'^battle-histories/$', views.HistoriesView.as_view(), name="battle_histories"),
-    url(r'^finish-battle/$', views.finish_battle, name='finish_battle')
+    url(r'^finish-battle/$', views.finish_battle, name='finish_battle'),
+    url(r'^championnat/$', views.CreateChampionship.as_view(), name='championship')
 
 ]

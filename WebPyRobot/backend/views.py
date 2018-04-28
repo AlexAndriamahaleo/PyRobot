@@ -23,11 +23,11 @@ from channels import Group
 from pure_pagination.mixins import PaginationMixin
 
 from .constants import NotificationMessage
-from .forms import SignUpForm, ChangeDataForm, CodeForm
+from .forms import SignUpForm, ChangeDataForm, CodeForm, ChampionshipForm
 from .funct.funct import getItemByType,getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
-from .models import UserProfile, Tank, Ia, BattleHistory, Notification, FAQ
+from .models import UserProfile, Tank, Ia, BattleHistory, Notification, FAQ, Championship
 from .utils import validate_ai_script
 
 
@@ -37,6 +37,21 @@ def index(request):
     if request.user.is_authenticated:
 
         current_user = UserProfile.objects.get(user=request.user)
+
+        champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+
+        '''
+        champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+        print(champ_pk)
+
+        players = Championship.objects.get(pk=champ_pk).players.all()
+        for obj in players:
+            print(obj.exp)
+
+        champ = Championship.objects.all()
+        for c in champ:
+            print(c.name)
+        '''
 
 
         context = {'money' : UserProfile.objects.get(user=request.user).money,
@@ -48,8 +63,10 @@ def index(request):
                    'scripts' : request.user.userprofile.ia_set.all(),
                    'active_script' : request.user.userprofile.get_active_ai_script(),
                    'players' : UserProfile.objects.exclude(pk=current_user.pk),
-                   'classement' : UserProfile.objects.order_by('-exp')}
-                   #'championnat' : 'New Championship'}
+                   # 'classement' : UserProfile.objects.order_by('-exp'),
+                   'classement' : Championship.objects.get(pk=champ_pk).players.all(),
+                   'all_championship': Championship.objects.all(),
+                   'championnat' : UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
         return render(request, "backend/accueil.html", context)
     else:
         form = SignUpForm()
@@ -121,6 +138,8 @@ class SignUp (FormView):
                                   name="%s Default AI" % username,
                                   text=DefaultIa.objects.get(pk=1).text,
                                   active=True)
+
+            Championship.objects.get(pk=1).add_user(userProfile)
 
             #default Inventory
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=1))
@@ -238,7 +257,8 @@ def fight(request, player_pk=''):
         'step': step,
         'map_name': map_name,
         'history_pk': bh_pk,
-        'is_versus': 'no'
+        'is_versus': 'no',
+        'championnat': user1.championship_set.all()[0].name
     }
     return render(request, "backend/fight.html", context)
 
@@ -327,7 +347,8 @@ def testcpu(request, player_pk=''):
         'step': step,
         'map_name': map_name,
         'history_pk': bh_pk,
-        'is_versus' : 'yes'
+        'is_versus' : 'yes',
+        'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name
     }
     return render(request, "backend/fight.html", context)
 
@@ -423,7 +444,8 @@ def editor(request):
         'pageIn': 'editor',
         'code': ia.text,
         'name': request.user,
-        'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))
+        'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
+        'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name
     }
     return render(request, 'backend/editeur.html', context)
 
@@ -649,6 +671,7 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(HistoriesView, self).get_context_data(**kwargs)
         context['pageIn'] = 'battle_histories'
+        context['championnat'] = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].name
         return context
 
 
@@ -667,6 +690,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
         context['active_script'] = self.request.user.userprofile.get_active_ai_script()
         context['scripts_count'] = self.request.user.userprofile.ia_set.count()
         context['tank'] = Tank.objects.get(owner=UserProfile.objects.get(user=self.request.user))
+        context['championnat'] = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].name
 
         selected_script_id = self.request.GET.get('script')
         try:
@@ -780,3 +804,30 @@ def finish_battle(request):
             messages.error(request, "Aucun combat en cours")
 
     return redirect("backend:battle_histories")
+
+class CreateChampionship(FormView):
+    template_name = 'backend/championship.html'
+    form_class = ChampionshipForm
+    success_url = '/championnat'
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateChampionship, self).get_context_data(**kwargs)
+        context['pageIn'] = 'championship'
+        context['all_championship'] = Championship.objects.all()
+        context['championnat'] = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].name
+        return context
+
+    def form_valid(self, form):
+        name = form.cleaned_data['name']
+
+        try:
+            new_name = Championship.objects.get(name=name)
+            print(new_name)
+
+        except ObjectDoesNotExist:
+            Championship(name=name).save()
+            messages.success(self.request, "Le championnat [%s] a bien été activée" % name)
+            return super(CreateChampionship,self).form_valid(form)
+
+        messages.error(self.request, "Championnat déjà existant, veuillez en créer un autre. Merci")
+        return super(CreateChampionship, self).form_valid(form)

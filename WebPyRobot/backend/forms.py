@@ -7,10 +7,16 @@ class SignUpForm (forms.Form):
     password = forms.CharField(label='Password', required=True, widget=forms.PasswordInput)
     # championnat = forms.ChoiceField(label='Championnat', required=True, widget=forms.Select())
 
+
 class ChangeDataForm(forms.Form):
     email = forms.EmailField(label='Email', required=True, disabled=True, widget=forms.TextInput(attrs={'class':'validate'}))
     username = forms.CharField(label='Pseudo', required=True, disabled=True, widget=forms.TextInput(attrs={'class':'validate'}))
     password = forms.CharField(label='Password', required=True, widget=forms.PasswordInput)
 
+
 class CodeForm (forms.Form):
     ia = forms.CharField(label='ia')
+
+
+class ChampionshipForm(forms.Form):
+    name = forms.CharField(label='Nom du championnat', required=True, widget=forms.TextInput(attrs={'class':'validate'}))

@@ -17,6 +17,8 @@ class UserProfile(models.Model):
     # avatar = models.ImageField(upload_to='img/user_avatar')
     agression = models.BooleanField(default=False)
 
+    # championship = models.ForeignKey(Championship)
+
     #Exp - R&D
     exp = models.PositiveIntegerField(default=0)
     srch = models.PositiveIntegerField(default=0)
@@ -87,6 +89,22 @@ class UserProfile(models.Model):
 
     def get_tank(self):
         return self.tank_set.all()[0]
+    '''
+    def del_user(request, username):
+        try:
+            u = User.objects.get(username=username)
+            u.delete()
+            messages.sucess(request, "The user is deleted")
+
+        except User.DoesNotExist:
+            messages.error(request, "User doesnot exist")
+            return render(request, 'front.html')
+
+        except Exception as e:
+            return render(request, 'front.html', {'err': e.message})
+
+        return render(request, 'front.html')
+    '''
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -310,4 +328,24 @@ class FAQ(models.Model):
     def save(self, *args, **kwargs):
         self.question = self.question.strip().rstrip('?')
         super(FAQ, self).save(*args, **kwargs)
+
+
+class Championship(models.Model):
+    name = models.CharField(max_length=60, blank=False, unique=True)
+    players = models.ManyToManyField(UserProfile)
+
+    def remove_user(self, user):
+        self.players.remove(user)
+
+
+    def add_user(self, user):
+        self.players.add(user)
+
+    def move_user(self, user):
+        self.add_user(user)
+        self.remove_user(user)
+
+    def get_players(self):
+        return self.players
+
 
