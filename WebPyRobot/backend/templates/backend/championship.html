@@ -19,14 +19,14 @@
                     <div class="nav-wrapper">
                         <form>
                             <div class="input-field">
-                                <input id="search" type="search" required>
-                                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                                <input id="searchChamp" type="search" onkeyup="searchChamp()" required>
+                                <label class="label-icon" for="searchChamp"><i class="material-icons">search</i></label>
                                 <i class="material-icons">close</i>
                             </div>
                         </form>
                     </div>
                 </nav>
-                <ul>
+                <ul id="resultChamp">
                     {% for champ in all_championship %}
                         <li>
                             <p>{{ champ.name }} avec {{ champ.players.all|length }} joueur(s)
@@ -74,5 +74,23 @@
 {% endblock %}
 
 {% block custom_js %}
-
+<script>
+    function searchChamp() {
+      var input, filter, table, li, p, i;
+      input = document.getElementById("searchChamp");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("resultChamp");
+      li = table.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+        p = li[i].getElementsByTagName("p")[0];
+        if (p) {
+          if (p.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
+    }
+</script>
 {% endblock %}

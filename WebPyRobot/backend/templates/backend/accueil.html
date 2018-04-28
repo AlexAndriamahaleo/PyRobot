@@ -89,14 +89,25 @@
             <h4>Mode versus</h4>
             <p>Liste des scripts disponible pour un entrainement</p>
             <h4>Joueurs du championnat</h4>
+            <nav class="indigo darken-4">
+                <div class="nav-wrapper">
+                    <form>
+                        <div class="input-field">
+                            <input id="modeVersus" type="search" onkeyup="searchPlayerVersus()" required>
+                            <label class="label-icon" for="modeVersus"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </div>
+            </nav>
             <div style="max-height: 350px; overflow: auto;">
-                <ul class="collapsible" data-collapsible="accordion">
+                <ul id="resultPlayerVersus" class="collapsible" data-collapsible="accordion">
                     {% if classement|length == 1 %}
                         <li>
-                        <div class="collapsible-header">
-                            Vous êtes seul(e) dans ce championnat
-                        </div>
-                    </li>
+                            <div class="collapsible-header">
+                                Vous êtes seul(e) dans ce championnat
+                            </div>
+                        </li>
                     {% else %}
                         {% for player in classement %}
                             {% if player.user != user %}
@@ -148,10 +159,21 @@
     <div id="championnat" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>{{ championnat|truncatechars:50 }}</h4>
-            <p>Liste des joueur du championnat et leur classement</p>
+            <p>Liste des joueurs du championnat et leur classement</p>
+            <nav class="indigo darken-4">
+                <div class="nav-wrapper">
+                    <form>
+                        <div class="input-field">
+                            <input id="PlayerChamp" type="search" onkeyup="searchPlayerChamp()" required>
+                            <label class="label-icon" for="PlayerChamp"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </div>
+            </nav>
             <div style="max-height: 350px; overflow: auto;">
 
-                <ul>
+                <ul id="resultPlayerChamp">
                     {% for player in classement %}
 
                         {% if player.user == user %}
@@ -199,7 +221,42 @@
 {% block custom_js %}
     <script src="{% static 'js/accueil.js' %}"></script>
     <script>
+        function searchPlayerChamp() {
+            var input, filter, table, li, div, i;
+            input = document.getElementById("PlayerChamp");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("resultPlayerChamp");
+            li = table.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                div = li[i].getElementsByTagName("div")[0];
+                console.log(div);
+                if (div) {
+                    if (div.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+        }
 
+        function searchPlayerVersus() {
+            var input, filter, table, li, div, i;
+            input = document.getElementById("modeVersus");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("resultPlayerVersus");
+            li = table.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                div = li[i].getElementsByTagName("div")[0];
+                if (div) {
+                    if (div.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+        }
         console.log("{{ championnat }}")
     </script>
 {% endblock %}
