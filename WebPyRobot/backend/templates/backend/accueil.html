@@ -65,12 +65,15 @@
                             <p>
                                 {{ script.name|truncatechars:22 }}
                                 <a class="btn-flat right"
-                                   onclick="window.location.href='/editor/?script={{ script.pk }}'">Éditer</a>
+                                   onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>
                             </p>
                         </li>
 
                     {% endfor %}
                 </ul>
+            <div class="fixed-action-btn">
+                <a class="waves-effect waves-teal btn-flat" onclick="window.location.href='/editor/'">Éditeur</a>
+            </div>
             </div>
         </div>
     </div>
@@ -114,8 +117,7 @@
                                 <li>
                                     <div class="collapsible-header"
                                          onclick="window.location.href='/versus/{{ player.pk }}'">
-                                        <i class="fas fa-street-view fa-2x"></i>
-                                        ~ {{ player.user }} avec {{ player.exp }} points
+                                        <i class="material-icons">face</i>{{ player.user }} avec {{ player.exp }} points
                                     </div>
                                 </li>
                             {% endif %}
@@ -127,13 +129,13 @@
 
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 1 - Facile</div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 1 - Facile</div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 2 - Intermédiaire</div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire</div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="fas fa-laptop fa-2x"></i>CPU 3 - Difficile</div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 3 - Difficile</div>
                 </li>
             </ul>
 
@@ -142,7 +144,7 @@
                 {% for script in scripts %}
                     <li>
                         <div class="collapsible-header">
-                            <i class="far fa-file-alt fa-2x"></i> - {{ script.name|truncatechars:22 }}
+                            <i class="material-icons">insert_drive_file</i> {{ script.name|truncatechars:22 }}
                         </div>
                         <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
                     </li>

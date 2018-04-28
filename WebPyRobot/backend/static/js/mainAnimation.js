@@ -95,7 +95,7 @@ var deadPlayer = function(player){
         document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
 
     document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" value=\"Voir l\'historique\"/>";
-    document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Éditer</a>";
+    document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Modifier</a>";
 
     if (is_replay != "yes"){
         var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
