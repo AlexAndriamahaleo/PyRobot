@@ -147,7 +147,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 class Ia(models.Model):
-    owner = models.ForeignKey(UserProfile)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, default='')
     text = models.TextField()
     active = models.BooleanField(default=False)
@@ -234,12 +234,12 @@ class NavSystem(models.Model):
 
 
 class Tank(models.Model):
-    owner = models.ForeignKey(UserProfile)
-    ia = models.ForeignKey(Ia)
-    weapon = models.ForeignKey(Weapon)
-    armor = models.ForeignKey(Armor)
-    caterpillar = models.ForeignKey(Caterpillar)
-    navSystem = models.ForeignKey(NavSystem)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    ia = models.ForeignKey(Ia, on_delete=models.CASCADE)
+    weapon = models.ForeignKey(Weapon, on_delete=models.CASCADE)
+    armor = models.ForeignKey(Armor, on_delete=models.CASCADE)
+    caterpillar = models.ForeignKey(Caterpillar, on_delete=models.CASCADE)
+    navSystem = models.ForeignKey(NavSystem, on_delete=models.CASCADE)
     hp_value = models.PositiveIntegerField(default=100)
 
     def __str__(self):
@@ -253,9 +253,9 @@ class TypeItem (models.Model):
         return self.name
 
 class Inventory(models.Model):
-    owner = models.ForeignKey(UserProfile)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     item = models.PositiveIntegerField()
-    typeItem = models.ForeignKey(TypeItem)
+    typeItem = models.ForeignKey(TypeItem, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.owner.__str__() + ",.... " + getItemByType(self.item, self.typeItem).__str__()
@@ -276,11 +276,11 @@ def getItemByType(itemIn,type):
 
 
 class BattleHistory(models.Model):
-    user = models.ForeignKey(User, related_name="battlehistories")
-    opponent = models.ForeignKey(User, related_name="opponents")
+    user = models.ForeignKey(User, related_name="battlehistories", on_delete=models.CASCADE)
+    opponent = models.ForeignKey(User, related_name="opponents", on_delete=models.CASCADE)
     is_victorious = models.BooleanField(default=False)
-    used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
-    opp_used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None)
+    used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None, on_delete=models.CASCADE)
+    opp_used_script = models.ForeignKey(Ia, related_name='+', null=True, default=None, on_delete=models.CASCADE)
     # Status of a battle. We need to show clients that battle is realtime not a replay :))
     is_finished = models.BooleanField(default=False, db_index=True)
     # Animation step index.
@@ -311,7 +311,7 @@ class Notification(models.Model):
     A notification, like Facebook notification
     Define for later use
     """
-    user = models.ForeignKey(User, related_name="notifications")
+    user = models.ForeignKey(User, related_name="notifications", on_delete=models.CASCADE)
     content = models.CharField(max_length=200)
     is_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
