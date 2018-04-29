@@ -27,7 +27,7 @@
                 <tbody>
                 {% for history in page_obj.object_list %}
                     <tr>
-                        <td>{{ history.timestamp }}</td>
+                        <td>{{ history.timestamp|date:'l d F Y' }}, {{ history.timestamp|time:'H:i' }}</td>
                         <td>
                             {% if history.mode %}
                                 VERSUS
