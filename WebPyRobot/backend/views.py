@@ -28,7 +28,7 @@ from .funct.funct import getItemByType,getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
 from .models import UserProfile, Tank, Ia, BattleHistory, Notification, FAQ, Championship
-from .utils import validate_ai_script
+from .utils import validate_ai_script, award_battle
 
 
 
@@ -183,11 +183,13 @@ def fight(request, player_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
     battle = user1.get_running_battle()
 
+    champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+
     # New battle
     if not battle:
         users1 = UserProfile.objects.exclude(pk=user1.pk)
         # Get list of players which have level = the current player level +/- 5
-        users = users1.exclude(agression=False, level__lte=user1.level-5, level__gte=user1.level+5)
+        users = Championship.objects.get(pk=champ_pk).players.all()
         if not users:
             messages.error(request, "There is no user available for battle")
             context = {
@@ -199,6 +201,11 @@ def fight(request, player_pk=''):
             user2 = random.choice(list(users))
         else:
             user2 = UserProfile.objects.get(pk=player_pk)
+            is_in_champ = user2.championship_set.all()[0].pk
+            if champ_pk != is_in_champ:
+                user2 = random.choice(list(users))
+                messages.error(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
+
 
         # Send realtime notification to the opponent if he's online
         notify = NotificationMessage()
@@ -267,12 +274,15 @@ def fight(request, player_pk=''):
 def testcpu(request, player_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
 
+    champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+
     print("player_pk: ", player_pk)
 
     battle = user1.get_running_battle()
     if not battle:
-        users1 = UserProfile.objects.exclude(pk=user1.pk)
-        users = users1.exclude(agression=False)
+        # users1 = UserProfile.objects.exclude(pk=user1.pk)
+
+        users = Championship.objects.get(pk=champ_pk).players.all()
 
         if not users:
             messages.error(request, "Aucun joueur disponible pour le training battle")
@@ -280,16 +290,27 @@ def testcpu(request, player_pk=''):
                 "battle_err": True
             }
             return render(request, "backend/fight.html", context)
+
         #user2 = UserProfile.objects.get(user=request.user)
 
         if player_pk != '':
             user2 = UserProfile.objects.get(pk=player_pk)
-            opponent = user2.user
-            tank1 = Tank.objects.get(owner=user1)
-            tank2 = Tank.objects.get(owner=user2)
-            ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
-            ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
-            print("choix: ", user2.user, ia2.name)
+            is_in_champ = user2.championship_set.all()[0].pk
+            if champ_pk == is_in_champ:
+                opponent = user2.user
+                tank1 = Tank.objects.get(owner=user1)
+                tank2 = Tank.objects.get(owner=user2)
+                ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+                print("choix: ", user2.user, ia2.name)
+            else:
+                user2 = random.choice(list(users))
+                opponent = user2.user
+                tank1 = Tank.objects.get(owner=user1)
+                tank2 = Tank.objects.get(owner=user2)
+                ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+                messages.error(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
         else:
             user2 = random.choice(list(users))
             opponent = user2.user
@@ -795,10 +816,17 @@ def finish_battle(request):
     """
     if request.method == "POST":
         bh_pk = request.POST.get("history_pk")
+        mode = request.POST.get('mode')
         try:
             battle = BattleHistory.objects.get(pk=bh_pk)
             battle.is_finished = True
             battle.save()
+
+            if battle.is_victorious:
+                award_battle(battle.user.userprofile, battle.opponent.userprofile, mode)
+            else:
+                award_battle(battle.opponent.userprofile, battle.user.userprofile, mode)
+
             messages.success(request, "Fin du combat")
         except:
             messages.error(request, "Aucun combat en cours")

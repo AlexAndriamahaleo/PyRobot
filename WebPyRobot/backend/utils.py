@@ -27,14 +27,14 @@ def calc_user_level(win, lose):
     """
     if win < lose:
         dif = lose - win
-        return (5 + 5*dif), (300 + 50*dif)
+        return (10 + 7*dif), (300 + 50*dif)
     elif win == lose:
-        return 5, 300
+        return 10, 300
     else:
         dif = win - lose
         if dif < 3:
-            return 2, 200
-        return 1, 150
+            return 4, 200
+        return 2, 150
 
 def award_battle(winner, loser, mode):
     """
@@ -59,7 +59,7 @@ def award_battle(winner, loser, mode):
     winner.save()
 
     if mode == 'no':
-        loser.exp += 1
+        loser.exp += 2
 
     if loser.exp >= loser.next_level_exp:
         loser.level += 1
