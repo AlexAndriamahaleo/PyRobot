@@ -1,6 +1,6 @@
 (function ($) {
     $(function () {
-            var editor = CodeMirror.fromTextArea(document.getElementById('ia'), {
+        var editor = CodeMirror.fromTextArea(document.getElementById('ia'), {
             mode: 'python',
             theme: 'dracula',
             keyMap: 'sublime',
@@ -18,7 +18,10 @@
             globalVars: true
         });
 
-        server = new CodeMirror.TernServer({defs: []});
+        var request = new XMLHttpRequest();
+        request.open("GET", "/static/tern/pyrobot.json", false);
+        request.send(null);
+        server = new CodeMirror.TernServer({defs: [JSON.parse(request.responseText)]});
         editor.setOption("extraKeys", {
             "Ctrl-Space": function (cm) {
                 server.complete(cm);
@@ -42,8 +45,13 @@
                 server.selectName(cm);
             }
         });
+
         editor.on("cursorActivity", function (cm) {
             server.updateArgHints(cm);
+        });
+
+        editor.on("keypress", function (cm) {
+            server.complete(cm);
         });
 
         $(".save").click(function (e) {
