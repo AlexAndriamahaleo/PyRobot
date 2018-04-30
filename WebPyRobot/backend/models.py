@@ -9,7 +9,6 @@ from django import forms
 from django.core.files.images import get_image_dimensions
 
 
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     money = models.PositiveIntegerField(default=0)
@@ -106,6 +105,7 @@ class UserProfile(models.Model):
         return render(request, 'front.html')
     '''
 
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
@@ -145,7 +145,6 @@ class UserProfileForm(forms.ModelForm):
         return avatar
 
 
-
 class Ia(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, default='')
@@ -158,16 +157,17 @@ class Ia(models.Model):
     def getIaByOwner(user):
         return Ia.objects.get(owner=user)
 
+
 def create_ia_name(sender, instance, raw, created, **kwargs):
     if instance.name == '':
         instance.name = "AI Script %s" % instance.pk
         instance.save()
 
+
 post_save.connect(create_ia_name, sender=Ia)
 
 
 class Weapon(models.Model):
-
     name = models.CharField(max_length=200)
     price = models.PositiveIntegerField()
     attackValue = models.PositiveIntegerField()
@@ -185,6 +185,7 @@ class Weapon(models.Model):
         else:
             return False
 
+
 class Armor(models.Model):
     name = models.CharField(max_length=200)
     price = models.PositiveIntegerField()
@@ -199,6 +200,7 @@ class Armor(models.Model):
             return True
         else:
             return False
+
 
 class Caterpillar(models.Model):
     name = models.CharField(max_length=200)
@@ -252,6 +254,7 @@ class TypeItem (models.Model):
     def __str__(self):
         return self.name
 
+
 class Inventory(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     item = models.PositiveIntegerField()
@@ -263,6 +266,7 @@ class Inventory(models.Model):
 
 class DefaultIa (models.Model):
     text = models.TextField()
+
 
 def getItemByType(itemIn,type):
     if type ==  TypeItem(pk=1) :
@@ -337,7 +341,6 @@ class Championship(models.Model):
     def remove_user(self, user):
         self.players.remove(user)
 
-
     def add_user(self, user):
         self.players.add(user)
 
@@ -347,5 +350,3 @@ class Championship(models.Model):
 
     def get_players(self):
         return self.players
-
-
