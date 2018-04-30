@@ -13,20 +13,20 @@ def getItemByType(itemIn, type):
 
 
 def getBoolInventory(currentUser):
-    weapons = Weapon.objects.all();
+    weapons = Weapon.objects.all()
     wB = []
     for w in weapons:
         wB.append(w.isInInventory(currentUser))
-    armors = Armor.objects.all();
+    armors = Armor.objects.all()
     aB = []
     for a in armors:
         aB.append(a.isInInventory(currentUser))
-    caterpillars = Caterpillar.objects.all();
+    caterpillars = Caterpillar.objects.all()
     cB = []
     for c in caterpillars:
         cB.append(c.isInInventory(currentUser))
-    navSys = NavSystem.objects.all();
+    navSys = NavSystem.objects.all()
     nB = []
     for n in navSys:
         nB.append(n.isInInventory(currentUser))
-    return [wB, aB, cB, nB ]
+    return [wB, aB, cB, nB]
