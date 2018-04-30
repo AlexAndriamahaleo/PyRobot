@@ -111,7 +111,7 @@ class SignUp (FormView):
 
     def get_success_url(self):
 
-        self.success_url = reverse('backend:registrationComplete')
+        self.success_url = reverse('backend:login')
 
         return super().get_success_url()
 
