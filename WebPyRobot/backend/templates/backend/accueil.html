@@ -116,7 +116,7 @@
                             {% if player.user != user %}
                                 <li>
                                     <div class="collapsible-header"
-                                         onclick="window.location.href='/versus/{{ player.pk }}'">
+                                         onclick="location.href='/versus/{{ player.pk }}'">
                                         <i class="material-icons">face</i>{{ player.user }} avec {{ player.exp }} points
                                     </div>
                                 </li>
@@ -129,13 +129,13 @@
 
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 1 - Facile</div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 1 - Facile <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire</div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 3 - Difficile</div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 3 - Difficile <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
                 </li>
             </ul>
 
@@ -143,7 +143,7 @@
             <ul>
                 {% for script in scripts %}
                     <li>
-                        <div class="collapsible-header">
+                        <div class="collapsible-header" onclick="location.href='/versus/{{ user.pk }}/{{ script.pk }}#{{ script.name }}'">
                             <i class="material-icons">insert_drive_file</i> {{ script.name|truncatechars:22 }}
                         </div>
                         <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
@@ -187,7 +187,7 @@
                         {% else %}
                             <li>
                                 <div class="collapsible-header grey lighten-2"
-                                     onclick="window.location.href='/combat/{{ player.pk }}'">[ {{ forloop.counter }} ]
+                                     onclick="window.location.href='/battle/{{ player.pk }}'">[ {{ forloop.counter }} ]
                                     - {{ player.user }} avec {{ player.exp }} points (pk={{ player.pk }})
                                 </div>
                             </li>
@@ -212,7 +212,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a onclick="window.location.href='/combat'"
+            <a onclick="window.location.href='/battle'"
                class="modal-action modal-close waves-effect waves-green btn-flat">Random in championship</a>
         </div>
     </div>

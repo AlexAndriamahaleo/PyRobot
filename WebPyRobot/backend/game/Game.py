@@ -223,6 +223,30 @@ class Game(object):
             )
         return bh.pk
 
+    def set_history_itself(self, map_name, is_training, script_op):
+        """
+        Save history of a battle
+        :return: ID of BattleHistory object
+        """
+        robot1 = self.__robots[0]
+        robot2 = self.__robots[1]
+        tank1 = robot1.getTank()
+        tank2 = robot2.getTank()
+        player = tank1.owner.user
+        opponent = tank2.owner.user
+        bh = BattleHistory.objects.create(
+                user = player,
+                used_script = tank1.owner.get_active_ai_script(),
+                opp_used_script = script_op,
+                opponent = opponent,
+                is_victorious = self.is_victorious(),
+                result_stats = json.dumps(self.__result),
+                max_step = len(self.__result),
+                map_name = map_name,
+                mode = is_training
+            )
+        return bh.pk
+
     def notify_endgame(self):
         robot1 = self.__robots[0]
         robot2 = self.__robots[1]

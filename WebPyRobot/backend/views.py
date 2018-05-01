@@ -204,7 +204,7 @@ def fight(request, player_pk=''):
             is_in_champ = user2.championship_set.all()[0].pk
             if champ_pk != is_in_champ:
                 user2 = random.choice(list(users))
-                messages.error(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
+                messages.warning(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
 
 
         # Send realtime notification to the opponent if he's online
@@ -271,12 +271,13 @@ def fight(request, player_pk=''):
 
 
 @login_required
-def testcpu(request, player_pk=''):
+def testcpu(request, player_pk='', script_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
 
     champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
 
-    print("player_pk: ", player_pk)
+    # print("player_pk: ", player_pk)
+    # print("script_pk: ", script_pk)
 
     battle = user1.get_running_battle()
     if not battle:
@@ -293,16 +294,51 @@ def testcpu(request, player_pk=''):
 
         #user2 = UserProfile.objects.get(user=request.user)
 
-        if player_pk != '':
-            user2 = UserProfile.objects.get(pk=player_pk)
-            is_in_champ = user2.championship_set.all()[0].pk
-            if champ_pk == is_in_champ:
-                opponent = user2.user
-                tank1 = Tank.objects.get(owner=user1)
-                tank2 = Tank.objects.get(owner=user2)
-                ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
-                ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
-                print("choix: ", user2.user, ia2.name)
+        if script_pk != '':
+            user2 = UserProfile.objects.get(user=request.user)
+            opponent = user2.user
+            tank1 = Tank.objects.get(owner=user1)
+            tank2 = Tank.objects.get(owner=user2)
+            ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+
+
+            script_1 = user1.ia_set.filter(name=ia1) # for pk -> list(script_1)[0].pk
+            old_selected = list(script_1)[0].pk
+            old_ia = Ia.objects.get(pk=old_selected)
+
+            # print("retour ", ia1.text)
+
+            # script_2 = user2.ia_set.filter(pk=script_pk)
+            selected = Ia.objects.get(pk=script_pk)
+
+            # selected = Ia.objects.get(pk=selected_pk)
+            user1.change_active_ai(selected)
+
+            ia2 = user1.get_active_ai_script()
+
+            user1.change_active_ai(old_ia)
+            # print(selected.text," - ", script_2, " - ", list(script_1)[0])
+            # ia2 = selected
+            # print("retour ", ia2)
+        else:
+            if player_pk != '':
+                user2 = UserProfile.objects.get(pk=player_pk)
+                is_in_champ = user2.championship_set.all()[0].pk
+                if champ_pk == is_in_champ:
+                    opponent = user2.user
+                    tank1 = Tank.objects.get(owner=user1)
+                    tank2 = Tank.objects.get(owner=user2)
+                    ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                    ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+                    print("choix: ", user2.user, ia2.name)
+                else:
+                    user2 = random.choice(list(users))
+                    opponent = user2.user
+                    tank1 = Tank.objects.get(owner=user1)
+                    tank2 = Tank.objects.get(owner=user2)
+                    ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                    ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+                    messages.warning(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
             else:
                 user2 = random.choice(list(users))
                 opponent = user2.user
@@ -310,14 +346,6 @@ def testcpu(request, player_pk=''):
                 tank2 = Tank.objects.get(owner=user2)
                 ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
                 ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
-                messages.error(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
-        else:
-            user2 = random.choice(list(users))
-            opponent = user2.user
-            tank1 = Tank.objects.get(owner=user1)
-            tank2 = Tank.objects.get(owner=user2)
-            ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
-            ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
 
 
         game = Game(tank1, tank2, ia1, ia2)
@@ -335,7 +363,12 @@ def testcpu(request, player_pk=''):
         opponent_y = 31
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
-        bh_pk = game.set_history(map_name, True)
+
+        if script_pk != '':
+            selected = Ia.objects.get(pk=script_pk)
+            bh_pk = game.set_history_itself(map_name, True, selected)
+        else:
+            bh_pk = game.set_history(map_name, True)
     else:
         res_stats = battle.result_stats
         try:
@@ -686,7 +719,7 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     def get_queryset(self):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
         queryset = queryset.filter(is_finished=True)
-        queryset = queryset.exclude(opponent=self.request.user) # not display test mode result
+        # queryset = queryset.exclude(opponent=self.request.user) # not display test mode result
         return queryset.order_by('-timestamp')
 
     def get_context_data(self, **kwargs):
