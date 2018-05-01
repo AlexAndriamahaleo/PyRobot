@@ -762,6 +762,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
             if addnew == "yes":
                 # context['temporary_text'] = DefaultIa.objects.all()[0].text
                 context['temporary_text'] = '# Votre code ici \n # Vous pouvez aussi charger un fichier depuis votre ordinateur'
+                messages.warning(self.request,"Vous venez de créer un nouveau code. Pensez à le [SAUVEGARDER] ! ")
 
         context['selected'] = selected
         return context
@@ -826,7 +827,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 kwargs['temporary_name'] = ia_name
                 if addnew == "yes":
                     kwargs["addnew"] = "yes1"
-                messages.error(request, "Votre script est vide ou contient un contenu bloqué")
+                messages.error(request, "Votre code est vide ou contient un contenu bloqué")
 
         # When user clicks on Activer button
         elif action == "Activer":
@@ -840,6 +841,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 messages.error(request, "Invalid AI (active)")
         # Other action is invalid, just pass through
         else:
+            messages.error(request, "Votre code ne correspond pas à la syntaxe Python")
             pass
         return self.get(request, *args, **kwargs)
 

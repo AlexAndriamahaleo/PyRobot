@@ -53,7 +53,7 @@
                             <td>
                                 <a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a>
                             </td>
-                            <td>{{ history.championship_name }}</td>
+                            <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% else %}
                             <td>{{ history.opponent.username }} ({{ history.opp_used_script.name }})</td>
                             <td>{{ history.used_script.name }}</td>
@@ -71,7 +71,7 @@
                             <td>
                                 <a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a>
                             </td>
-                            <td>{{ history.championship_name }}</td>
+                            <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% endif %}
                     </tr>
                 {% endfor %}
