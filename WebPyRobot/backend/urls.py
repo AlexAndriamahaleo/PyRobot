@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^battle-histories/$', views.HistoriesView.as_view(), name="battle_histories"),
     url(r'^finish-battle/$', views.finish_battle, name='finish_battle'),
     url(r'^championnat/$', views.CreateChampionship.as_view(), name='championship'),
-    url(r'^change_championship/$', views.change_championship, name='change_championship')
+    url(r'^change_championship/$', views.change_championship, name='change_championship'),
+    url(r'^password/$', views.change_password, name='change_password')
 
 ]

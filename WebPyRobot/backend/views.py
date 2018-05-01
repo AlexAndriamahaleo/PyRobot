@@ -2,7 +2,7 @@ import json
 import random
 
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import logout as system_logout
@@ -934,3 +934,38 @@ def change_championship(request):
 
 
     return redirect("backend:index")
+
+@login_required
+def change_password(request):
+    current_user = UserProfile.objects.get(user=request.user)
+    champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+
+    if request.method == 'POST':
+        # form = PasswordChangeForm(request.user, request.POST)
+        form = SetPasswordForm(request.user, request.POST)
+        print(form.errors)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Votre mot de passe a bien été mise à jour !')
+            return redirect('backend:index')
+        else:
+            messages.error(request, 'Veuillez corriger le ou les erreurs ci-dessous')
+    else:
+        form = SetPasswordForm(request.user)
+    return render(request, 'backend/change_password.html', {
+        'money': UserProfile.objects.get(user=request.user).money,
+        'username': request.user,
+        'pageIn': 'change_password',
+        # 'point' : UserProfile.objects.get(user=request.user).exp,
+        'agression': UserProfile.objects.get(user=request.user).agression,
+        'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
+        'scripts': request.user.userprofile.ia_set.all(),
+        'active_script': request.user.userprofile.get_active_ai_script(),
+        'players': UserProfile.objects.exclude(pk=current_user.pk),
+        # 'classement' : UserProfile.objects.order_by('-exp'),
+        'classement': Championship.objects.get(pk=champ_pk).players.all(),
+        'all_championship': Championship.objects.all(),
+        'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name,
+        'form': form
+    })
