@@ -183,7 +183,8 @@ def fight(request, player_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
     battle = user1.get_running_battle()
 
-    champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+    champ = UserProfile.objects.get(user=request.user).championship_set.all()[0]
+    champ_pk = champ.pk
 
     # New battle
     if not battle:
@@ -224,7 +225,7 @@ def fight(request, player_pk=''):
         tank2 = user2.get_tank()
         ia1 = user1.get_active_ai_script()
         ia2 = user2.get_active_ai_script()
-        game = Game(tank1, tank2, ia1, ia2)
+        game = Game(tank1, tank2, ia1, ia2, champ.name)
         res = game.run(0)
 
         opponent = user2.user.username
@@ -274,7 +275,8 @@ def fight(request, player_pk=''):
 def testcpu(request, player_pk='', script_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
 
-    champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+    champ = UserProfile.objects.get(user=request.user).championship_set.all()[0]
+    champ_pk = champ.pk
 
     # print("player_pk: ", player_pk)
     # print("script_pk: ", script_pk)
@@ -348,7 +350,7 @@ def testcpu(request, player_pk='', script_pk=''):
                 ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
 
 
-        game = Game(tank1, tank2, ia1, ia2)
+        game = Game(tank1, tank2, ia1, ia2, champ.name)
 
         res = game.run(0)
 
