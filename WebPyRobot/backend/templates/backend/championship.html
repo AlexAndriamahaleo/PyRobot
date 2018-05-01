@@ -26,15 +26,23 @@
                         </form>
                     </div>
                 </nav>
-                <ul id="resultChamp">
+                <ul id="resultChamp" class="collection">
                     {% for champ in all_championship %}
-                        <li>
+                        <li class="collection-item">
                             <p>{{ champ.name }} avec {{ champ.players.all|length }} joueur(s)
-                                <span class="badge">
-                                    <a class=" modal-trigger btn-floating red" href="#confirmleague"  data-champpk="{{ champ.pk }}">
-                                        <i id="{{ champ.name }}" class="championship large material-icons">chevron_right</i>
-                                    </a>
-                                </span>
+                                {% if champ.name == championnat %}
+                                    <span class="badge">
+                                        <a class=" modal-trigger btn-floating yellow" data-champpk="{{ champ.pk }}">
+                                            <i id="{{ champ.name }}" class="championship large material-icons">my_location</i>
+                                        </a>
+                                    </span>
+                                {% else %}
+                                    <span class="badge">
+                                        <a class=" modal-trigger btn-floating indigo darken-4" href="#confirmleague"  data-champpk="{{ champ.pk }}">
+                                            <i id="{{ champ.name }}" class="championship large material-icons">add_location</i>
+                                        </a>
+                                    </span>
+                                {% endif %}
                             </p>
                         </li>
                     {% endfor %}
