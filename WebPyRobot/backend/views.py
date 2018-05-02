@@ -793,7 +793,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
         action = self.request.POST.get("action")
 
         # When user clicks on Sauvgarder button
-        if action == "Sauvgarder":
+        if action == "Sauvegarder":
             addnew = self.request.POST.get("addnew_flag")
             selected_pk = self.request.POST.get("selected_pk")
             ia_name = request.POST.get('ai_name', '')
