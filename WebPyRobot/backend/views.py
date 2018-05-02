@@ -349,7 +349,6 @@ def testcpu(request, player_pk='', script_pk=''):
                 ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
                 ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
 
-
         game = Game(tank1, tank2, ia1, ia2, champ.name)
 
         res = game.run(0)
@@ -376,7 +375,7 @@ def testcpu(request, player_pk='', script_pk=''):
         try:
             res = json.loads(res_stats)
         except ValueError:
-            print ("ValueError - battle result: %s" % res_stats)
+            print("ValueError - battle result: %s" % res_stats)
             res = []
 
         opponent = "CPU_error"
@@ -403,10 +402,11 @@ def testcpu(request, player_pk='', script_pk=''):
         'step': step,
         'map_name': map_name,
         'history_pk': bh_pk,
-        'is_versus' : 'yes',
+        'is_versus': 'yes',
         'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name
     }
     return render(request, "backend/fight.html", context)
+
 
 @login_required
 def replay(request):

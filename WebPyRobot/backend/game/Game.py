@@ -63,7 +63,7 @@ class Game(object):
         self.__robots = [Robot(r1, 0), Robot(r2, 1)]
         self.__robotsia = [ia1, ia2]
         self.__result = []
-        for i in range (self.__size*self.__size):
+        for i in range(self.__size*self.__size):
             self.__map.append(-1)
         self.__map[0] = 0
         self.__map[self.__size*self.__size - 1] = 1
