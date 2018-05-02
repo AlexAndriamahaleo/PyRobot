@@ -89,10 +89,14 @@ var moveRigth = function(player,x,y){
 
 var deadPlayer = function(player){
     player.dead();
-    if (player.name == playername)
+    if (player.name == opponent){
+        document.getElementById("win").innerHTML = "Fin de la battle !";
+    } else if(player.name == playername){
         document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
-    else
+    }
+    else{
         document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
+    }
 
     document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" value=\"Voir l\'historique\"/>";
     document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Modifier</a>";
