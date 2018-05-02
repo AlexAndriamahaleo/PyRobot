@@ -274,18 +274,17 @@ class Game(object):
 
     def run(self, i):
         if i >= 100: return self.__result
-        if self.__robots[0].getLife() <= 0:
-            self.__result.append([0, "dead", 0, 0])
-            return self.__result
-        if self.__robots[1].getLife() <= 0:
-            self.__result.append([1, "dead", 0, 0])
-            return self.__result
 
         self.__current = 0
         exec (self.__robotsia[0].text)
         self.__result.append([0, "endTurn", 0, 0])
         self.__result.append([0, "endTurn", 0, 0])
         self.__current = 1
+
+        if self.__robots[1].getLife() <= 0:
+            self.__result.append([1, "dead", 0, 0])
+            return self.__result
+
         exec (self.__robotsia[1].text)
         self.__result.append([1, "endTurn", 0, 0])
         self.__result.append([0, "endTurn", 0, 0])
@@ -294,5 +293,10 @@ class Game(object):
         self.__robots[0].setPA(self.__robots[0].gettankpa())
         self.__robots[1].setPM(self.__robots[1].gettankpm())
         self.__robots[1].setPA(self.__robots[1].gettankpa())
+
+        if self.__robots[0].getLife() <= 0:
+            self.__result.append([0, "dead", 0, 0])
+            return self.__result
+
 
         return self.run(i + 1)
