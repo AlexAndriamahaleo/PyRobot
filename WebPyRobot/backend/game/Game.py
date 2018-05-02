@@ -14,6 +14,7 @@ class Robot(object):
         self.__pa = self.__tank.navSystem.actionValue
         self.__cpa = self.__pa
         self.__cpm = self.__pm
+        self.__arm = self.__tank.armor.armorValue
 
     def getTank(self):
         return self.__tank
@@ -44,6 +45,9 @@ class Robot(object):
 
     def gettankpm(self):
         return self.__pm
+
+    def gettankarm(self):
+        return self.__arm
 
     def getWeaponDamage(self):
         return self.__tank.weapon.attackValue
@@ -178,7 +182,13 @@ class Game(object):
 
         pa = self.__robots[self.__current].getPointAction()
         paWe = self.__robots[self.__current].getWPa()
+
         dWe = self.__robots[self.__current].getWeaponDamage()
+
+        arm = self.__robots[self.__current].gettankarm()
+        reduce_dmg = int(arm*dWe/100)
+        dWe -= reduce_dmg
+
         range = self.__robots[self.__current].getRange()
         mid_point = int(self.__size/2)
         if pa - paWe >= 0:

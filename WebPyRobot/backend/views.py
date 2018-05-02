@@ -192,7 +192,7 @@ def fight(request, player_pk=''):
         # Get list of players which have level = the current player level +/- 5
         users = Championship.objects.get(pk=champ_pk).players.all()
         if not users:
-            messages.error(request, "There is no user available for battle")
+            messages.error(request, "Aucun joueur disponible pour une battle.")
             context = {
                 "battle_err": True
             }

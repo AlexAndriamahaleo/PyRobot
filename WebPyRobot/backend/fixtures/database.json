@@ -41,7 +41,7 @@
     "fields": {
       "name": "Blindage niv.1",
       "price": "500",
-      "armorValue": "30",
+      "armorValue": "70",
       "pathIcon": "shield_1.png"
     }
   },
