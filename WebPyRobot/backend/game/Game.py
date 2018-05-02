@@ -56,7 +56,7 @@ class Robot(object):
 
 
 class Game(object):
-    def __init__(self, r1, r2, ia1, ia2):
+    def __init__(self, r1, r2, ia1, ia2, champ):
         self.__size = settings.BATTLE_MAP_SIZE
         self.__map = []
         self.__current = 0
@@ -67,6 +67,7 @@ class Game(object):
             self.__map.append(-1)
         self.__map[0] = 0
         self.__map[self.__size*self.__size - 1] = 1
+        self.__champ = champ
 
     def getTankId(self):
         return self.__current
@@ -219,7 +220,33 @@ class Game(object):
                 result_stats = json.dumps(self.__result),
                 max_step = len(self.__result),
                 map_name = map_name,
-                mode = is_training
+                mode = is_training,
+                championship_name = self.__champ
+            )
+        return bh.pk
+
+    def set_history_itself(self, map_name, is_training, script_op):
+        """
+        Save history of a battle
+        :return: ID of BattleHistory object
+        """
+        robot1 = self.__robots[0]
+        robot2 = self.__robots[1]
+        tank1 = robot1.getTank()
+        tank2 = robot2.getTank()
+        player = tank1.owner.user
+        opponent = tank2.owner.user
+        bh = BattleHistory.objects.create(
+                user = player,
+                used_script = tank1.owner.get_active_ai_script(),
+                opp_used_script = script_op,
+                opponent = opponent,
+                is_victorious = self.is_victorious(),
+                result_stats = json.dumps(self.__result),
+                max_step = len(self.__result),
+                map_name = map_name,
+                mode = is_training,
+                championship_name = self.__champ
             )
         return bh.pk
 

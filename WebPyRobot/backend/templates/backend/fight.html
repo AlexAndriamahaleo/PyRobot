@@ -45,6 +45,7 @@
                                     <form action="{% url 'backend:finish_battle' %}" method="POST">
                                         {% csrf_token %}
                                         <input type="hidden" name="history_pk" value="{{ history_pk }}"/>
+                                        <input type="hidden" name="mode" value="{{ is_versus }}"/>
                                         <div id="fincombat">
                                             <input class="waves-effect waves-light btn indigo darken-4 yellow-text"
                                                    type="submit" value="Terminer le combat"/>

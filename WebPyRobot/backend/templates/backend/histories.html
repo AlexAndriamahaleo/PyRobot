@@ -17,11 +17,12 @@
                 <tr>
                     <th>Date</th>
                     <th>Mode</th>
-                    <th>Adversaire</th>
+                    <th>Adversaire (code)</th>
                     <th>Votre code</th>
                     <th>Résultat</th>
                     <th>Combat</th>
                     <th>Modifier le code utilisé</th>
+                    <th>Championnat</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,23 +53,25 @@
                             <td>
                                 <a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a>
                             </td>
+                            <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% else %}
-                            <td>{{ history.user.username }} ({{ history.user.username }})</td>
-                            <td>{{ history.opp_used_script.name }}</td>
+                            <td>{{ history.opponent.username }} ({{ history.opp_used_script.name }})</td>
+                            <td>{{ history.used_script.name }}</td>
                             <td>
                                 {% if history.is_victorious %}
-                                    Perdu
-                                {% else %}
                                     Gagné
+                                {% else %}
+                                    Perdu
                                 {% endif %}
                             </td>
                             <td>
-                                <a class="waves-effect waves-light btn"
+                                <a class="waves-effect waves-light indigo darken-4 yellow-text btn"
                                    href="{% url 'backend:replay' %}?bh_pk={{ history.pk }}">Voir</a>
                             </td>
                             <td>
                                 <a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a>
                             </td>
+                            <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% endif %}
                     </tr>
                 {% endfor %}

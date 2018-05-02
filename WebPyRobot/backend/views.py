@@ -2,7 +2,7 @@ import json
 import random
 
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import logout as system_logout
@@ -28,7 +28,7 @@ from .funct.funct import getItemByType,getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
 from .models import UserProfile, Tank, Ia, BattleHistory, Notification, FAQ, Championship
-from .utils import validate_ai_script
+from .utils import validate_ai_script, award_battle
 
 
 
@@ -111,7 +111,7 @@ class SignUp (FormView):
 
     def get_success_url(self):
 
-        self.success_url = reverse('backend:registrationComplete')
+        self.success_url = reverse('backend:login')
 
         return super().get_success_url()
 
@@ -183,11 +183,14 @@ def fight(request, player_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
     battle = user1.get_running_battle()
 
+    champ = UserProfile.objects.get(user=request.user).championship_set.all()[0]
+    champ_pk = champ.pk
+
     # New battle
     if not battle:
         users1 = UserProfile.objects.exclude(pk=user1.pk)
         # Get list of players which have level = the current player level +/- 5
-        users = users1.exclude(agression=False, level__lte=user1.level-5, level__gte=user1.level+5)
+        users = Championship.objects.get(pk=champ_pk).players.all()
         if not users:
             messages.error(request, "There is no user available for battle")
             context = {
@@ -199,6 +202,11 @@ def fight(request, player_pk=''):
             user2 = random.choice(list(users))
         else:
             user2 = UserProfile.objects.get(pk=player_pk)
+            is_in_champ = user2.championship_set.all()[0].pk
+            if champ_pk != is_in_champ:
+                user2 = random.choice(list(users))
+                messages.warning(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
+
 
         # Send realtime notification to the opponent if he's online
         notify = NotificationMessage()
@@ -217,7 +225,7 @@ def fight(request, player_pk=''):
         tank2 = user2.get_tank()
         ia1 = user1.get_active_ai_script()
         ia2 = user2.get_active_ai_script()
-        game = Game(tank1, tank2, ia1, ia2)
+        game = Game(tank1, tank2, ia1, ia2, champ.name)
         res = game.run(0)
 
         opponent = user2.user.username
@@ -264,15 +272,20 @@ def fight(request, player_pk=''):
 
 
 @login_required
-def testcpu(request, player_pk=''):
+def testcpu(request, player_pk='', script_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
 
-    print("player_pk: ", player_pk)
+    champ = UserProfile.objects.get(user=request.user).championship_set.all()[0]
+    champ_pk = champ.pk
+
+    # print("player_pk: ", player_pk)
+    # print("script_pk: ", script_pk)
 
     battle = user1.get_running_battle()
     if not battle:
-        users1 = UserProfile.objects.exclude(pk=user1.pk)
-        users = users1.exclude(agression=False)
+        # users1 = UserProfile.objects.exclude(pk=user1.pk)
+
+        users = Championship.objects.get(pk=champ_pk).players.all()
 
         if not users:
             messages.error(request, "Aucun joueur disponible pour le training battle")
@@ -280,26 +293,64 @@ def testcpu(request, player_pk=''):
                 "battle_err": True
             }
             return render(request, "backend/fight.html", context)
+
         #user2 = UserProfile.objects.get(user=request.user)
 
-        if player_pk != '':
-            user2 = UserProfile.objects.get(pk=player_pk)
+        if script_pk != '':
+            user2 = UserProfile.objects.get(user=request.user)
             opponent = user2.user
             tank1 = Tank.objects.get(owner=user1)
             tank2 = Tank.objects.get(owner=user2)
             ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
-            ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
-            print("choix: ", user2.user, ia2.name)
+
+
+            script_1 = user1.ia_set.filter(name=ia1) # for pk -> list(script_1)[0].pk
+            old_selected = list(script_1)[0].pk
+            old_ia = Ia.objects.get(pk=old_selected)
+
+            # print("retour ", ia1.text)
+
+            # script_2 = user2.ia_set.filter(pk=script_pk)
+            selected = Ia.objects.get(pk=script_pk)
+
+            # selected = Ia.objects.get(pk=selected_pk)
+            user1.change_active_ai(selected)
+
+            ia2 = user1.get_active_ai_script()
+
+            user1.change_active_ai(old_ia)
+            # print(selected.text," - ", script_2, " - ", list(script_1)[0])
+            # ia2 = selected
+            # print("retour ", ia2)
         else:
-            user2 = random.choice(list(users))
-            opponent = user2.user
-            tank1 = Tank.objects.get(owner=user1)
-            tank2 = Tank.objects.get(owner=user2)
-            ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
-            ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+            if player_pk != '':
+                user2 = UserProfile.objects.get(pk=player_pk)
+                is_in_champ = user2.championship_set.all()[0].pk
+                if champ_pk == is_in_champ:
+                    opponent = user2.user
+                    tank1 = Tank.objects.get(owner=user1)
+                    tank2 = Tank.objects.get(owner=user2)
+                    ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                    ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+                    print("choix: ", user2.user, ia2.name)
+                else:
+                    user2 = random.choice(list(users))
+                    opponent = user2.user
+                    tank1 = Tank.objects.get(owner=user1)
+                    tank2 = Tank.objects.get(owner=user2)
+                    ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                    ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
+                    messages.warning(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
+            else:
+                user2 = random.choice(list(users))
+                opponent = user2.user
+                tank1 = Tank.objects.get(owner=user1)
+                tank2 = Tank.objects.get(owner=user2)
+                ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
 
 
-        game = Game(tank1, tank2, ia1, ia2)
+        game = Game(tank1, tank2, ia1, ia2, champ.name)
 
         res = game.run(0)
 
@@ -314,7 +365,12 @@ def testcpu(request, player_pk=''):
         opponent_y = 31
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
-        bh_pk = game.set_history(map_name, True)
+
+        if script_pk != '':
+            selected = Ia.objects.get(pk=script_pk)
+            bh_pk = game.set_history_itself(map_name, True, selected)
+        else:
+            bh_pk = game.set_history(map_name, True)
     else:
         res_stats = battle.result_stats
         try:
@@ -665,7 +721,7 @@ class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
     def get_queryset(self):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
         queryset = queryset.filter(is_finished=True)
-        queryset = queryset.exclude(opponent=self.request.user) # not display test mode result
+        # queryset = queryset.exclude(opponent=self.request.user) # not display test mode result
         return queryset.order_by('-timestamp')
 
     def get_context_data(self, **kwargs):
@@ -706,6 +762,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
             if addnew == "yes":
                 # context['temporary_text'] = DefaultIa.objects.all()[0].text
                 context['temporary_text'] = '# Votre code ici \n # Vous pouvez aussi charger un fichier depuis votre ordinateur'
+                messages.warning(self.request,"Vous venez de créer un nouveau code. Pensez à le [SAUVEGARDER] ! ")
 
         context['selected'] = selected
         return context
@@ -770,7 +827,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 kwargs['temporary_name'] = ia_name
                 if addnew == "yes":
                     kwargs["addnew"] = "yes1"
-                messages.error(request, "Votre script est vide ou contient un contenu bloqué")
+                messages.error(request, "Votre code est vide ou contient un contenu bloqué")
 
         # When user clicks on Activer button
         elif action == "Activer":
@@ -784,6 +841,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                 messages.error(request, "Invalid AI (active)")
         # Other action is invalid, just pass through
         else:
+            messages.error(request, "Votre code ne correspond pas à la syntaxe Python")
             pass
         return self.get(request, *args, **kwargs)
 
@@ -795,10 +853,17 @@ def finish_battle(request):
     """
     if request.method == "POST":
         bh_pk = request.POST.get("history_pk")
+        mode = request.POST.get('mode')
         try:
             battle = BattleHistory.objects.get(pk=bh_pk)
             battle.is_finished = True
             battle.save()
+
+            if battle.is_victorious:
+                award_battle(battle.user.userprofile, battle.opponent.userprofile, mode)
+            else:
+                award_battle(battle.opponent.userprofile, battle.user.userprofile, mode)
+
             messages.success(request, "Fin du combat")
         except:
             messages.error(request, "Aucun combat en cours")
@@ -869,3 +934,38 @@ def change_championship(request):
 
 
     return redirect("backend:index")
+
+@login_required
+def change_password(request):
+    current_user = UserProfile.objects.get(user=request.user)
+    champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
+
+    if request.method == 'POST':
+        # form = PasswordChangeForm(request.user, request.POST)
+        form = SetPasswordForm(request.user, request.POST)
+        print(form.errors)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Votre mot de passe a bien été mise à jour !')
+            return redirect('backend:index')
+        else:
+            messages.error(request, 'Veuillez corriger le ou les erreurs ci-dessous')
+    else:
+        form = SetPasswordForm(request.user)
+    return render(request, 'backend/change_password.html', {
+        'money': UserProfile.objects.get(user=request.user).money,
+        'username': request.user,
+        'pageIn': 'change_password',
+        # 'point' : UserProfile.objects.get(user=request.user).exp,
+        'agression': UserProfile.objects.get(user=request.user).agression,
+        'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
+        'scripts': request.user.userprofile.ia_set.all(),
+        'active_script': request.user.userprofile.get_active_ai_script(),
+        'players': UserProfile.objects.exclude(pk=current_user.pk),
+        # 'classement' : UserProfile.objects.order_by('-exp'),
+        'classement': Championship.objects.get(pk=champ_pk).players.all(),
+        'all_championship': Championship.objects.all(),
+        'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name,
+        'form': form
+    })
