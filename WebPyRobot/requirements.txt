@@ -6,3 +6,4 @@ django-pure-pagination==0.3.0
 asgi-redis==1.4.3
 django-ckeditor==5.3.1
 django-crontab==0.7.1
+django-inoa-chronograph==0.1.30

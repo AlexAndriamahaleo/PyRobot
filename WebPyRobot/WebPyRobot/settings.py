@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'backend',
     'pure_pagination',
     'ckeditor',
-    'django_crontab'
+    'django_crontab',
+    "django_cron", # python3 manage.py migrate django_cron
 ]
 
 MIDDLEWARE = [
@@ -47,6 +48,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CRON_CLASSES = [
+    "backend.cron.MyCronJob",
 ]
 
 ROOT_URLCONF = 'WebPyRobot.urls'
@@ -137,9 +142,11 @@ CHANNEL_LAYERS = {
     },
 }
 
+
 CRONJOBS = [
-    ("*/1 * * * *", "backend.cron.test_job")
+    ("*/1 * * * *", "backend.cron.test_job", '>> test.txt')
 ]
+
 
 
 MESSAGE_TAGS = {
