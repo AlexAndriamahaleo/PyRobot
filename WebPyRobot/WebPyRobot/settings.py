@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'backend',
     'pure_pagination',
     'ckeditor',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,10 @@ CHANNEL_LAYERS = {
         "ROUTING": "backend.routing.channel_routing",
     },
 }
+
+CRONJOBS = [
+    ("*/1 * * * *", "backend.cron.test_job")
+]
 
 
 MESSAGE_TAGS = {

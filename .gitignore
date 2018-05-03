@@ -10,3 +10,4 @@ media/
 .idea
 WebPyRobot/development.py
 
+/pip3freeze_requirements.txt
