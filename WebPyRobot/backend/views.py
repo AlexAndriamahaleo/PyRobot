@@ -64,7 +64,7 @@ def index(request):
                    'active_script' : request.user.userprofile.get_active_ai_script(),
                    'players' : UserProfile.objects.exclude(pk=current_user.pk),
                    # 'classement' : UserProfile.objects.order_by('-exp'),
-                   'classement' : Championship.objects.get(pk=champ_pk).players.all(),
+                   'classement' : Championship.objects.get(pk=champ_pk).players.all().order_by('-exp'),
                    'all_championship': Championship.objects.all(),
                    'championnat' : UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
         return render(request, "backend/accueil.html", context)
@@ -354,6 +354,10 @@ def testcpu(request, player_pk='', script_pk=''):
 
         res = game.run(0)
 
+        # print(res)
+        # print("\n")
+        # print(game)
+
         if game.is_victorious():                #launcher WIN
             is_victorious = "yes"
         else:                                   #launcher LOSE
@@ -454,7 +458,8 @@ def replay(request):
         'step': step,
         'map_name': map_name,
         'history_pk': bh_pk,
-        'is_replay': "yes"
+        'is_replay': 'yes',
+        'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name
     }
 
     return render(request, "backend/fight.html", context)

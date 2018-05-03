@@ -31,9 +31,9 @@
 
                     <canvas class="materialboxed col l8 offset-l2" id="canvas"></canvas>
 
-                    <div class="col l4 offset-l5">&nbsp;</div>
+                    <div class="col l8 offset-l2">&nbsp;</div>
 
-                    <div class="col l5 offset-l4">
+                    <div class="col l8 offset-l2">
                         {% if not is_replay %}
                             <div class="row">
                                 <div id="editer" class="col s12 m6 l6">
@@ -47,7 +47,7 @@
                                         <input type="hidden" name="history_pk" value="{{ history_pk }}"/>
                                         <input type="hidden" name="mode" value="{{ is_versus }}"/>
                                         <div id="fincombat">
-                                            <input class="waves-effect waves-light btn indigo darken-4 yellow-text"
+                                            <input class="waves-effect waves-light btn indigo darken-4 yellow-text finish"
                                                    type="submit" value="Terminer le combat"/>
                                         </div>
                                     </form>
