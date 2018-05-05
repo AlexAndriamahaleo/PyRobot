@@ -107,8 +107,7 @@ var deadPlayer = function (player) {
                 msg_content: "Le combat contre " + playername + " est terminé",
                 msg_type: "notification",
                 msg_class: "success",
-                is_versus: is_versus,
-                history_pk: history_pk
+                is_versus: is_versus
             };
             socket.send(JSON.stringify(message));
         };
@@ -121,15 +120,15 @@ var deadPlayer = function (player) {
                 msg_class: "success",
                 finished: "yes",
                 username: playername,
-                is_versus: is_versus,
-                history_pk: history_pk
+                is_versus: is_versus
             };
             socket2.send(JSON.stringify(message));
         };
         if (socket2.readyState == WebSocket.OPEN) socket2.onopen();
 
-        document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" value=\"Voir l\'historique\"/>";
-        document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Modifier</a>";
+        document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Voir l\'historique\"/>";
+        document.getElementById("editer").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Modifier le script\"/>";
+        //document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Modifier</a>";
     }
 };
 

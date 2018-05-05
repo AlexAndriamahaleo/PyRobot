@@ -51,7 +51,8 @@
         });
 
         editor.on("keypress", function (cm) {
-            server.complete(cm);
+            //server.complete(cm);
+            server.updateArgHints(cm);
         });
 
         $(".save").click(function (e) {

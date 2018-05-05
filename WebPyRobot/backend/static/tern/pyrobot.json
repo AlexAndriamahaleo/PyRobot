@@ -1,56 +1,57 @@
 {
   "!name": "pyrobot",
   "self": {
+    "!type": "fn() -> self.fn",
     "getEnemyTankId()": {
-      "!type": "fn() -> int",
+      "!type": "fn() -> number",
       "!doc": "Renvoie l'ID du tank ennemie."
     },
     "getTankId()": {
-      "!type": "fn() -> int",
+      "!type": "fn() -> number",
       "!doc": "Renvoie l'ID de votre tank."
     },
-    "getCellDistance(NumCell1, NumCell2)": {
-      "!type": "fn() -> int",
+    "getCellDistance(NumCell1, NumCell1)": {
+      "!type": "fn(NumCell1: number, NumCell2: number) -> number",
       "!doc": "Permet de connaître la distance entre la cellule NumCell1 et la cellule NumCell2."
     },
     "getCellFromXY(X, Y)": {
-      "!type": "fn() -> int",
+      "!type": "fn(pos_x: number, pos_y: number) -> number",
       "!doc": "Permet de connaître le numéro d'une cellule à partir d'une coordonnée X et Y."
     },
     "getCellPosY(NumCell)": {
-      "!type": "fn() -> int",
+      "!type": "fn(NumCell: number) -> number",
       "!doc": "Permet de connaître l'ordonnée Y d'une cellule NumCell."
     },
     "getCellPosX(NumCell)": {
-      "!type": "fn() -> int",
+      "!type": "fn(NumCell: number) -> number",
       "!doc": "Permet de connaître l'ordonnée X d'une cellule NumCell."
     },
     "getPosition(TankID)": {
-      "!type": "fn() -> int",
+      "!type": "fn(tankId: number) -> number",
       "!doc": "Permet de connaître le numéro de la cellule sur laquelle se trouve le tank qui a pour identifiant TankID."
     },
     "getRange(TankId)": {
-      "!type": "fn() -> int",
+      "!type": "fn(tankId: number) -> number",
       "!doc": "Permet de connaître la portée du tank d'identifiant TankID."
     },
     "getPA(TankID)": {
-      "!type": "fn() -> int",
+      "!type": "fn(tankId: number) -> number",
       "!doc": "Permet de connaître le nombre de Point d'Action actuel (ou restant) du tank d'identifiant TankID."
     },
     "getPM(TankID)": {
-      "!type": "fn() -> int",
+      "!type": "fn(tankId: number) -> number",
       "!doc": "Permet de connaître le nombre de Point de Mouvement actuel (ou restant) du tank d'identifiant TankID."
     },
     "moveTank(NumCell)": {
-      "!type": "fn() -> int",
+      "!type": "fn(NumCell: number)",
       "!doc": "Fonction permettant de déplacer son tank vers une cellule NumCell. Si celle-ci n'est pas à sa portée (par rapport aux nombres de PM), le tank se déplace vers une cellule proche de celle désiré."
     },
     "shoot()": {
-      "!type": "fn() -> void",
+      "!type": "fn() ",
       "!doc": "Fonction permettant de tirer sur le tank ennemi."
     },
     "getLife(TankID)": {
-      "!type": "fn() -> void",
+      "!type": "fn(NumCell: number) -> number",
       "!doc": "Permet de connaître la vie restante du tank qui a pour identifiant TankID"
     }
   },
@@ -60,7 +61,7 @@
     "!url": "https://docs.python.org/fr/3/index.html"
   },
   "as": {
-    "!type": "fn()",
+    "!type": "string",
     "!doc": "(doc à venir)",
     "!url": "https://docs.python.org/fr/3/index.html"
   },
@@ -105,32 +106,32 @@
     "!url": "https://docs.python.org/fr/3/index.html"
   },
   "and": {
-    "!type": "fn()",
+    "!type": "string",
     "!doc": "toutes les conditions dans une expression booléenne doivent être satisfaites",
     "!url": "https://docs.python.org/fr/3/index.html"
   },
   "or": {
-    "!type": "fn()",
+    "!type": "string",
     "!doc": "au moins une condition doit être remplie",
     "!url": "https://docs.python.org/fr/3/index.html"
   },
   "def": {
-    "!type": "fn()",
+    "!type": "string",
     "!doc": "utilisé pour créer une nouvelle fonction définie par l'utilisateur",
     "!url": "https://docs.python.org/fr/3/index.html"
   },
   "return": {
-    "!type": "fn()",
+    "!type": "string",
     "!doc": "quitte la fonction et renvoie une valeur",
     "!url": "https://docs.python.org/fr/3/index.html"
   },
   "global": {
-    "!type": "fn()",
+    "!type": "string",
     "!doc": "accès aux variables définies en dehors des fonctions",
     "!url": "https://docs.python.org/fr/3/index.html"
   },
   "try": {
-    "!type": "fn()",
+    "!type": "string",
     "!doc": "spécifie les gestionnaires d'exceptions",
     "!url": "https://docs.python.org/fr/3/index.html"
   },

@@ -233,6 +233,7 @@ def fight(request, player_pk=''):
         player_y = settings.PLAYER_INITIAL_POS_Y
         opponent_x = settings.OPPONENT_INITIAL_POS_X
         opponent_y = settings.OPPONENT_INITIAL_POS_Y
+        script_user = ia1.pk
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
         bh_pk = game.set_history(map_name, False)
@@ -250,9 +251,12 @@ def fight(request, player_pk=''):
         player_y = battle.player_y
         opponent_x = battle.opponent_x
         opponent_y = battle.opponent_y
+        script_user = battle.used_script.pk
         step = battle.step
         map_name = battle.map_name
         bh_pk = battle.pk
+        messages.warning(request, "Vous avez déjà une battle en cours...")
+
 
     context = {
         'result': res,
@@ -266,6 +270,7 @@ def fight(request, player_pk=''):
         'map_name': map_name,
         'history_pk': bh_pk,
         'is_versus': 'no',
+        'script_used': script_user,
         'championnat': user1.championship_set.all()[0].name
     }
     return render(request, "backend/fight.html", context)
@@ -332,7 +337,7 @@ def testcpu(request, player_pk='', script_pk=''):
                     tank2 = Tank.objects.get(owner=user2)
                     ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
                     ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
-                    print("choix: ", user2.user, ia2.name)
+                    # print("choix: ", user2.user, ia2.name)
                 else:
                     user2 = random.choice(list(users))
                     opponent = user2.user
@@ -363,6 +368,7 @@ def testcpu(request, player_pk='', script_pk=''):
         else:                                   #launcher LOSE
             is_victorious = "no"
         # opponent = "CPU"
+        script_user = ia1.pk
         player_x = 0
         player_y = 0
         opponent_x = 31
@@ -383,7 +389,7 @@ def testcpu(request, player_pk='', script_pk=''):
             print ("ValueError - battle result: %s" % res_stats)
             res = []
 
-        opponent = "CPU_error"
+        opponent = battle.opponent.username
         is_victorious = "no"
         if battle.is_victorious:
             is_victorious = "yes"
@@ -391,13 +397,15 @@ def testcpu(request, player_pk='', script_pk=''):
         player_y = battle.player_y
         opponent_x = battle.opponent_x
         opponent_y = battle.opponent_y
+        script_user = battle.used_script.pk
         step = battle.step
         map_name = battle.map_name
         bh_pk = battle.pk
+        messages.warning(request, "Vous avez déjà une battle en cours...")
 
     context = {
         'result': res,
-        'pageIn': 'accueil',
+        'pageIn': 'battle',
         'opponent': opponent,
         'is_victorious':is_victorious,
         'player_x': player_x,
@@ -408,6 +416,7 @@ def testcpu(request, player_pk='', script_pk=''):
         'map_name': map_name,
         'history_pk': bh_pk,
         'is_versus' : 'yes',
+        'script_used': script_user,
         'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name
     }
     return render(request, "backend/fight.html", context)
@@ -859,6 +868,9 @@ def finish_battle(request):
     if request.method == "POST":
         bh_pk = request.POST.get("history_pk")
         mode = request.POST.get('mode')
+        script = request.POST.get('script_pk')
+        action = request.POST.get('action')
+
         try:
             battle = BattleHistory.objects.get(pk=bh_pk)
             battle.is_finished = True
@@ -872,6 +884,10 @@ def finish_battle(request):
             messages.success(request, "Fin du combat")
         except:
             messages.error(request, "Aucun combat en cours")
+
+
+        if action == "Modifier le script":
+            return redirect("/editor/?script="+script)
 
     return redirect("backend:battle_histories")
 
