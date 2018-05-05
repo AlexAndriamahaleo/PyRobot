@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'pure_pagination',
     'ckeditor',
     'django_crontab',
-    "django_cron", # python3 manage.py migrate django_cron
 ]
 
 MIDDLEWARE = [
@@ -50,9 +49,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CRON_CLASSES = [
-    "backend.cron.MyCronJob",
-]
 
 ROOT_URLCONF = 'WebPyRobot.urls'
 
