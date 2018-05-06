@@ -134,7 +134,7 @@
                                        value="Activer">
                             </li>
                             <li>
-                                <a class="indigo-text darken-4" href="{% url 'backend:testcpu' %}">TESTER</a>
+                                <a class="indigo-text darken-4" href="{% url 'backend:versus' %}">TESTER</a>
                             </li>
                             <li>
                                 <a class="indigo-text darken-4" onclick="window.location.href='/battle'">COMBATTRE
@@ -144,10 +144,15 @@
                         </ul>
                         <ul class="side-nav" id="mobile-demo">
                             <li class="save">
-                                <a class="waves-effect" href="#"><i
-                                        class="material-icons left">save</i>Sauvgarder</a></li>
+                                <input type="submit" class="btn-flat indigo-text darken-4" name="action"
+                                       value="Sauvegarder">
+                            </li>
+                            <li class="save">
+                                <input type="submit" class="btn-flat indigo-text darken-4" name="action"
+                                       value="Activer">
+                            </li>
                             <li>
-                                <a class="waves-effect" href="#"><i class="material-icons left">cached</i>Tester</a>
+                                <a class="waves-effect" href="{% url 'backend:versus' %}"><i class="material-icons left">cached</i>Tester</a>
                             </li>
                         </ul>
                         <a href="#" data-activates="mobile-demo" class="button-collapse"><i
@@ -241,5 +246,9 @@
     <script src="{% static 'js/editor.js' %}"></script>
     <script type="text/javascript">
     var code = "{{ temporary_text }}";
+
+    //onclick="document.getElementById('code').submit()
+
+
 </script>
 {% endblock %}

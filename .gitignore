@@ -10,3 +10,5 @@ media/
 .idea
 WebPyRobot/development.py
 
+/pip3freeze_requirements.txt
+/WebPyRobot/backend/static/tern/pyrobot.json.old

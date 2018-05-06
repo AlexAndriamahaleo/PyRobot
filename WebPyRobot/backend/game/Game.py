@@ -14,6 +14,7 @@ class Robot(object):
         self.__pa = self.__tank.navSystem.actionValue
         self.__cpa = self.__pa
         self.__cpm = self.__pm
+        self.__arm = self.__tank.armor.armorValue
 
     def getTank(self):
         return self.__tank
@@ -44,6 +45,9 @@ class Robot(object):
 
     def gettankpm(self):
         return self.__pm
+
+    def gettankarm(self):
+        return self.__arm
 
     def getWeaponDamage(self):
         return self.__tank.weapon.attackValue
@@ -122,7 +126,7 @@ class Game(object):
             if x > xp:
                 # gauche
                 if pm > 0 and self.__map[self.getCellFromXY(x - 1, y)] == -1:
-                    self.__result.append([self.__current, "moveLeft", 0, 0])
+                    self.__result.append([self.__current, "moveLeft", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x - 1, y)] = self.__current
                     pm -= 1
@@ -132,7 +136,7 @@ class Game(object):
             if x < xp :
                 #droite
                 if pm > 0 and self.__map[self.getCellFromXY(x + 1, y)] == -1:
-                    self.__result.append([self.__current, "moveRight", 0, 0])
+                    self.__result.append([self.__current, "moveRight", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x + 1, y)] = self.__current
                     pm -=1
@@ -142,7 +146,7 @@ class Game(object):
             if y > yp :
                 #Bas
                 if pm > 0 and self.__map[self.getCellFromXY(x, y-1)] == -1:
-                    self.__result.append([self.__current, "moveDown", 0, 0])
+                    self.__result.append([self.__current, "moveDown", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x , y-1)] = self.__current
                     pm -=1
@@ -152,7 +156,7 @@ class Game(object):
             if y < yp :
                 #Haut
                 if pm > 0 and self.__map[self.getCellFromXY(x, y + 1)] == -1:
-                    self.__result.append([self.__current, "moveUp", 0, 0])
+                    self.__result.append([self.__current, "moveUp", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x, y+1)] = self.__current
                     pm -=1
@@ -178,15 +182,24 @@ class Game(object):
 
         pa = self.__robots[self.__current].getPointAction()
         paWe = self.__robots[self.__current].getWPa()
+
         dWe = self.__robots[self.__current].getWeaponDamage()
+
+        arm = self.__robots[self.__current].gettankarm()
+        reduce_dmg = int(arm*dWe/100)
+
+        real_dmg = dWe - reduce_dmg
+
+        rest_pv = self.__robots[self.getEnemyTankId()].getLife()-real_dmg
+
         range = self.__robots[self.__current].getRange()
         mid_point = int(self.__size/2)
         if pa - paWe >= 0:
             if(dist > range):
-                self.__result.append([self.__current, "shoot", mid_point, mid_point])
+                self.__result.append([self.__current, "shoot", mid_point, mid_point, 0])
             else:
-                self.__result.append([self.__current, "shoot",x, y])
-                self.__robots[self.getEnemyTankId()].setLife(self.__robots[self.getEnemyTankId()].getLife()-dWe)
+                self.__result.append([self.__current, "shoot",x, y, rest_pv])
+                self.__robots[self.getEnemyTankId()].setLife(rest_pv)
             self.__robots[self.__current].setPA(pa-paWe)
 
     def is_victorious(self):
@@ -264,25 +277,29 @@ class Game(object):
 
     def run(self, i):
         if i >= 100: return self.__result
-        if self.__robots[0].getLife() <= 0:
-            self.__result.append([0, "dead", 0, 0])
-            return self.__result
-        if self.__robots[1].getLife() <= 0:
-            self.__result.append([1, "dead", 0, 0])
-            return self.__result
 
         self.__current = 0
         exec (self.__robotsia[0].text)
-        self.__result.append([0, "endTurn", 0, 0])
-        self.__result.append([0, "endTurn", 0, 0])
+        self.__result.append([0, "endTurn", 0, 0, 0])
+        self.__result.append([0, "endTurn", 0, 0, 0])
+
+        if self.__robots[1].getLife() <= 0:
+            self.__result.append([1, "dead", 0, 0, 0])
+            return self.__result
+
         self.__current = 1
         exec (self.__robotsia[1].text)
-        self.__result.append([1, "endTurn", 0, 0])
-        self.__result.append([0, "endTurn", 0, 0])
+        self.__result.append([1, "endTurn", 0, 0, 0])
+        self.__result.append([0, "endTurn", 0, 0, 0])
 
         self.__robots[0].setPM(self.__robots[0].gettankpm())
         self.__robots[0].setPA(self.__robots[0].gettankpa())
         self.__robots[1].setPM(self.__robots[1].gettankpm())
         self.__robots[1].setPA(self.__robots[1].gettankpa())
+
+        if self.__robots[0].getLife() <= 0:
+            self.__result.append([0, "dead", 0, 0, 0])
+            return self.__result
+
 
         return self.run(i + 1)

@@ -19,7 +19,7 @@
                     <div class="nav-wrapper">
                         <form>
                             <div class="input-field">
-                                <input id="searchChamp" type="search" onkeyup="searchChamp()" required>
+                                <input id="searchChamp_id" type="search" onkeyup="searchChamp()" required>
                                 <label class="label-icon" for="searchChamp"><i class="material-icons">search</i></label>
                                 <i class="material-icons">close</i>
                             </div>
@@ -38,7 +38,8 @@
                                     </span>
                                 {% else %}
                                     <span class="badge">
-                                        <a class=" modal-trigger btn-floating indigo darken-4" href="#confirmleague"  data-champpk="{{ champ.pk }}">
+                                        <a class=" modal-trigger btn-floating indigo darken-4" href="#confirmleague"
+                                           data-champpk="{{ champ.pk }}">
                                             <i id="{{ champ.name }}" class="championship large material-icons">add_location</i>
                                         </a>
                                     </span>
@@ -72,8 +73,9 @@
             <div class="modal-footer">
                 <form action="{% url 'backend:change_championship' %}" method="POST">
                     {% csrf_token %}
-                    <input id="modalconfirmation2" type="hidden" name="champ_name" />
-                    <input type="submit" class="modal-action modal-close waves-effect waves-green btn-flat" value="Oui"/>
+                    <input id="modalconfirmation2" type="hidden" name="champ_name"/>
+                    <input type="submit" class="modal-action modal-close waves-effect waves-green btn-flat"
+                           value="Oui"/>
                     <a class="modal-action modal-close waves-effect waves-green btn-flat">Non</a>
                 </form>
             </div>
@@ -82,23 +84,23 @@
 {% endblock %}
 
 {% block custom_js %}
-<script>
-    function searchChamp() {
-      var input, filter, table, li, p, i;
-      input = document.getElementById("searchChamp");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("resultChamp");
-      li = table.getElementsByTagName("li");
-      for (i = 0; i < li.length; i++) {
-        p = li[i].getElementsByTagName("p")[0];
-        if (p) {
-          if (p.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-          } else {
-            li[i].style.display = "none";
-          }
+    <script>
+        function searchChamp() {
+            var input, filter, table, li, p, i;
+            input = document.getElementById("searchChamp_id");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("resultChamp");
+            li = table.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                p = li[i].getElementsByTagName("p")[0];
+                if (p) {
+                    if (p.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
         }
-      }
-    }
-</script>
+    </script>
 {% endblock %}

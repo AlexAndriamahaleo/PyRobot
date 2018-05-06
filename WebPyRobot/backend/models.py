@@ -328,7 +328,7 @@ class FAQ(models.Model):
     """
     question = models.TextField(null=False)
     answer = RichTextField(null=False)
-    symbol = models.CharField(default='fa-book', null=True, help_text='Font Awesome icon name', max_length=50)
+    symbol = models.CharField(default='import_contacts', null=True, help_text='Material Icons', max_length=50)
 
     def save(self, *args, **kwargs):
         self.question = self.question.strip().rstrip('?')

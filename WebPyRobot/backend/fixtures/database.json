@@ -41,7 +41,7 @@
     "fields": {
       "name": "Blindage niv.1",
       "price": "500",
-      "armorValue": "30",
+      "armorValue": "70",
       "pathIcon": "shield_1.png"
     }
   },
@@ -166,7 +166,7 @@
     "fields": {
       "question": "Quelles sont les r\u00e8gles du jeu ",
       "answer": "<p><strong>Concevez</strong></p>\r\n\r\n<p>... ... la meilleur combinaison d&#39;&eacute;quipement pour votre tank.</p>\r\n\r\n<p><strong>Imaginez et Codez</strong></p>\r\n\r\n<p>... ... ce tank qui prendra l&#39;ascendant sur votre adversaire et vous m&egrave;nera &agrave; la victoire gr&acirc;ce &agrave; vos comp&eacute;tences - ou future comp&eacute;tences - en programmation.</p>\r\n\r\n<p>Nous incluons un syst&egrave;me de niveau et d&#39;exp&eacute;rience. Dans le jeu, vous allez vous confronter &agrave; plus fort que vous. [Bient&ocirc;t] En cas de victoire la r&eacute;compense (sous forme d&#39;exp&eacute;rience) n&#39;en sera que meilleur.</p>\r\n\r\n<p><strong>Plus en d&eacute;tail </strong></p>\r\n\r\n<p>Un combat se d&eacute;roule sur une grille de jeu de 32 cases par 32 cases.</p>\r\n\r\n<p>Comme tout bon programmeur, cela signifie que pour les indices en X et en Y vont de 0 &agrave; 31.</p>\r\n\r\n<p>Vous avez donc 1024 cases sur cette grille. Qui vous permettront de mettre en place votre strat&eacute;gie de jeu.</p>",
-      "symbol": "fa-book"
+      "symbol": "import_contacts"
     }
   },
   {
@@ -175,70 +175,61 @@
     "fields": {
       "question": "Pourquoi \"MaturePyRobot\"",
       "answer": "<p>Le pr&eacute;c&eacute;dent projet s&#39;intitulait &quot;WebPyRobot&quot;. Bien que ce soit l&eacute;gitime, car sur navigateur Web, nous avons d&eacute;cid&eacute; de nous d&eacute;marquer. Nous avons men&eacute; ce projet &agrave; maturit&eacute;, pour que les foncitonnalit&eacute;es de base soient op&eacute;rationnelles &agrave; 100%. ... (&agrave; compl&eacute;ter)</p>",
-      "symbol": "fa-question"
+      "symbol": "question_answer"
     }
   },
   {
     "model": "backend.faq",
     "pk": 3,
     "fields": {
-      "question": "\u00c0 quoi sert le Mode Passif ",
-      "answer": "<p>Le mode passif te permet de ne pas te faire &quot;agresser&quot; par d&#39;autre utilisateur pendant que tu modifies ton tank.</p>",
-      "symbol": "fa-power-off"
+      "question": "Comment fonctionne le Drag'n'Drop ",
+      "answer": "<p><strong>Wikipedia</strong> &quot;Les glisser-d&eacute;poser est, dans une interface graphique, une m&eacute;thode consistant &agrave; utiliser une souris [..] pour d&eacute;placer d&#39;un endroit &agrave; un autre un &eacute;l&eacute;ment graphiquep r&eacute;sent sur l&#39;&eacute;cran [..] d&#39;un ordinateur.&quot;</p>\r\n\r\n<p>1 - Faire un clique sur le script &agrave; importer et maintenir la pression sur le bouton.</p>\r\n\r\n<p>2 - D&eacute;placer votre souris, toujours en maintenant le clic, vers la zone final (l&#39;&eacute;diteur python).</p>\r\n\r\n<p>3 - Une fois sur l&#39;&eacute;diteur, l&acirc;cher le clic. Et HOP !! Votre script est import&eacute;. Sauvegardez le et continuez &agrave; travailler dessus en ligne.</p>",
+      "symbol": "content_copy"
     }
   },
   {
     "model": "backend.faq",
     "pk": 4,
     "fields": {
-      "question": "Comment fonctionne le Drag'n'Drop ",
-      "answer": "<p><strong>Wikipedia</strong> &quot;Les glisser-d&eacute;poser est, dans une interface graphique, une m&eacute;thode consistant &agrave; utiliser une souris [..] pour d&eacute;placer d&#39;un endroit &agrave; un autre un &eacute;l&eacute;ment graphiquep r&eacute;sent sur l&#39;&eacute;cran [..] d&#39;un ordinateur.&quot;</p>\r\n\r\n<p>1 - Faire un clique sur le script &agrave; importer et maintenir la pression sur le bouton.</p>\r\n\r\n<p>2 - D&eacute;placer votre souris, toujours en maintenant le clic, vers la zone final (l&#39;&eacute;diteur python).</p>\r\n\r\n<p>3 - Une fois sur l&#39;&eacute;diteur, l&acirc;cher le clic. Et HOP !! Votre script est import&eacute;. Sauvegardez le et continuez &agrave; travailler dessus en ligne.</p>",
-      "symbol": "fa-clone"
+      "question": "L'animation est bizarre, pourquoi ",
+      "answer": "<p>Les tanks tirent au mileux ? Et au bout d&#39;un certain temps, se tire dessus ? C&#39;est normal, on essaie tant bien que mal de reproduire l&#39;execution de votre code. Ce ne sont pas des bugs. Il bien entendu un gagnant et un perdant. Une notification vous l&#39;indiquera.</p>",
+      "symbol": "live_tv"
     }
   },
   {
     "model": "backend.faq",
     "pk": 5,
     "fields": {
-      "question": "L'animation est bizarre, pourquoi ",
-      "answer": "<p>Les tanks tirent au mileux ? Et au bout d&#39;un certain temps, se tire dessus ? C&#39;est normal, on essaie tant bien que mal de reproduire l&#39;execution de votre code. Ce ne sont pas des bugs. Il bien entendu un gagnant et un perdant. Une notification vous l&#39;indiquera.</p>",
-      "symbol": "fa-television"
+      "question": "Je n'arrive pas \u00e0 glisser-d\u00e9poser mon fichier depuis mon ordinateur vers l'\u00e9diteur",
+      "answer": "<p>L&#39;&eacute;diteur n&#39;accepte que deux extensions:</p>\r\n\r\n<ol>\r\n\t<li>nomdufichier.py</li>\r\n\t<li>nomdufichier.txt</li>\r\n</ol>",
+      "symbol": "file_upload"
     }
   },
   {
     "model": "backend.faq",
     "pk": 6,
     "fields": {
-      "question": "Je n'arrive pas \u00e0 glisser-d\u00e9poser mon fichier depuis mon ordinateur vers l'\u00e9diteur",
-      "answer": "<p>L&#39;&eacute;diteur n&#39;accepte que deux extensions:</p>\r\n\r\n<ol>\r\n\t<li>nomdufichier.py</li>\r\n\t<li>nomdufichier.txt</li>\r\n</ol>",
-      "symbol": "fa-file-text"
+      "question": "Comment sauvegarder un script en ligne sur mon ordinateur ",
+      "answer": "<ol>\r\n\t<li>Ouvrir votre &eacute;diteur pr&eacute;f&eacute;r&eacute; (sublime text, visual studio code, bloc-note, notpad++,...)</li>\r\n\t<li>Copier/Coller le code &eacute;crit dans l&#39;&eacute;diteur dans un nouveau fichier portant l&#39;extension .py ou .txt</li>\r\n\t<li>Enregistrer ce fichier sur votre ordinateur, il sera possible de le charger en ligne avec le Drag&#39;n&#39;Drop</li>\r\n</ol>",
+      "symbol": "description"
     }
   },
   {
     "model": "backend.faq",
     "pk": 7,
     "fields": {
-      "question": "Comment sauvegarder un script en ligne sur mon ordinateur ",
-      "answer": "<ol>\r\n\t<li>Ouvrir votre &eacute;diteur pr&eacute;f&eacute;r&eacute; (sublime text, visual studio code, bloc-note, notpad++,...)</li>\r\n\t<li>Copier/Coller le code &eacute;crit dans l&#39;&eacute;diteur dans un nouveau fichier portant l&#39;extension .py ou .txt</li>\r\n\t<li>Enregistrer ce fichier sur votre ordinateur, il sera possible de le charger en ligne avec le Drag&#39;n&#39;Drop</li>\r\n</ol>",
-      "symbol": "fa-files-o"
+      "question": "J'ai atteint mon quota de script (max 5), comment supprimer un script ",
+      "answer": "<ol>\r\n\t<li>Charger le script &agrave; supprimer dans l&#39;&eacute;diteur</li>\r\n\t<li>&Eacute;crire le nouveau script &agrave; la place</li>\r\n\t<li>Changer &eacute;ventuellement le nom pour le nouveau script</li>\r\n\t<li>Sauvegarder</li>\r\n</ol>",
+      "symbol": "filter_5"
     }
   },
   {
     "model": "backend.faq",
     "pk": 8,
     "fields": {
-      "question": "J'ai atteint mon quota de script (max 5), comment supprimer un script ",
-      "answer": "<ol>\r\n\t<li>Charger le script &agrave; supprimer dans l&#39;&eacute;diteur</li>\r\n\t<li>&Eacute;crire le nouveau script &agrave; la place</li>\r\n\t<li>Changer &eacute;ventuellement le nom pour le nouveau script</li>\r\n\t<li>Sauvegarder</li>\r\n</ol>",
-      "symbol": "fa-bars"
-    }
-  },
-  {
-    "model": "backend.faq",
-    "pk": 9,
-    "fields": {
       "question": "En cas d'erreur que faire ",
       "answer": "<p>Si une erreur survient, la plupart du temps, l&#39;&eacute;diteur est mis en cause.</p>\r\n\r\n<p>Tentez d&#39;identifier d&#39;eventuel erreur:<br />\r\n- indentation du code<br />\r\n- variable utilis&eacute;e<br />\r\n- syntaxe python respect&eacute;e</p>\r\n\r\n<p>En cas d&#39;echec lors de la v&eacute;rification contacter le support technique.</p>",
-      "symbol": "fa-exclamation"
+      "symbol": "bug_report"
     }
   },
   {

@@ -55,13 +55,13 @@
                             </td>
                             <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% else %}
-                            <td>{{ history.opponent.username }} ({{ history.opp_used_script.name }})</td>
-                            <td>{{ history.used_script.name }}</td>
+                            <td>{{ history.user.username }} ({{ history.used_script.name  }})</td>
+                            <td>{{ history.opp_used_script.name}}</td>
                             <td>
                                 {% if history.is_victorious %}
-                                    Gagné
-                                {% else %}
                                     Perdu
+                                {% else %}
+                                    Gagné
                                 {% endif %}
                             </td>
                             <td>

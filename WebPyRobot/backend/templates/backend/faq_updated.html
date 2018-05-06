@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-MaturePyRobot - FAQ
+PyRobot - FAQ
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@ MaturePyRobot - FAQ
     <ul class="collapsible" data-collapsible="accordion">
         {% for fq in faqs %}
         <li>
-            <div class="collapsible-header"><i class="fa {{ fq.symbol }}" aria-hidden="true"></i> {{ fq.question }} ?</div>
+            <div class="collapsible-header"><i class="material-icons">{{ fq.symbol }}</i> {{ fq.question }} ?</div>
             <div class="collapsible-body">
                 {{ fq.answer|safe }}
             </div>

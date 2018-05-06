@@ -49,6 +49,23 @@
                 //console.log(event.target.id);
             });
 
+            $('.finish').click(function () {
+                if (is_replay != "yes") {
+                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                    var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/" + opponent + "-notifications/");
+                    socket.onopen = function () {
+                        var message = {
+                            msg_content: "Le combat contre " + playername + " est terminé",
+                            msg_type: "notification",
+                            msg_class: "success",
+                            is_versus: is_versus
+                        };
+                        socket.send(JSON.stringify(message));
+                    };
+                    if (socket.readyState == WebSocket.OPEN) socket.onopen();
+                }
+            });
+
         });
 
 

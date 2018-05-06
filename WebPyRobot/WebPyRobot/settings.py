@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'backend',
     'pure_pagination',
     'ckeditor',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'WebPyRobot.urls'
 
@@ -136,6 +138,17 @@ CHANNEL_LAYERS = {
     },
 }
 
+
+CRONJOBS = [
+    ("* * * * *", "backend.cron.myCronJob", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/cron.log'),
+    # Idk if it's the right way, may be different for deployment version
+    # btw it works
+
+    ("* * * * *", "backend.cron.test", '>> cron.log')
+    # seems not being executed
+]
+
+CRONTAB_COMMAND_SUFFIX = '2>&1'
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'deep-purple',
