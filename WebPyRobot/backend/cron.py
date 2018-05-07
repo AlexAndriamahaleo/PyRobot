@@ -1,10 +1,29 @@
+import datetime
+from .models import Championship
 
-
-def myCronJob():
-    print("VOICI MON CONRJOB QUI EST EXÉCUTÉ TOUTE LES 1 MIN.")
+def OneMinuteJob():
+    now = datetime.datetime.now()
+    print(str(now), " - OneMinuteJob -> Test CronJob for DB")
     pass
 
 
-def test():
-    print("VOICI MON CONRJOB 2 QUI EST EXÉCUTÉ TOUTE LES 1 MIN.")
+def TenMinuteJob():
+    now = datetime.datetime.now()
+    print(str(now), " - TenMinuteJob -> Test CronJob for DB")
     pass
+
+
+def displayDataChampionship():
+    now = datetime.datetime.now()
+    print(str(now), " - Display Championship Objects")
+    championships = Championship.objects.all()
+    for championship in championships:
+        if championship.get_players().count() == 0:
+            old_championship = championship.name
+            try:
+                championship.delete()
+                print(">>> No players in %s [DELETED]" % old_championship)
+            except:
+                print("ERROR ON DELETE - %s" % old_championship)
+        else:
+            print("> Players in %s : %s" % (championship.name, championship.get_players().count()))

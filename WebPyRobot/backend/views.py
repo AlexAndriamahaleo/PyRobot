@@ -886,7 +886,7 @@ def finish_battle(request):
             messages.error(request, "Aucun combat en cours")
 
 
-        if action == "Modifier le script":
+        if action == "Éditeur":
             return redirect("/editor/?script="+script)
 
     return redirect("backend:battle_histories")
