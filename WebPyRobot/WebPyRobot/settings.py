@@ -140,11 +140,13 @@ CHANNEL_LAYERS = {
 
 
 CRONJOBS = [
-    ("* * * * *", "backend.cron.myCronJob", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/cron.log'),
+    ("* * * * *", "backend.cron.OneMinuteJob", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/cronOneMinuteJob.log'),
+    ("* * * * *", "backend.cron.displayDataChampionship", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/displayDataChampionship.log'),
+    ("*/10 * * * *", "backend.cron.TenMinuteJob", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/cronTenMinuteJob.log'),
     # Idk if it's the right way, may be different for deployment version
     # btw it works
 
-    ("* * * * *", "backend.cron.test", '>> cron.log')
+    # ("* * * * *", "backend.cron.test", '>> cron.log')
     # seems not being executed
 ]
 
