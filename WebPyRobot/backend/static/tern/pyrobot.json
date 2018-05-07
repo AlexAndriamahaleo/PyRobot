@@ -2,6 +2,10 @@
   "!name": "pyrobot",
   "self": {
     "!type": "fn() -> self.fn",
+    "getSize()": {
+      "!type": "fn() -> number",
+      "!doc": "Renvoie la taille de la map."
+    },
     "getEnemyTankId()": {
       "!type": "fn() -> number",
       "!doc": "Renvoie l'ID du tank ennemie."

@@ -5,13 +5,13 @@ from . import api_views
 from . import views
 
 app_name = 'backend'
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^signup/$', views.SignUp.as_view(), name='signUp'),
     url(r'^registrationComplete/autoLogin/$', views.thanks, name='registrationComplete'),
-    url(r'^password_change/$', views.password_change, name='password_change'),
     url(r'^battle/$', views.fight, name='fight'),
     url(r'^battle/(?P<player_pk>[0-9]+)/$', views.fight, name='fight'),
     url(r'^testcpu/$', views.testcpu, name='testcpu'),
@@ -39,6 +39,5 @@ urlpatterns = [
     url(r'^finish-battle/$', views.finish_battle, name='finish_battle'),
     url(r'^championnat/$', views.CreateChampionship.as_view(), name='championship'),
     url(r'^change_championship/$', views.change_championship, name='change_championship'),
-    url(r'^password/$', views.change_password, name='change_password')
-
+    url(r'^password/$', views.change_password, name='change_password'),
 ]

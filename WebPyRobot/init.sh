@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_CMD="python"
+PYTHON_CMD="python3"
 PIP_CMD="pip"
 
 PYTHON_VERSION=$($PYTHON_CMD --version | cut -d\  -f 2 | cut -d. -f 1)

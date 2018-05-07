@@ -24,18 +24,15 @@ from pure_pagination.mixins import PaginationMixin
 
 from .constants import NotificationMessage
 from .forms import SignUpForm, ChangeDataForm, CodeForm, ChampionshipForm
-from .funct.funct import getItemByType,getBoolInventory
+from .funct.funct import getItemByType, getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
 from .models import UserProfile, Tank, Ia, BattleHistory, Notification, FAQ, Championship
 from .utils import validate_ai_script, award_battle
 
 
-
-
 def index(request):
     if request.user.is_authenticated:
-
         current_user = UserProfile.objects.get(user=request.user)
 
         champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
@@ -53,25 +50,24 @@ def index(request):
             print(c.name)
         '''
 
-
-        context = {'money' : UserProfile.objects.get(user=request.user).money,
-                   'username' : request.user,
-                   'pageIn' : 'accueil' ,
-                   #'point' : UserProfile.objects.get(user=request.user).exp,
+        context = {'money': UserProfile.objects.get(user=request.user).money,
+                   'username': request.user,
+                   'pageIn': 'accueil',
+                   # 'point': UserProfile.objects.get(user=request.user).exp,
                    'agression': UserProfile.objects.get(user=request.user).agression,
                    'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
-                   'scripts' : request.user.userprofile.ia_set.all(),
-                   'active_script' : request.user.userprofile.get_active_ai_script(),
-                   'players' : UserProfile.objects.exclude(pk=current_user.pk),
-                   # 'classement' : UserProfile.objects.order_by('-exp'),
-                   'classement' : Championship.objects.get(pk=champ_pk).players.all().order_by('-exp'),
+                   'scripts': request.user.userprofile.ia_set.all(),
+                   'active_script': request.user.userprofile.get_active_ai_script(),
+                   'players': UserProfile.objects.exclude(pk=current_user.pk),
+                   # 'classement': UserProfile.objects.order_by('-exp'),
+                   'classement': Championship.objects.get(pk=champ_pk).players.all().order_by('-exp'),
                    'all_championship': Championship.objects.all(),
-                   'championnat' : UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
+                   'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
         return render(request, "backend/accueil.html", context)
     else:
         form = SignUpForm()
-        context = { 'form' : form }
-        return render(request, "backend/index.html",context)
+        context = {'form': form}
+        return render(request, "backend/index.html", context)
 
 
 @never_cache
@@ -129,10 +125,10 @@ class SignUp (FormView):
         except ObjectDoesNotExist:
             user = User.objects.create_user(username, email, password)
 
-            #create User
+            # create User
             UserProfile(user=user, money=0, next_level_exp=int(1/settings.EXP_CONSTANT), agression=True).save()
 
-            #create ia file default
+            # create ia file default
             userProfile = UserProfile.objects.get(user=user)
             i = Ia.objects.create(owner=userProfile,
                                   name="%s Default AI" % username,
@@ -141,19 +137,18 @@ class SignUp (FormView):
 
             Championship.objects.get(pk=1).add_user(userProfile)
 
-            #default Inventory
+            # default Inventory
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=1))
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=2))
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=3))
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=4))
 
             #init tank
-            w = getItemByType(1,TypeItem(pk=1))
-            a = getItemByType(1,TypeItem(pk=2))
-            c = getItemByType(1,TypeItem(pk=3))
-            n = getItemByType(1,TypeItem(pk=4))
-            Tank.objects.create(owner=userProfile, ia=i,weapon=w,armor=a,caterpillar=c,navSystem=n)
-
+            w = getItemByType(1, TypeItem(pk=1))
+            a = getItemByType(1, TypeItem(pk=2))
+            c = getItemByType(1, TypeItem(pk=3))
+            n = getItemByType(1, TypeItem(pk=4))
+            Tank.objects.create(owner=userProfile, ia=i, weapon=w, armor=a, caterpillar=c, navSystem=n)
 
             from django.contrib.auth import authenticate
             user = authenticate(username=username, password=password)
@@ -207,7 +202,6 @@ def fight(request, player_pk=''):
                 user2 = random.choice(list(users))
                 messages.warning(request, "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
 
-
         # Send realtime notification to the opponent if he's online
         notify = NotificationMessage()
         notify.msg_content = "%s vient de démarrer un combat contre toi" % user1.user.username
@@ -243,7 +237,7 @@ def fight(request, player_pk=''):
         try:
             res = json.loads(res_stats)
         except ValueError:
-            print ("ValueError - battle result: %s" % res_stats)
+            print("ValueError - battle result: %s" % res_stats)
             res = []
 
         opponent = battle.opponent.username
@@ -256,7 +250,6 @@ def fight(request, player_pk=''):
         map_name = battle.map_name
         bh_pk = battle.pk
         messages.warning(request, "Vous avez déjà une battle en cours...")
-
 
     context = {
         'result': res,
@@ -299,7 +292,7 @@ def testcpu(request, player_pk='', script_pk=''):
             }
             return render(request, "backend/fight.html", context)
 
-        #user2 = UserProfile.objects.get(user=request.user)
+        # user2 = UserProfile.objects.get(user=request.user)
 
         if script_pk != '':
             user2 = UserProfile.objects.get(user=request.user)
@@ -307,7 +300,6 @@ def testcpu(request, player_pk='', script_pk=''):
             tank1 = Tank.objects.get(owner=user1)
             tank2 = Tank.objects.get(owner=user2)
             ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
-
 
             script_1 = user1.ia_set.filter(name=ia1) # for pk -> list(script_1)[0].pk
             old_selected = list(script_1)[0].pk
@@ -354,7 +346,6 @@ def testcpu(request, player_pk='', script_pk=''):
                 ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
                 ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
 
-
         game = Game(tank1, tank2, ia1, ia2, champ.name)
 
         res = game.run(0)
@@ -386,7 +377,7 @@ def testcpu(request, player_pk='', script_pk=''):
         try:
             res = json.loads(res_stats)
         except ValueError:
-            print ("ValueError - battle result: %s" % res_stats)
+            print("ValueError - battle result: %s" % res_stats)
             res = []
 
         opponent = battle.opponent.username
@@ -415,11 +406,12 @@ def testcpu(request, player_pk='', script_pk=''):
         'step': step,
         'map_name': map_name,
         'history_pk': bh_pk,
-        'is_versus' : 'yes',
+        'is_versus': 'yes',
         'script_used': script_user,
         'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name
     }
     return render(request, "backend/fight.html", context)
+
 
 @login_required
 def replay(request):
@@ -473,6 +465,7 @@ def replay(request):
 
     return render(request, "backend/fight.html", context)
 
+
 @login_required
 def password_change(request):
     if request.method == 'POST':
@@ -497,6 +490,7 @@ def password_change(request):
             messages.error(request, "Les mots de passe ne sont pas identiques. Veuillez réessayer.")
             return render(request, "backend/accueil.html", context)
 
+
 @login_required
 def editor(request):
     userprofile = UserProfile.objects.get(user=request.user)
@@ -519,6 +513,7 @@ def editor(request):
     }
     return render(request, 'backend/editeur.html', context)
 
+
 @login_required
 def createscript(request):
     userProfile = UserProfile.objects.get(user=request.user)
@@ -536,6 +531,7 @@ def createscript(request):
 
     return render(request, 'backend/editeur.html', context)
 
+
 @login_required
 def editorDetail(request, pk):
     return HttpResponse('page de l editor pour ' + pk)
@@ -545,8 +541,8 @@ def editorDetail(request, pk):
 def market(request):
     currentUser = UserProfile.objects.get(user=request.user)
 
-    context = {'money' : currentUser.money,
-               'username' : request.user,
+    context = {'money': currentUser.money,
+               'username': request.user,
                'pageIn': 'market',
                'weapons': Weapon.objects.all(),
                'armors': Armor.objects.all(),
@@ -555,15 +551,16 @@ def market(request):
                }
     return render(request, 'backend/boutique.html',context)
 
+
 @login_required
 def inventory(request):
     inventory = UserProfile.objects.get(user=request.user).__getInventory__()
-    weapon = inventory [0]
-    armor = inventory [1]
-    caterpillar = inventory [2]
-    navSys = inventory [3]
-    context = {'money' : UserProfile.objects.get(user=request.user).money,
-               'username' : request.user,
+    weapon = inventory[0]
+    armor = inventory[1]
+    caterpillar = inventory[2]
+    navSys = inventory[3]
+    context = {'money': UserProfile.objects.get(user=request.user).money,
+               'username': request.user,
                'pageIn': 'inventory',
                'weaponInv': weapon,
                'armorInv': armor,
@@ -587,12 +584,14 @@ def parameter(request):
                'form': form}
     return render(request, 'backend/parameter.html',context)
 
+
 @login_required
 def help(request):
     context = {'money' : UserProfile.objects.get(user=request.user).money,
                'username' : request.user,
                'pageIn': 'help'}
     return render(request, 'backend/aide.html',context)
+
 
 @login_required
 def agression(request):
@@ -601,6 +600,7 @@ def agression(request):
     userProfile.agression = not agressionValue
     userProfile.save()
     return redirect(reverse('backend:index'))
+
 
 @login_required
 def changeStuff(request):
@@ -638,8 +638,8 @@ def changeStuff(request):
             tank.weapon = wps[0]
         tank.save()
 
-
     return redirect(reverse('backend:inventory'))
+
 
 @login_required
 def buyStuff (request):
@@ -672,10 +672,10 @@ def buyStuff (request):
                    }
         messages.error(request, "Vous n'avez pas assez d'argent")
         return render(request, 'backend/boutique.html', context)
-    else :
+    else:
         user.money = user.money - price
         user.save()
-        Inventory.objects.create(owner=user,item=itemIn,typeItem=TypeItem(pk=typeIn))
+        Inventory.objects.create(owner=user, item=itemIn, typeItem=TypeItem(pk=typeIn))
         context = {'money': UserProfile.objects.get(user=request.user).money,
                    'username': request.user,
                    'pageIn': 'market',
@@ -687,41 +687,46 @@ def buyStuff (request):
         messages.success(request, "Achat éffectué. Retrouvez l'équipement dans votre inventaire")
         return render(request, 'backend/boutique.html', context)
 
+
 @login_required
-def documentation (request):
+def documentation(request):
     context = {
         'pageIn': 'documentation',
     }
-    return render (request,"backend/documentation.html", context)
+    return render(request, "backend/documentation.html", context)
 
-def faq (request):
+
+def faq(request):
     faqs = FAQ.objects.all().order_by('pk')
     context = {
         'pageIn': 'faq',
         'faqs': faqs
     }
-    return render (request,"backend/faq_updated.html", context)
+    return render(request, "backend/faq_updated.html", context)
+
 
 @login_required
-def tutoriel (request):
+def tutoriel(request):
     context = {
         'pageIn': 'tutoriels',
     }
-    return render(request,"backend/tutorial.html", context)
+    return render(request, "backend/tutorial.html", context)
+
 
 @login_required
 def recherche(request):
     context = {
         'pageIn': 'recherche',
     }
-    return render(request,"backend/research.html", context)
+    return render(request, "backend/research.html", context)
+
 
 @login_required
-def developpement (request):
+def developpement(request):
     context = {
         'pageIn': 'developpement',
     }
-    return render(request,"backend/developpement.html", context)
+    return render(request, "backend/developpement.html", context)
 
 
 class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
@@ -885,11 +890,40 @@ def finish_battle(request):
         except:
             messages.error(request, "Aucun combat en cours")
 
-
         if action == "Modifier le script":
             return redirect("/editor/?script="+script)
 
     return redirect("backend:battle_histories")
+
+
+@login_required
+def change_championship(request):
+    if request.method == "POST":
+        try:
+            new_champ_name = request.POST.get("champ_name")
+            # print(new_champ_name)
+
+            champ_pk = Championship.objects.get(name=new_champ_name).pk
+            # print(champ_pk)
+
+            current_user = UserProfile.objects.get(user=request.user)
+            # print(current_user)
+
+            old_champ_name = current_user.championship_set.all()[0].name
+            # print(old_champ_name)
+
+            Championship.objects.get(name=new_champ_name).players.add(current_user)
+            Championship.objects.get(name=old_champ_name).players.remove(current_user)
+
+            current_champ_name = current_user.championship_set.all()[0].name
+            print(current_champ_name)
+
+            messages.success(request, "Vous avez rejoint %s" % new_champ_name)
+        except:
+            messages.error(request, "Erreur changement de championnat")
+
+    return redirect("backend:index")
+
 
 class CreateChampionship(FormView):
     template_name = 'backend/championship.html'
@@ -924,37 +958,6 @@ class CreateChampionship(FormView):
         messages.error(self.request, "Championnat déjà existant, veuillez en créer un autre. Merci")
         return super(CreateChampionship, self).form_valid(form)
 
-@login_required
-def change_championship(request):
-    if request.method == "POST":
-
-        try:
-            new_champ_name = request.POST.get("champ_name")
-            # print(new_champ_name)
-
-            champ_pk = Championship.objects.get(name=new_champ_name).pk
-            # print(champ_pk)
-
-            current_user = UserProfile.objects.get(user=request.user)
-            # print(current_user)
-
-            old_champ_name = current_user.championship_set.all()[0].name
-            # print(old_champ_name)
-
-
-            Championship.objects.get(name=new_champ_name).players.add(current_user)
-            Championship.objects.get(name=old_champ_name).players.remove(current_user)
-
-            current_champ_name = current_user.championship_set.all()[0].name
-            print(current_champ_name)
-
-            messages.success(request, "Vous avez rejoint %s" % new_champ_name)
-        except:
-            messages.error(request, "Erreur changement de championnat")
-
-
-
-    return redirect("backend:index")
 
 @login_required
 def change_password(request):

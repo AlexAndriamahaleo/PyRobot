@@ -1,6 +1,7 @@
 from unittest import TestCase
 from django.test import Client, SimpleTestCase
 from django.contrib.auth.models import User
+from .models import Championship, UserProfile
 from .forms import *
 
 # Create your tests here.
@@ -144,11 +145,7 @@ class TestUrlLogout(SimpleTestCase, TestCase):
         response = self.client.get('/logout/', follow=True)
         # print(response.redirect_chain[0])  # Looks like ('/', 302)
         # excpected_url, status_code = response.redirect_chain[0]  # récupère l'adresse et le code de la redirection
-        ''' print()
-            print()
-            print(response.redirect_chain[0])
-            print()
-            print() '''
+        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
 
         self.assertRedirects(response, expected_url='/', status_code=302, target_status_code=200)
 
@@ -168,11 +165,7 @@ class TestUrlPassword(SimpleTestCase, TestCase):
 
     def test_password(self):
         response = self.client.get('/password/', follow=True)
-        print()
-        print()
-        print(response.redirect_chain[0])
-        print()
-        print()
+        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
         self.assertRedirects(response, expected_url='/login/?next=/password/', status_code=302, target_status_code=200)
 
 
@@ -182,27 +175,42 @@ class TestUrlBattle(SimpleTestCase, TestCase):
 
     def test_battle(self):
         response = self.client.get('/battle/', follow=True)
-        '''print()
-        print()
-        print(response.redirect_chain[0])
-        print()
-        print()'''
+        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
         self.assertRedirects(response, expected_url='/login/?next=/battle/', status_code=302, target_status_code=200)
 
 
 class TestUrlBattleWithSinglePlayerPk(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username='bob', email='bob@bibi.com', password='bobbibi', pk=1)
 
     def test_battle_with_single_player_pk(self):
-        response = self.client.get('battle/1/', self.user, follow=True)
-        '''print()
-        print()
-        print(response.redirect_chain)
-        print()
-        print()'''
-        self.assertEqual(response.status_code, 200)
+        user1 = User(username='bob', email='bob@bibi.com', password='bobbibi')
+        user1.id = 1
+        user1.save()
+        UserProfile(user=user1).save()
+        user_1 = UserProfile.objects.get(id=user1.id)
+
+        '''user2 = User(username='marc', email='marc@mi.com', password='marcima')
+        user2.id = 2
+        user2.save()
+        
+        UserProfile(user=user2).save()
+        user_2 = UserProfile.objects.get(id=user2.id)
+
+        print(UserProfile.objects.all())'''
+
+        ch = Championship(name='ch')
+        ch.id = 1
+        ch.save()
+        Championship.objects.get(name='ch').players.create(user=user1)
+        # ch.players.add(user_1)
+        # ch.players.add(user_2)
+        # ch.save()
+        # print("\n{}\n".format(Championship.objects.all()))
+
+        # response = self.client.get('battle/', user1, follow=True)
+        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
+        # self.assertEqual(response.status_code, 200)
         # self.assertRedirects(response, expected_url='/battle/'+str(self.user.pk)+'/', status_code=302, target_status_code=200)
 
 
@@ -212,11 +220,7 @@ class TestUrlTestCPU(SimpleTestCase, TestCase):
 
     def test_testCPU(self):
         response = self.client.get('/testcpu/', follow=True)
-        ''' print()
-            print()
-            print(response.redirect_chain[0])
-            print()
-            print() '''
+        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
         self.assertRedirects(response, expected_url='/login/?next=/testcpu/', status_code=302, target_status_code=200)
 
 
@@ -226,9 +230,14 @@ class TestUrlVersus(SimpleTestCase, TestCase):
 
     def test_versus(self):
         response = self.client.get('/versus/', follow=True)
-        print()
-        print()
-        print(response.redirect_chain[0])
-        print()
-        print()
+        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
         self.assertRedirects(response, expected_url='/login/?next=/versus/', status_code=302, target_status_code=200)
+
+
+class TestUrlReplay(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_versus(self):
+        response = self.client.get('/replay/', follow=True)
+        print("\n\n{}\n\n".format(response.redirect_chain[0]))

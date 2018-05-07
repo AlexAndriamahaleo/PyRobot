@@ -73,6 +73,9 @@ class Game(object):
         self.__map[self.__size*self.__size - 1] = 1
         self.__champ = champ
 
+    def getSize(self):
+        return self.__size
+
     def getTankId(self):
         return self.__current
 
@@ -124,7 +127,7 @@ class Game(object):
         cpt = 0
         while pm > 0 and pos != NumCell:
             if x > xp:
-                # gauche
+                # Gauche
                 if pm > 0 and self.__map[self.getCellFromXY(x - 1, y)] == -1:
                     self.__result.append([self.__current, "moveLeft", 0, 0, 0])
                     self.__map[pos] = -1
@@ -133,8 +136,8 @@ class Game(object):
                     x -= 1
                     pos = self.getPosition(self.__current)
 
-            if x < xp :
-                #droite
+            if x < xp:
+                # Droite
                 if pm > 0 and self.__map[self.getCellFromXY(x + 1, y)] == -1:
                     self.__result.append([self.__current, "moveRight", 0, 0, 0])
                     self.__map[pos] = -1
@@ -143,8 +146,8 @@ class Game(object):
                     x += 1
                     pos = self.getPosition(self.__current)
 
-            if y > yp :
-                #Bas
+            if y > yp:
+                # Bas
                 if pm > 0 and self.__map[self.getCellFromXY(x, y-1)] == -1:
                     self.__result.append([self.__current, "moveDown", 0, 0, 0])
                     self.__map[pos] = -1
@@ -153,8 +156,8 @@ class Game(object):
                     y -= 1
                     pos = self.getPosition(self.__current)
 
-            if y < yp :
-                #Haut
+            if y < yp:
+                # Haut
                 if pm > 0 and self.__map[self.getCellFromXY(x, y + 1)] == -1:
                     self.__result.append([self.__current, "moveUp", 0, 0, 0])
                     self.__map[pos] = -1
@@ -164,8 +167,8 @@ class Game(object):
                     pos = self.getPosition(self.__current)
 
             cpt += 1
-            if cpt >= self.__robots[self.__current].getPM(): return
-
+            if cpt >= self.__robots[self.__current].getPM():
+                return
 
         self.__robots[self.__current].setPM(pm)
 
@@ -178,7 +181,7 @@ class Game(object):
         xp = self.getCellPosX(posp)
         yp = self.getCellPosY(posp)
 
-        dist = self.getCellDistance(self.getCellFromXY(x,y),self.getCellFromXY(xp,yp))
+        dist = self.getCellDistance(self.getCellFromXY(x, y), self.getCellFromXY(xp, yp))
 
         pa = self.__robots[self.__current].getPointAction()
         paWe = self.__robots[self.__current].getWPa()
@@ -195,10 +198,10 @@ class Game(object):
         range = self.__robots[self.__current].getRange()
         mid_point = int(self.__size/2)
         if pa - paWe >= 0:
-            if(dist > range):
+            if dist > range:
                 self.__result.append([self.__current, "shoot", mid_point, mid_point, 0])
             else:
-                self.__result.append([self.__current, "shoot",x, y, rest_pv])
+                self.__result.append([self.__current, "shoot", x, y, rest_pv])
                 self.__robots[self.getEnemyTankId()].setLife(rest_pv)
             self.__robots[self.__current].setPA(pa-paWe)
 
@@ -225,17 +228,17 @@ class Game(object):
         player = tank1.owner.user
         opponent = tank2.owner.user
         bh = BattleHistory.objects.create(
-                user = player,
-                used_script = tank1.owner.get_active_ai_script(),
-                opp_used_script = tank2.owner.get_active_ai_script(),
-                opponent = opponent,
-                is_victorious = self.is_victorious(),
-                result_stats = json.dumps(self.__result),
-                max_step = len(self.__result),
-                map_name = map_name,
-                mode = is_training,
-                championship_name = self.__champ
-            )
+            user=player,
+            used_script=tank1.owner.get_active_ai_script(),
+            opp_used_script=tank2.owner.get_active_ai_script(),
+            opponent=opponent,
+            is_victorious=self.is_victorious(),
+            result_stats=json.dumps(self.__result),
+            max_step=len(self.__result),
+            map_name=map_name,
+            mode=is_training,
+            championship_name=self.__champ
+        )
         return bh.pk
 
     def set_history_itself(self, map_name, is_training, script_op):
@@ -250,16 +253,16 @@ class Game(object):
         player = tank1.owner.user
         opponent = tank2.owner.user
         bh = BattleHistory.objects.create(
-                user = player,
-                used_script = tank1.owner.get_active_ai_script(),
-                opp_used_script = script_op,
-                opponent = opponent,
-                is_victorious = self.is_victorious(),
-                result_stats = json.dumps(self.__result),
-                max_step = len(self.__result),
-                map_name = map_name,
-                mode = is_training,
-                championship_name = self.__champ
+                user=player,
+                used_script=tank1.owner.get_active_ai_script(),
+                opp_used_script=script_op,
+                opponent=opponent,
+                is_victorious=self.is_victorious(),
+                result_stats=json.dumps(self.__result),
+                max_step=len(self.__result),
+                map_name=map_name,
+                mode=is_training,
+                championship_name=self.__champ
             )
         return bh.pk
 
@@ -276,10 +279,11 @@ class Game(object):
                                     content="Le combat contre %s vient de se terminer" % user1.user.username)
 
     def run(self, i):
-        if i >= 100: return self.__result
+        if i >= 100:
+            return self.__result
 
         self.__current = 0
-        exec (self.__robotsia[0].text)
+        exec(self.__robotsia[0].text)
         self.__result.append([0, "endTurn", 0, 0, 0])
         self.__result.append([0, "endTurn", 0, 0, 0])
 
@@ -288,7 +292,7 @@ class Game(object):
             return self.__result
 
         self.__current = 1
-        exec (self.__robotsia[1].text)
+        exec(self.__robotsia[1].text)
         self.__result.append([1, "endTurn", 0, 0, 0])
         self.__result.append([0, "endTurn", 0, 0, 0])
 
@@ -300,6 +304,5 @@ class Game(object):
         if self.__robots[0].getLife() <= 0:
             self.__result.append([0, "dead", 0, 0, 0])
             return self.__result
-
 
         return self.run(i + 1)

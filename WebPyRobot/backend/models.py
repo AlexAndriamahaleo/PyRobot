@@ -248,7 +248,7 @@ class Tank(models.Model):
         return self.owner.__str__()
 
 
-class TypeItem (models.Model):
+class TypeItem(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -268,14 +268,14 @@ class DefaultIa (models.Model):
     text = models.TextField()
 
 
-def getItemByType(itemIn,type):
-    if type ==  TypeItem(pk=1) :
+def getItemByType(itemIn, type):
+    if type ==  TypeItem(pk=1):
         return Weapon.objects.get(pk=itemIn)
     elif type == TypeItem(pk=2):
         return Armor.objects.get(pk=itemIn)
     elif type == TypeItem(pk=3):
         return Caterpillar.objects.get(pk=itemIn)
-    elif type == TypeItem(pk=4) :
+    elif type == TypeItem(pk=4):
         return NavSystem.objects.get(pk=itemIn)
 
 
@@ -338,6 +338,9 @@ class FAQ(models.Model):
 class Championship(models.Model):
     name = models.CharField(max_length=60, blank=False, unique=True)
     players = models.ManyToManyField(UserProfile)
+
+    def __str__(self):
+        return self.name
 
     def remove_user(self, user):
         self.players.remove(user)
