@@ -1,50 +1,58 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block title %}
     MaturePyRobot - Historique
 {% endblock %}
 
 {% block custom_css %}
+    <style>
+    body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+    }
 
+    main {
+        flex: 1 0 auto;
+    }
+    </style>
+    <script src="{% static 'js/scrollreveal.js' %}"></script>
+    <script>
+        window.sr = ScrollReveal();
+    </script>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div id="container1" class="container">
 
         <div class="col s12 m2 l12">
             <table class="striped">
                 <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Mode</th>
-                    <th>Adversaire (code)</th>
-                    <th>Votre code</th>
-                    <th>Résultat</th>
-                    <th>Combat</th>
-                    <th>Modifier le code utilisé</th>
-                    <th>Championnat</th>
-                </tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Mode</th>
+                        <th>Adversaire (code)</th>
+                        <th>Votre code</th>
+                        <th>Résultat</th>
+                        <th>Combat</th>
+                        <th>Modifier le code utilisé</th>
+                        <th>Championnat</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for history in page_obj.object_list %}
-                    <tr>
+                {% for history in object_list %}
+                    <tr class="historic">
                         <td>{{ history.timestamp|date:'l d F Y' }}, {{ history.timestamp|time:'H:i' }}</td>
                         <td>
-                            {% if history.mode %}
-                                VERSUS
-                            {% else %}
-                                CHAMPIONNAT
-                            {% endif %}
+                            {% if history.mode %}VERSUS{% else %}CHAMPIONNAT{% endif %}
                         </td>
                         {% if  history.opponent.username != request.user.username %}
                             <td>{{ history.opponent.username }}</td>
                             <td>{{ history.used_script.name }}</td>
                             <td>
-                                {% if history.is_victorious %}
-                                    Gagné
-                                {% else %}
-                                    Perdu
-                                {% endif %}
+                                {% if history.is_victorious %}Gagné{% else %}Perdu{% endif %}
                             </td>
                             <td>
                                 <a class="waves-effect waves-light indigo darken-4 yellow-text btn"
@@ -58,11 +66,7 @@
                             <td>{{ history.user.username }} ({{ history.used_script.name  }})</td>
                             <td>{{ history.opp_used_script.name}}</td>
                             <td>
-                                {% if history.is_victorious %}
-                                    Perdu
-                                {% else %}
-                                    Gagné
-                                {% endif %}
+                                {% if history.is_victorious %}Perdu{% else %}Gagné{% endif %}
                             </td>
                             <td>
                                 <a class="waves-effect waves-light indigo darken-4 yellow-text btn"
@@ -77,16 +81,19 @@
                 {% endfor %}
                 </tbody>
             </table>
-
-            <hr/>
-            <div id="pagination">
-                {{ page_obj.render }}
-            </div>
         </div>
 
     </div>
 {% endblock %}
 
 {% block custom_js %}
-
+    <script>
+        sr.reveal('.historic', {
+            reset: true ,
+            mobile: true,
+            viewFactor: 0.35,
+            viewOffset: { top: 48 },
+            duration: 2000
+        });
+    </script>
 {% endblock %}

@@ -724,13 +724,13 @@ def developpement (request):
     return render(request,"backend/developpement.html", context)
 
 
-class HistoriesView(LoginRequiredMixin, PaginationMixin, ListView):
+class HistoriesView(LoginRequiredMixin, ListView):
     """
     History of battles of a user
     """
     template_name = "backend/histories.html"
     model = BattleHistory
-    paginate_by = 10
+    # paginate_by = 20
 
     def get_queryset(self):
         queryset = BattleHistory.objects.filter(Q(user=self.request.user) | Q(opponent=self.request.user))
