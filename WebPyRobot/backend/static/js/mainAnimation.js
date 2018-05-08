@@ -2,6 +2,9 @@ var stringReceive = a;
 
 var tabReceive = [];
 
+var div_pv_self = document.getElementById('rest-pv-self');
+var div_pv_opponent = document.getElementById('rest-pv-opponent');
+
 var suprStr = function (stringReceive) {
     var str = "";
     var miniTab = [];
@@ -92,10 +95,14 @@ var deadPlayer = function (player) {
         document.getElementById("win").innerHTML = "Fin de la battle !";
     } else if (player.name == playername) {
         Materialize.toast('Dommage !', 4000);
+        div_pv_self.style.width = "0%";
+        div_pv_self.innerHTML = "0 %";
         document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
     }
     else {
         Materialize.toast('Bravo !', 4000);
+        div_pv_opponent.style.width = "0%";
+        div_pv_opponent.innerHTML = "0 %";
         document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
     }
 
@@ -151,7 +158,7 @@ var shoot = function (player, x, y, i, is_replay) {
     }*/
 
 
-    if (x == player1.x && y == player1.y) {
+    if (x == player1.x && y == player1.y) { // OPPONENT BULLET ?
 
         if (is_replay == 'yes') {
             if (playername != opponent) {
@@ -159,7 +166,13 @@ var shoot = function (player, x, y, i, is_replay) {
                     Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
                 }
                 else {
-                    Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                    //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                    console.log("ATK: ", i);
+                    if (tabReceive[i][4] != 0) {
+                        self_rest_pv = tabReceive[i][4] + '%';
+                        div_pv_self.style.width = self_rest_pv;
+                        div_pv_self.innerHTML = tabReceive[i][4] + ' %';
+                    }
                 }
             }
         } else {
@@ -167,7 +180,12 @@ var shoot = function (player, x, y, i, is_replay) {
                 Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
             }
             else {
-                Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                if (tabReceive[i][4] != 0) {
+                    self_rest_pv = tabReceive[i][4] + '%';
+                    div_pv_self.style.width = self_rest_pv;
+                    div_pv_self.innerHTML = tabReceive[i][4] + ' %';
+                }
             }
         }
         bullet = new Bullet("tir.png", player.x, player.y, player1.direction, player1.x, player1.y, contraint);
@@ -181,10 +199,17 @@ var shoot = function (player, x, y, i, is_replay) {
                 if (tabReceive[i][4] < 0) {
                     Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
                 }
-                else if(tabReceive[i][4] > 0){
-                    Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                else if (tabReceive[i][4] > 0) {
+                    //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+
                 }
             }
+        }
+
+        if (tabReceive[i][4] > 0) {
+            self_rest_pv = tabReceive[i][4] + '%';
+            div_pv_opponent.style.width = self_rest_pv;
+            div_pv_opponent.innerHTML = tabReceive[i][4] + ' %';
         }
 
         bullet = new Bullet("tir.png", player.x, player.y, player2.direction, player2.x, player2.y, contraint);
@@ -199,16 +224,26 @@ var shoot = function (player, x, y, i, is_replay) {
                 if (tabReceive[i][4] < 0) {
                     Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
                 }
-                else if(tabReceive[i][4] > 0){
-                    Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                else if (tabReceive[i][4] > 0) {
+                    //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                    if (tabReceive[i][4] != 0) {
+                        self_rest_pv = tabReceive[i][4] + '%';
+                        div_pv_self.style.width = self_rest_pv;
+                        div_pv_self.innerHTML = tabReceive[i][4] + ' %';
+                    }
                 }
             }
         } else {
             if (tabReceive[i][4] < 0) {
                 Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
             }
-            else if(tabReceive[i][4] > 0){
-                Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+            else if (tabReceive[i][4] > 0) {
+                //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                if (tabReceive[i][4] != 0) {
+                    self_rest_pv = tabReceive[i][4] + '%';
+                    div_pv_self.style.width = self_rest_pv;
+                    div_pv_self.innerHTML = tabReceive[i][4] + ' %';
+                }
             }
         }
         bullet = new Bullet("tir.png", player.x, player.y, -2, x, y, contraint);

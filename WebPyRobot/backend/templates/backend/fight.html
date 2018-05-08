@@ -21,19 +21,40 @@
                 <div class="row z-depth-1 section padding-section" id="show_str"></div>
             </div>
         {% else %}
-            <div class="col s12 m9 l10 pad">
+            <div class="col s12 m12 l12">
                 <div class="row z-depth-1 section padding-section">
                     <div class="card-panel yellow lighten-2">
                     <span id="win" class="indigo-text darken-4">
                         Bataille en cours...
                     </span>
                     </div>
+                    <div class="col s12 m3 l3">
+                        <p>
+                            {{ request.user.username }}
+                        </p>
+                        <div class="progress" >
+                            <div id="rest-pv-self" class="determinate center-align white-text" style="width: 100%">
+                                100 %
+                            </div>
+                        </div>
+                    </div>
 
-                    <canvas class="materialboxed col l8 offset-l2" id="canvas"></canvas>
+                    <canvas class="materialboxed col s12 m6 l6" id="canvas"></canvas>
 
-                    <div class="col l8 offset-l2">&nbsp;</div>
+                    <div class="col s12 m3 l3">
+                        <p>
+                            {{ opponent }}
+                        </p>
+                        <div class="progress">
+                            <div id="rest-pv-opponent" class="determinate center-align white-text" style="width: 100%">
+                                100 %
+                            </div>
+                        </div>
+                    </div>
 
-                    <div class="col l8 offset-l2">
+                    <div class="col s12 m12 l12">&nbsp;</div>
+
+                    <div class="col s12 m8 offset-m2 l8 offset-l2">
                         {% if not is_replay %}
                             <div class="row">
                                 <!--<div id="editer" class="col s12 m6 l6">
@@ -57,6 +78,17 @@
                                                    type="submit" name="action" value="Terminer le combat"/>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="col l8 offset-l2">
+                                    <div id="editer" class="col s12 m12 l6">
+                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text" onclick="window.location.href='/editor/'"><i class="material-icons right">edit</i>Éditeur</a>
+                                    </div>
+                                    <div id="editer" class="col s12 m12 l6">
+                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text" onclick="window.location.href='/battle-histories'"><i class="material-icons right">history</i>Historique</a>
+                                    </div>
                                 </div>
                             </div>
                         {% endif %}
