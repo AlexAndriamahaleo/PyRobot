@@ -33,20 +33,18 @@
 
     <div class="col s12 m12 l4">
         <div class="card sticky-action">
-
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
                 <a class="waves-effect waves-light modal-trigger" href="#versus">
-                    <img class="activator" src="{% static 'img/icons/training.png' %}">
+                    <img id="mode_versus" class="activator" src="{% static 'img/icons/training_info.png' %}">
                 </a>
             </div>
         </div>
     </div>
     <div class="col s12 m12 l4">
         <div class="card sticky-action tooltipped" data-position="bottom" data-delay="50"
-             data-tooltip="Code actif: {{ active_script.name }}">
+             data-tooltip="Code actif: {{ active_script.name }}" >
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
-                <img class="activator" src="{% static 'img/icons/code.png' %}">
-
+                <img id="mode_edit" class="activator" src="{% static 'img/icons/code_info.png' %}">
             </div>
 
             <div class="card-reveal">
@@ -77,7 +75,7 @@
         <div class="card sticky-action">
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
                 <a class="waves-effect waves-light modal-trigger" href="#championnat">
-                    <img class="activator" src="{% static 'img/icons/championnat.png' %}">
+                    <img id="mode_championship" class="activator" src="{% static 'img/icons/championnat_info.png' %}">
                 </a>
             </div>
         </div>
