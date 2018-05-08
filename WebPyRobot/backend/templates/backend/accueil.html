@@ -50,30 +50,26 @@
             </div>
 
             <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4"><i
-                        class="material-icons right">close</i>Vos codes</span>
-                <ul>
+                <span class="card-title grey-text text-darken-4">
+                    <i class="material-icons right">close</i>Vos codes</span>
+
+                <div class="collection">
                     {% for script in scripts %}
-
-                        <!--<div class="card-panel waves-effect waves-block waves-light" onclick="window.location.href='/editor/?script={{ script.pk }}'">
-                            <span class="card-title">
+                        <p>
+                            <a onclick="window.location.href='/editor/?script={{ script.pk }}'" class="collection-item black-text" style="cursor:pointer">
                                 {{ script.name|truncatechars:22 }}
-                            </span>
-                        </div>-->
-
-                        <li>
-                            <p>
-                                {{ script.name|truncatechars:22 }}
-                                <a class="btn-flat right"
-                                   onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>
-                            </p>
-                        </li>
-
+                                {% if script.name ==  active_script.name %}
+                                    <span class="new badge indigo yellow-text darken-4" data-badge-caption="Actif"></span>
+                                {% endif %}
+                            </a>
+                        </p>
                     {% endfor %}
-                </ul>
-            <div class="fixed-action-btn">
-                <a class="waves-effect waves-teal btn-flat" onclick="window.location.href='/editor/'">Éditeur</a>
-            </div>
+                </div>
+
+
+                <div class="fixed-action-btn hide-on-med-and-down">
+                    <a class="waves-effect waves-teal btn-flat" onclick="window.location.href='/editor/'">Éditeur</a>
+                </div>
             </div>
         </div>
     </div>
@@ -129,13 +125,16 @@
 
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 1 - Facile <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 1 - Facile <span
+                            class=" badge " data-badge-caption="Bientôt disponible"></span></div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire <span
+                            class=" badge " data-badge-caption="Bientôt disponible"></span></div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 3 - Difficile <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
+                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 3 - Difficile <span
+                            class=" badge " data-badge-caption="Bientôt disponible"></span></div>
                 </li>
             </ul>
 
@@ -143,7 +142,8 @@
             <ul>
                 {% for script in scripts %}
                     <li>
-                        <div class="collapsible-header" onclick="location.href='/versus/{{ user.pk }}/{{ script.pk }}#{{ script.name }}'">
+                        <div class="collapsible-header"
+                             onclick="location.href='/versus/{{ user.pk }}/{{ script.pk }}#{{ script.name }}'">
                             <i class="material-icons">insert_drive_file</i> {{ script.name|truncatechars:22 }}
                         </div>
                         <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
@@ -259,6 +259,7 @@
                 }
             }
         }
+
         console.log("{{ championnat }}")
     </script>
 {% endblock %}
