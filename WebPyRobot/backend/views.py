@@ -93,7 +93,7 @@ def login(request):
             context = {
                 'form': form,
                 'next': request.GET.get('next'),
-                'error': 'Votre Pseudo et/ou votre mot de passe ne correspond pas, veuillez réessayer. Merci'
+                'error': { 'username' : [{"code": "unique", "message": 'Votre Pseudo et/ou votre mot de passe ne correspond pas, veuillez réessayer. Merci'}]}
             }
             return render(request, 'backend/index.html', context)
     return render(request, 'backend/index.html',  {'next': request.GET.get('next')})
@@ -104,6 +104,68 @@ def logout(request):
     system_logout(request)
     return redirect(reverse('backend:index'))
 
+def signup(request):
+    context = {}
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+
+            print(username, first_name, last_name, email)
+
+            user = User.objects.get(username=username)
+
+            UserProfile(user=user, money=0, next_level_exp=int(1 / settings.EXP_CONSTANT), agression=True).save()
+
+            # create ia file default
+            userProfile = UserProfile.objects.get(user=user)
+            i = Ia.objects.create(owner=userProfile,
+                                  name="%s Default AI" % username,
+                                  text=DefaultIa.objects.get(pk=1).text,
+                                  active=True)
+
+            Championship.objects.get(pk=1).add_user(userProfile)
+
+            # default Inventory
+            Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=1))
+            Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=2))
+            Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=3))
+            Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=4))
+
+            # init tank
+            w = getItemByType(1, TypeItem(pk=1))
+            a = getItemByType(1, TypeItem(pk=2))
+            c = getItemByType(1, TypeItem(pk=3))
+            n = getItemByType(1, TypeItem(pk=4))
+            Tank.objects.create(owner=userProfile, ia=i, weapon=w, armor=a, caterpillar=c, navSystem=n)
+            # raise Http404
+
+            from django.contrib.auth import authenticate
+            user = authenticate(username=username, password=raw_password)
+
+            from django.contrib.auth import login
+            login(request, user)
+            return redirect('backend:login')
+        else:
+            # print(form.is_valid())
+            # print(str(form.errors.as_data))
+            context = {
+                'form': form,
+                'error' : form.errors.as_json
+            }
+    else:
+        form = SignUpForm()
+        context = {
+            'form': form,
+            'error': 'ERROR METHOD POST'
+        }
+    return render(request, "backend/index.html", context)
 
 class SignUp (FormView):
     template_name = 'backend/index.html'

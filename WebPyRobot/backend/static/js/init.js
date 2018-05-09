@@ -4,6 +4,8 @@
         $(document).ready(function () {
             $('.collapsible').collapsible();
 
+            $('input#input_text, textarea#textarea1').characterCounter();
+
             $('#alert_close').click(function () {
                 $("#alert_box").fadeOut("slow", function () {
                 });
