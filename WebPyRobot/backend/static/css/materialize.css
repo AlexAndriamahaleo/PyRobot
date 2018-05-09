@@ -3113,12 +3113,12 @@ td, th {
 }
 
 .collection a.collection-item:not(.active):hover {
-    background-color: #ddd;
+    background-color: #fff176;
 }
 
 .collection.with-header .collection-header {
     background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 3px solid #1a237e;
     padding: 10px 20px;
 }
 
