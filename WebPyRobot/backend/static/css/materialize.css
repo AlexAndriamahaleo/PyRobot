@@ -7049,7 +7049,7 @@ form p:last-child {
 }
 
 .switch label input[type=checkbox]:checked + .lever {
-    background-color: #84c7c1;
+    background-color: #ff1744;
 }
 
 .switch label input[type=checkbox]:checked + .lever:before, .switch label input[type=checkbox]:checked + .lever:after {
@@ -7057,7 +7057,7 @@ form p:last-child {
 }
 
 .switch label input[type=checkbox]:checked + .lever:after {
-    background-color: #26a69a;
+    background-color: #1a237e;
 }
 
 .switch label .lever {
@@ -7066,7 +7066,7 @@ form p:last-child {
     position: relative;
     width: 36px;
     height: 14px;
-    background-color: rgba(0, 0, 0, 0.38);
+    background-color: #1a237e;
     border-radius: 15px;
     margin-right: 10px;
     -webkit-transition: background 0.3s ease;
@@ -7095,7 +7095,7 @@ form p:last-child {
 }
 
 .switch label .lever:after {
-    background-color: #F1F1F1;
+    background-color: #ffeb3b;
     -webkit-box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
