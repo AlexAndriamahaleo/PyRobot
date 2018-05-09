@@ -5,6 +5,8 @@ var tabReceive = [];
 var div_pv_self = document.getElementById('rest-pv-self');
 var div_pv_opponent = document.getElementById('rest-pv-opponent');
 
+var combat_speed = 300 ;
+
 var suprStr = function (stringReceive) {
     var str = "";
     var miniTab = [];
@@ -374,5 +376,5 @@ window.onload = function () {
             var ybird = Math.floor((Math.random() * 32) + 1);
             map.addBird(new Bird("bird.png", 32, ybird, 3, 32, ybird, contraint));
         }
-    }, 300);
+    }, combat_speed);
 };
