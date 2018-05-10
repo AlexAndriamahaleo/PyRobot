@@ -963,18 +963,27 @@ class CreateChampionship(FormView):
         context['pageIn'] = 'championship'
         context['all_championship'] = Championship.objects.all()
         context['championnat'] = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].name
+        context['championnat_mode'] = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].private_mode
         return context
 
     def form_valid(self, form):
         name = form.cleaned_data['name']
+        secret_pass = form.cleaned_data['secret_pass']
+        print("mot de passe: [",secret_pass,"]")
+
         current_user = UserProfile.objects.get(user=self.request.user)
 
         try:
             new_name = Championship.objects.get(name=name)
-            # print(new_name)
+            print(new_name)
 
         except ObjectDoesNotExist:
-            Championship(name=name).save()
+
+            if secret_pass == '':
+                Championship(name=name, private_mode=False).save()
+            else:
+                Championship(name=name, private_mode=True, secret_word=secret_pass).save()
+
             old_champ_name = current_user.championship_set.all()[0].name
 
             Championship.objects.get(name=name).players.add(current_user)
@@ -992,10 +1001,19 @@ def change_championship(request):
 
         try:
             new_champ_name = request.POST.get("champ_name")
+            in_champ_secret = request.POST.get("champ_secret")
             # print(new_champ_name)
+            # print("utilisateur: ",in_champ_secret)
 
-            champ_pk = Championship.objects.get(name=new_champ_name).pk
+            champ_mode = Championship.objects.get(name=new_champ_name).private_mode
+            champ_secret = Championship.objects.get(name=new_champ_name).secret_word
             # print(champ_pk)
+            # print("code secret: ",champ_secret)
+
+            if champ_secret != in_champ_secret and champ_mode:
+                messages.error(request, "Code secret incorrect.")
+                # print(champ_mode)
+                return redirect("backend:championship")
 
             current_user = UserProfile.objects.get(user=request.user)
             # print(current_user)
@@ -1008,13 +1026,13 @@ def change_championship(request):
             Championship.objects.get(name=old_champ_name).players.remove(current_user)
 
             current_champ_name = current_user.championship_set.all()[0].name
-            print(current_champ_name)
+            # print(current_champ_name)
 
             messages.success(request, "Vous avez rejoint %s" % new_champ_name)
+
         except:
             messages.error(request, "Erreur changement de championnat")
-
-
+            return redirect("backend:championship")
 
     return redirect("backend:index")
 

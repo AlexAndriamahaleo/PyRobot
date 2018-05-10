@@ -41,4 +41,5 @@ class CodeForm (forms.Form):
 
 
 class ChampionshipForm(forms.Form):
-    name = forms.CharField(label='Nom du championnat', required=True, widget=forms.TextInput(attrs={'class':'validate'}))
+    name = forms.CharField(label='Nom du championnat', max_length=60, required=True, widget=forms.TextInput(attrs={'class':'validate'}))
+    secret_pass = forms.CharField(label='Code secret', max_length=60, required=False, widget=forms.TextInput(attrs={'type' : 'password'}), help_text='Créez un code secret.')

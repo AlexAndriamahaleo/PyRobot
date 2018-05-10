@@ -29,18 +29,20 @@
                 <ul id="resultChamp" class="collection" style="min-height: 394px; max-height: 396px; overflow: auto">
                     {% for champ in all_championship %}
                         <li class="collection-item">
-                            <p>{{ champ.name }} avec {{ champ.players.all|length }} joueur(s)
+                            <p>{% if champ.private_mode %}<i class="material-icons">lock</i>{% endif %} {{ champ.name }}
+                                avec {{ champ.players.all|length }} joueur(s)
                                 {% if champ.name == championnat %}
                                     <span class="badge">
-                                        <a class=" modal-trigger btn-floating yellow" data-champpk="{{ champ.pk }}">
-                                            <i id="{{ champ.name }}" class="championship large material-icons">my_location</i>
+                                        <a class="btn-floating yellow" data-champpk="{{ champ.pk }}">
+                                            <i id="{{ champ.name }}" data-mode="{{ champ.private_mode }}" class="championship large material-icons">my_location</i>
                                         </a>
                                     </span>
                                 {% else %}
                                     <span class="badge">
                                         <a class=" modal-trigger btn-floating indigo darken-4" href="#confirmleague"
                                            data-champpk="{{ champ.pk }}">
-                                            <i id="{{ champ.name }}" class="championship large material-icons">add_location</i>
+                                            <i id="{{ champ.name }}" data-mode="{{ champ.private_mode }}"
+                                               class="championship large material-icons">add_location</i>
                                         </a>
                                     </span>
                                 {% endif %}
@@ -63,15 +65,16 @@
                                 <div>Mode du championnat</div>
                                 <label>
                                     Public
-                                    <input type="checkbox">
+                                    <input id="check_mode" type="checkbox" value="True">
                                     <span class="lever" onclick="displayPrivateChamp()"></span>
                                     Privée
                                 </label>
                             </div>
                         </div>
                         <div id="private_champ" class="input-field col s12 m8 l8" style="visibility: hidden">
-                            <input id="secret" type="password" class="validate">
-                            <label for="secret">Code secret</label>
+                            {{ form.secret_pass }}
+                            <label for="{{ form.secret_pass.label }}">{{ form.secret_pass.label }}</label>
+                            {{ form.secret_pass.help_text }}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -80,51 +83,30 @@
                 </form>
             </div>
         </div>
-        <div id="confirmleague" class="modal">
+        <div id="confirmleague" class="modal" style="min-height: 300px">
             <div class="modal-content">
                 <h4>Confirmation</h4>
                 <p id="modalconfirmation"></p>
             </div>
-            <div class="modal-footer">
-                <form action="{% url 'backend:change_championship' %}" method="POST">
+            <form action="{% url 'backend:change_championship' %}" method="POST">
+                <div id="secret" style="visibility: hidden" class="input-field col s12 m6 l6 push-l2">
+                    <input id="mode_championship" type="password" name="champ_secret"/>
+                    <label for="mode_championship">Code secret</label>
+                </div>
+                <div class="modal-footer">
                     {% csrf_token %}
-                    <input id="modalconfirmation2" type="hidden" name="champ_name"/>
-                    <input type="submit" class="modal-action modal-close waves-effect waves-green btn-flat"
+                    <input id="name_championship" type="hidden" name="champ_name"/>
+
+                    <input id="confirm_champ" type="submit" class="modal-action modal-close waves-effect waves-green btn-flat"
                            value="Oui"/>
-                    <a class="modal-action modal-close waves-effect waves-green btn-flat">Non</a>
-                </form>
-            </div>
+                    <a id="not_confirm_champ" class="modal-action modal-close waves-effect waves-green btn-flat">Non</a>
+
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
 
 {% block custom_js %}
-    <script>
-        function searchChamp() {
-            var input, filter, table, li, p, i;
-            input = document.getElementById("searchChamp_id");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("resultChamp");
-            li = table.getElementsByTagName("li");
-            for (i = 0; i < li.length; i++) {
-                p = li[i].getElementsByTagName("p")[0];
-                if (p) {
-                    if (p.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        function displayPrivateChamp() {
-            div_champ = document.getElementById("private_champ");
-            if (div_champ.style.visibility === 'hidden') {
-                div_champ.style.visibility = '';
-            } else {
-                div_champ.style.visibility = 'hidden';
-            }
-        }
-    </script>
+    <script type="text/javascript" src="{% static 'js/championship.js' %}"></script>
 {% endblock %}

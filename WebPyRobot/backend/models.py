@@ -333,6 +333,8 @@ class FAQ(models.Model):
 
 class Championship(models.Model):
     name = models.CharField(max_length=60, blank=False, unique=True)
+    private_mode = models.BooleanField(default=False)
+    secret_word = models.CharField(max_length=60, blank=True)
     players = models.ManyToManyField(UserProfile)
 
     def remove_user(self, user):

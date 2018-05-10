@@ -238,12 +238,5 @@
     "fields":{
       "name": "Championnat PyRobot [Default]"
     }
-  },
-  {
-    "model": "backend.Championship",
-    "pk": 2,
-    "fields":{
-      "name": "PyRobot Test Champ"
-    }
   }
 ]
