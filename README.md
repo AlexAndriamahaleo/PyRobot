@@ -1,4 +1,4 @@
-## MaturePyRobot 2017 [![Build Status](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots.svg?branch=master)](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots)
+## MaturePyRobot 2017 [![Build Status](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots.svg?branch=master)](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://github.com/AlexAndriamahaleo/MaturePyRobots/blob/championship_dev/LICENSE)
 
 ## Pre-requirements
 
