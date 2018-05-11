@@ -1,4 +1,10 @@
-## MaturePyRobot 2017 [![Build Status](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots.svg?branch=master)](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://github.com/AlexAndriamahaleo/MaturePyRobots/blob/championship_dev/LICENSE) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Django.svg)](https://www.python.org/) [![PyPI - Django Version](https://img.shields.io/pypi/djversions/djangorestframework.svg)](https://docs.djangoproject.com/en/2.0/releases/1.11/)
+## MaturePyRobot 2017 [![Build Status](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots.svg?branch=master)](https://travis-ci.org/AlexAndriamahaleo/MaturePyRobots) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://github.com/AlexAndriamahaleo/MaturePyRobots/blob/championship_dev/LICENSE) 
+
+[![PyPI - Python Version](https://img.shields.io/badge/Python-3.6.2-blue.svg)](https://www.python.org/)  
+
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-9.6.5-blue.svg)](https://www.postgresql.org/)
+
+[![PyPI - Django Version](https://img.shields.io/badge/django%20version-1.11.5%2B-blue.svg)](https://docs.djangoproject.com/en/2.0/releases/1.11/)
 
 ## Pre-requirements
 
