@@ -60,7 +60,7 @@ $ python3 manage.py runserver
 The server will be available at http://127.0.0.1:8000/
 
 
-## Deployment
+## Deployment [![Nginx](https://img.shields.io/badge/Nginx-lastest-green.svg)](https://www.nginx.com/) [![Supervisor](https://img.shields.io/badge/Supervisor-lastest-green.svg)](http://supervisord.org/introduction.html) [![Redis](https://img.shields.io/badge/Redis-lastest-orange.svg)](https://redis.io/)
 
 #### Pre-requirements
 - Nginx (lastest version)
