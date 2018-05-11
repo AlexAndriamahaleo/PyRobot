@@ -1,0 +1,25 @@
+PyRobot
+
+    Superuser :
+        _admin_pyrobot
+        _contactpyrobot@gmail.com
+        _pyrobot
+
+    Users ORDIs:
+        _LOGIN: ORDI_1
+        _PRENOM: ORDI_1
+        _NOM: ORDINATEUR
+        _MAIL: contactpyrobot@gmail.com
+        _MDP: pyrobot
+
+        _LOGIN: ORDI_2
+        _PRENOM: ORDI_2
+        _NOM: ORDINATEUR
+        _MAIL: contactpyrobot@gmail.com
+        _MDP: pyrobot
+
+        _LOGIN: ORDI_3
+        _PRENOM: ORDI_3
+        _NOM: ORDINATEUR
+        _MAIL: contactpyrobot@gmail.com
+        _MDP: pyrobot

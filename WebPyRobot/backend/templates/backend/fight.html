@@ -17,12 +17,18 @@
 {% block content %}
     <div class="container">
         {% if battle_err %}
-            <div class="col s12 m9 l10 pad">
-                <div class="row z-depth-1 section padding-section" id="show_str"></div>
+            <div class="col s12 m12 l12">
+                <div class="row section padding-section">
+                    <div class="col s12 m3 l3"></div>
+                    <div class="col s12 m6 l6">
+                        <img style="width: 760px; height: 760px" class="materialboxed" src="{% static 'img/icons/no_players.png' %}">
+                    </div>
+                    <div class="col s12 m3 l3"></div>
+                </div>
             </div>
         {% else %}
             <div class="col s12 m12 l12">
-                <div class="row z-depth-1 section padding-section">
+                <div class="row section padding-section">
                     <div class="card-panel yellow lighten-2">
                     <span id="win" class="indigo-text darken-4">
                         Bataille en cours...

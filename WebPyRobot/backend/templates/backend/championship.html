@@ -30,7 +30,13 @@
                     {% for champ in all_championship %}
                         <li class="collection-item">
                             <p>{% if champ.private_mode %}<i class="material-icons">lock</i>{% endif %} {{ champ.name }}
-                                avec {{ champ.players.all|length }} joueur(s)
+
+                                {% if champ.players.all|length == 0 %}
+                                    aucun joueur(s) [EN ATTENTE DE SUPPRESSION]
+                                {% else %}
+                                    avec {{ champ.players.all|length }} joueur(s)
+                                {% endif %}
+
                                 {% if champ.name == championnat %}
                                     <span class="badge">
                                         <a class="btn-floating yellow" data-champpk="{{ champ.pk }}">

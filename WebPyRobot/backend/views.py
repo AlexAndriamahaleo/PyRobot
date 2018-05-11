@@ -53,6 +53,16 @@ def index(request):
             print(c.name)
         '''
 
+        # cpu_1 = UserProfile.objects.get(pk=1)
+        # cpu_2 = UserProfile.objects.get(pk=2)
+        # cpu_3= UserProfile.objects.get(pk=3)
+
+        # print(cpu_1.pk, cpu_2.pk, cpu_3.pk)
+
+        classement = Championship.objects.get(pk=champ_pk).players.all().order_by('-exp')
+        # classement = Championship.objects.get(pk=champ_pk).players.exclude(user=cpu_1.user).exclude(user=cpu_2.user).exclude(user=cpu_3.user).order_by('-exp')
+        # print(classement)
+
 
         context = {'money' : UserProfile.objects.get(user=request.user).money,
                    'username' : request.user,
@@ -64,8 +74,8 @@ def index(request):
                    'active_script' : request.user.userprofile.get_active_ai_script(),
                    'players' : UserProfile.objects.exclude(pk=current_user.pk),
                    # 'classement' : UserProfile.objects.order_by('-exp'),
-                   'classement' : Championship.objects.get(pk=champ_pk).players.all().order_by('-exp'),
-                   'all_championship': Championship.objects.all(),
+                   'classement' : classement,
+                   # 'all_championship': Championship.objects.all(),
                    'championnat' : UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
         return render(request, "backend/accueil.html", context)
     else:
@@ -90,6 +100,7 @@ def login(request):
             return redirect(urlnext)
         else:
             form = SignUpForm()
+            print("DEBUG: %s" % user)
             context = {
                 'form': form,
                 'next': request.GET.get('next'),
@@ -130,7 +141,7 @@ def signup(request):
                                   text=DefaultIa.objects.get(pk=1).text,
                                   active=True)
 
-            Championship.objects.get(pk=1).add_user(userProfile)
+            Championship.objects.get(pk=2).add_user(userProfile)
 
             # default Inventory
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=1))
@@ -201,7 +212,8 @@ class SignUp (FormView):
                                   text=DefaultIa.objects.get(pk=1).text,
                                   active=True)
 
-            Championship.objects.get(pk=1).add_user(userProfile)
+            # Championship.objects.get(pk=1).add_user(userProfile)
+            Championship.objects.get(pk=2).add_user(userProfile)
 
             #default Inventory
             Inventory.objects.create(owner=userProfile, item=1, typeItem=TypeItem(pk=1))
@@ -252,13 +264,16 @@ def fight(request, player_pk=''):
     if not battle:
         users1 = UserProfile.objects.exclude(pk=user1.pk)
         # Get list of players which have level = the current player level +/- 5
-        users = Championship.objects.get(pk=champ_pk).players.all()
+        users = Championship.objects.get(pk=champ_pk).players.exclude(pk=UserProfile.objects.get(user=request.user).pk)
+        # if users is None:
+            # return render(request, "backend/accueil.html")
         if not users:
-            messages.error(request, "Aucun joueur disponible pour une battle.")
+            messages.warning(request, "Aucun joueur disponible pour une battle.")
             context = {
                 "battle_err": True
             }
-            return render(request, "backend/fight.html", context)
+            # return render(request, "backend/fight.html", context)
+            return redirect(reverse('backend:index'), context)
         # Get opponent by a random choice from the list above
         if player_pk == '':
             user2 = random.choice(list(users))
@@ -322,7 +337,7 @@ def fight(request, player_pk=''):
 
     context = {
         'result': res,
-        'pageIn': 'accueil',
+        'pageIn': 'battle',
         'opponent': opponent,
         'player_x': player_x,
         'player_y': player_y,
@@ -339,7 +354,7 @@ def fight(request, player_pk=''):
 
 
 @login_required
-def testcpu(request, player_pk='', script_pk=''):
+def versus(request, player_pk='', script_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
 
     champ = UserProfile.objects.get(user=request.user).championship_set.all()[0]
@@ -364,31 +379,40 @@ def testcpu(request, player_pk='', script_pk=''):
         #user2 = UserProfile.objects.get(user=request.user)
 
         if script_pk != '':
-            user2 = UserProfile.objects.get(user=request.user)
-            opponent = user2.user
-            tank1 = Tank.objects.get(owner=user1)
-            tank2 = Tank.objects.get(owner=user2)
-            ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+
+            if int(player_pk) > 3:
+                user2 = UserProfile.objects.get(user=request.user)
+                opponent = user2.user
+                tank1 = Tank.objects.get(owner=user1)
+                tank2 = Tank.objects.get(owner=user2)
+                ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
 
 
-            script_1 = user1.ia_set.filter(name=ia1) # for pk -> list(script_1)[0].pk
-            old_selected = list(script_1)[0].pk
-            old_ia = Ia.objects.get(pk=old_selected)
+                script_1 = user1.ia_set.filter(name=ia1) # for pk -> list(script_1)[0].pk
+                old_selected = list(script_1)[0].pk
+                old_ia = Ia.objects.get(pk=old_selected)
 
-            # print("retour ", ia1.text)
+                # print("retour ", ia1.text)
 
-            # script_2 = user2.ia_set.filter(pk=script_pk)
-            selected = Ia.objects.get(pk=script_pk)
+                # script_2 = user2.ia_set.filter(pk=script_pk)
+                selected = Ia.objects.get(pk=script_pk)
 
-            # selected = Ia.objects.get(pk=selected_pk)
-            user1.change_active_ai(selected)
+                # selected = Ia.objects.get(pk=selected_pk)
+                user1.change_active_ai(selected)
 
-            ia2 = user1.get_active_ai_script()
+                ia2 = user1.get_active_ai_script()
 
-            user1.change_active_ai(old_ia)
-            # print(selected.text," - ", script_2, " - ", list(script_1)[0])
-            # ia2 = selected
-            # print("retour ", ia2)
+                user1.change_active_ai(old_ia)
+                # print(selected.text," - ", script_2, " - ", list(script_1)[0])
+                # ia2 = selected
+                # print("retour ", ia2)
+            else:
+                user2 = UserProfile.objects.get(pk=player_pk)
+                opponent = user2.user
+                tank1 = Tank.objects.get(owner=user1)
+                tank2 = Tank.objects.get(owner=user2)
+                ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
+                ia2 = user2.get_active_ai_script()  # Ia.objects.get(owner=CPU)
         else:
             if player_pk != '':
                 user2 = UserProfile.objects.get(pk=player_pk)
@@ -961,7 +985,8 @@ class CreateChampionship(FormView):
     def get_context_data(self, **kwargs):
         context = super(CreateChampionship, self).get_context_data(**kwargs)
         context['pageIn'] = 'championship'
-        context['all_championship'] = Championship.objects.all()
+        # print(Championship.objects.exclude(pk=Championship.objects.get(pk=1).pk))
+        context['all_championship'] = Championship.objects.exclude(pk=Championship.objects.get(pk=1).pk)
         context['championnat'] = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].name
         context['championnat_mode'] = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].private_mode
         return context
@@ -972,6 +997,9 @@ class CreateChampionship(FormView):
         print("mot de passe: [",secret_pass,"]")
 
         current_user = UserProfile.objects.get(user=self.request.user)
+        # cpu_1 = UserProfile.objects.get(pk=1)
+        # cpu_2 = UserProfile.objects.get(pk=2)
+        # cpu_3 = UserProfile.objects.get(pk=3)
 
         try:
             new_name = Championship.objects.get(name=name)
@@ -987,6 +1015,8 @@ class CreateChampionship(FormView):
             old_champ_name = current_user.championship_set.all()[0].name
 
             Championship.objects.get(name=name).players.add(current_user)
+            # Championship.objects.get(name=name).players.add(cpu_1, cpu_2, cpu_3, current_user)
+
             Championship.objects.get(name=old_champ_name).players.remove(current_user)
 
             messages.success(self.request, "Le championnat [%s] a bien été créé" % name)

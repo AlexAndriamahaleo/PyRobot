@@ -337,6 +337,9 @@ class Championship(models.Model):
     secret_word = models.CharField(max_length=60, blank=True)
     players = models.ManyToManyField(UserProfile)
 
+    def __str__(self):
+        return self.name
+
     def remove_user(self, user):
         self.players.remove(user)
 
