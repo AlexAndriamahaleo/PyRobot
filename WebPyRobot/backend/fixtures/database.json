@@ -356,32 +356,32 @@
     "model": "backend.ia",
     "pk": 1,
     "fields": {
-      "owner": 1,
-      "name": "ORDI_1 Facile",
-      "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos)\n# Shoot the enemy Gracefuly\nself.shoot()",
-      "active": true
+        "owner": 1,
+        "name": "ORDI_1 Facile",
+        "text": "# CPU_1\r\n# Ne tire pas tant que\r\n# le tank enemy n'est pas\r\n# \u00e0\u00a0 sa port\u00e9e\r\n\r\nenemy = self.getEnemyTankId()\r\nenemypos = self.getPosition(enemy)\r\nenemyRange = self.getRange(enemy)\r\n\r\nmytank = self.getTankId()\r\nmyRange = self.getRange(mytank)\r\n\r\nself.moveTank(enemypos)\r\n\r\nmypos = self.getPosition(mytank)\r\n\r\ndist_btw = self.getCellDistance(mypos,enemypos)\r\n\r\nif dist_btw < enemyRange :\r\n    current_PA = self.getPA(mytank)\r\n    while(current_PA != 0):\r\n        self.shoot()\r\n        current_PA = self.getPA(mytank)\r\n",
+        "active": true
     }
-  },
-  {
+},
+{
     "model": "backend.ia",
     "pk": 2,
     "fields": {
-      "owner": 2,
-      "name": "ORDI_2 Intermediaire",
-      "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos)\n# Shoot the enemy Gracefuly\nself.shoot()",
-      "active": true
+        "owner": 2,
+        "name": "ORDI_2 Intermediaire",
+        "text": "# CPU_2\r\n\r\n#############ENEMY#################\r\nid_enemy = self.getEnemyTankId() # int\r\npos_enemy = self.getPosition(id_enemy) # cell\r\nportee_enemy = self.getRange(id_enemy) # int\r\npos_enemy_X = self.getCellPosX(pos_enemy)\r\npos_enemy_Y = self.getCellPosY(pos_enemy)\r\nlife_enemy = self.getLife(id_enemy)\r\n##################################\r\n\r\n##############MY TANK################\r\nid_tank = self.getTankId()\r\npos_tank = self.getPosition(id_tank)\r\nportee_tank = self.getRange(id_tank)\r\npos_tank_X = self.getCellPosX(pos_tank)\r\npos_tank_Y = self.getCellPosY(pos_tank)\r\nlife_tank = self.getLife(id_tank)\r\n###################################\r\n\r\n###################################\r\nglobal step_1_enemy_pos\r\nstep_1_enemy_pos = []\r\n\r\nfor i in range(4):\r\n    tmp_en_X = pos_enemy_X - 3 + i\r\n    tmp_en_Y = pos_enemy_Y - i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n    step_1_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\nfor i in range(4):\r\n    tmp_en_X = pos_enemy_X + 3 - i\r\n    tmp_en_Y = pos_enemy_Y - i\r\n    if  tmp_en_X < 32 and  tmp_en_Y < 32:\r\n        tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n        tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n        if (tmp_cell, tmp_dist_from_tank) not in step_1_enemy_pos:\r\n            step_1_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\n\r\nglobal step_2_enemy_pos\r\nstep_2_enemy_pos = []\r\nglobal min_dist\r\nmin_dist = 1000\r\n\r\npos_tmp_X = self.getCellPosX(step_1_enemy_pos[0][0])\r\npos_tmp_Y = self.getCellPosY(step_1_enemy_pos[0][0])\r\nfor i in range(4):\r\n    tmp_en_X = pos_tmp_X - 3 + i\r\n    tmp_en_Y = pos_tmp_Y - i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n    if tmp_dist_from_tank < min_dist:\r\n        step_2_enemy_pos = []\r\n        min_dist = tmp_dist_from_tank\r\n    elif tmp_dist_from_tank == min_dist:\r\n        step_2_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\n    else:\r\n        pass\r\nfor i in range(4):\r\n    tmp_en_X = pos_tmp_X + 3 - i\r\n    tmp_en_Y = pos_tmp_Y  - i\r\n    if  tmp_en_X < 32 and  tmp_en_Y < 32:\r\n        tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n        tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n        if (tmp_cell, tmp_dist_from_tank) not in step_2_enemy_pos:\r\n            if tmp_dist_from_tank < min_dist:\r\n                step_2_enemy_pos = []\r\n                min_dist = tmp_dist_from_tank\r\n            elif tmp_dist_from_tank == min_dist:\r\n                step_2_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\n            else:\r\n                pass\r\n\r\n###################################\r\n\r\n###################################\r\nglobal step_1_tank_pos\r\nstep_1_tank_pos = []\r\n\r\nglobal step_1_tank_pos_2pm\r\nstep_1_tank_pos_2pm = []\r\n\r\n\r\nfor i in range(4):\r\n    tmp_en_X = pos_tank_X + 3 - i\r\n    tmp_en_Y = pos_tank_Y + i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    if  len(step_2_enemy_pos) > 1:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[1][0])\r\n    else:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[0][0])\r\n    \r\n    if tmp_dist_from_en > portee_tank and tmp_dist_from_en not in step_1_tank_pos:\r\n        step_1_tank_pos.append([tmp_cell, tmp_dist_from_en])\r\n        \r\n\r\nfor i in range(3):\r\n    tmp_en_X = pos_tank_X + 2 - i\r\n    tmp_en_Y = pos_tank_Y + i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    if  len(step_2_enemy_pos) > 1:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[1][0])\r\n    else:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[0][0])\r\n    \r\n    if tmp_dist_from_en >= portee_tank and tmp_dist_from_en not in step_1_tank_pos_2pm:\r\n        step_1_tank_pos_2pm.append([tmp_cell, tmp_dist_from_en])\r\n\r\n###################################\r\n\r\nif life_enemy == 100:\r\n    if step_1_tank_pos != []:\r\n        new_pos = step_1_tank_pos[1][0]\r\n        self.moveTank(new_pos)\r\n    else:\r\n        dist_btw = self.getCellDistance(pos_tank,pos_enemy)\r\n        if (abs(dist_btw - portee_enemy)) >= 0 and (abs(dist_btw - portee_enemy)) <= 3:\r\n            new_pos = pos_enemy\r\n            self.moveTank(new_pos)\r\n        elif (abs(dist_btw - portee_enemy)) >= 0 and (abs(dist_btw - portee_enemy)) > 4 and (abs(dist_btw - portee_enemy)) <= 6:\r\n            back_to_zero_X = self.getCellPosX(pos_tank) - 1\r\n            back_to_zero_Y = self.getCellPosY(pos_tank)\r\n            new_pos = self.getCellFromXY(back_to_zero_X, back_to_zero_Y)\r\n            self.moveTank(new_pos)\r\n        else:\r\n            pass\r\n    # self.moveTank(pos_enemy)\r\n    new_pos_tank = self.getPosition(id_tank)\r\n    dist_btw = self.getCellDistance(new_pos_tank,pos_enemy)\r\n    \r\n    if dist_btw <= portee_enemy :\r\n        current_PA = self.getPA(id_tank)\r\n        while(current_PA != 0):\r\n            self.shoot()\r\n            current_PA = self.getPA(id_tank)\r\nelse:\r\n    current_PA = self.getPA(id_tank)\r\n    while(current_PA != 0):\r\n        self.shoot()\r\n        current_PA = self.getPA(id_tank)\r\n    if self.getCellPosX(pos_enemy) < self.getCellPosX(pos_tank):\r\n        new_pos = self.getCellFromXY(0, 0)\r\n    else:\r\n        new_pos = self.getCellFromXY(31, 0)\r\n    self.moveTank(new_pos)",
+        "active": true
     }
-  },
-  {
+},
+{
     "model": "backend.ia",
     "pk": 3,
     "fields": {
-      "owner": 3,
-      "name": "ORDI_1 Difficile",
-      "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos)\n# Shoot the enemy Gracefuly\nself.shoot()",
-      "active": true
+        "owner": 3,
+        "name": "ORDI_1 Difficile",
+        "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos)\n# Shoot the enemy Gracefuly\nself.shoot()",
+        "active": true
     }
-  },
+},
   {
     "model": "backend.tank",
     "pk": 1,
