@@ -18,26 +18,26 @@ class UserProfile(models.Model):
 
     # championship = models.ForeignKey(Championship)
 
-    #Exp - R&D
+    # Exp - R&D
     exp = models.PositiveIntegerField(default=0)
     srch = models.PositiveIntegerField(default=0)
     dev = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=0)
-    next_level_exp = models.PositiveIntegerField(default=int(1/settings.EXP_CONSTANT))
+    next_level_exp = models.PositiveIntegerField(default=int(1 / settings.EXP_CONSTANT))
     true_level = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.user.username
 
     def __getInventory__(self):
-        wep = Inventory.objects.filter(owner=self,typeItem=TypeItem(pk=1))
+        wep = Inventory.objects.filter(owner=self, typeItem=TypeItem(pk=1))
         wOut = []
         for w in wep:
-            wOut.append(getItemByType(w.item,TypeItem(pk=1)))
+            wOut.append(getItemByType(w.item, TypeItem(pk=1)))
         arm = Inventory.objects.filter(owner=self, typeItem=TypeItem(pk=2))
-        aOut =[]
+        aOut = []
         for a in arm:
-            aOut.append(getItemByType(a.item,TypeItem(pk=2)))
+            aOut.append(getItemByType(a.item, TypeItem(pk=2)))
         cater = Inventory.objects.filter(owner=self, typeItem=TypeItem(pk=3))
         cOut = []
         for c in cater:
@@ -83,11 +83,12 @@ class UserProfile(models.Model):
         return None
 
     def calc_next_level_exp(self):
-        self.next_level_exp = int((self.level + 1)**2/settings.EXP_CONSTANT)
+        self.next_level_exp = int((self.level + 1) ** 2 / settings.EXP_CONSTANT)
         # instance.save()
 
     def get_tank(self):
         return self.tank_set.all()[0]
+
     '''
     def del_user(request, username):
         try:
@@ -117,20 +118,20 @@ class UserProfileForm(forms.ModelForm):
         try:
             w, h = get_image_dimensions(avatar)
 
-            #validate dimensions
+            # validate dimensions
             max_width = max_height = 100
             if w > max_width or h > max_height:
                 raise forms.ValidationError(
                     u'Please use an image that is '
-                     '%s x %s pixels or smaller.' % (max_width, max_height))
+                    '%s x %s pixels or smaller.' % (max_width, max_height))
 
-            #validate content type
+            # validate content type
             main, sub = avatar.content_type.split('/')
             if not (main == 'image' and sub in ['jpeg', 'pjpeg', 'gif', 'png']):
                 raise forms.ValidationError(u'Please use a JPEG, '
-                    'GIF or PNG image.')
+                                            'GIF or PNG image.')
 
-            #validate file size
+            # validate file size
             if len(avatar) > (20 * 1024):
                 raise forms.ValidationError(
                     u'Avatar file size may not exceed 20k.')
@@ -178,9 +179,9 @@ class Weapon(models.Model):
     def __str__(self):
         return self.name
 
-    def isInInventory(self,user):
-        inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=1), item=self.pk)
-        if inv.count() > 0 :
+    def isInInventory(self, user):
+        inv = Inventory.objects.filter(owner=user, typeItem=TypeItem(pk=1), item=self.pk)
+        if inv.count() > 0:
             return True
         else:
             return False
@@ -194,9 +195,10 @@ class Armor(models.Model):
 
     def __str__(self):
         return self.name
-    def isInInventory(self,user):
-        inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=2), item=self.pk)
-        if inv.count() > 0 :
+
+    def isInInventory(self, user):
+        inv = Inventory.objects.filter(owner=user, typeItem=TypeItem(pk=2), item=self.pk)
+        if inv.count() > 0:
             return True
         else:
             return False
@@ -210,9 +212,10 @@ class Caterpillar(models.Model):
 
     def __str__(self):
         return self.name
-    def isInInventory(self,user):
-        inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=3), item=self.pk)
-        if inv.count() > 0 :
+
+    def isInInventory(self, user):
+        inv = Inventory.objects.filter(owner=user, typeItem=TypeItem(pk=3), item=self.pk)
+        if inv.count() > 0:
             return True
         else:
             return False
@@ -227,9 +230,9 @@ class NavSystem(models.Model):
     def __str__(self):
         return self.name
 
-    def isInInventory(self,user):
-        inv = Inventory.objects.filter(owner=user,typeItem=TypeItem(pk=4), item=self.pk)
-        if inv.count() > 0 :
+    def isInInventory(self, user):
+        inv = Inventory.objects.filter(owner=user, typeItem=TypeItem(pk=4), item=self.pk)
+        if inv.count() > 0:
             return True
         else:
             return False
@@ -264,12 +267,12 @@ class Inventory(models.Model):
         return self.owner.__str__() + ",.... " + getItemByType(self.item, self.typeItem).__str__()
 
 
-class DefaultIa (models.Model):
+class DefaultIa(models.Model):
     text = models.TextField()
 
 
 def getItemByType(itemIn, type):
-    if type ==  TypeItem(pk=1):
+    if type == TypeItem(pk=1):
         return Weapon.objects.get(pk=itemIn)
     elif type == TypeItem(pk=2):
         return Armor.objects.get(pk=itemIn)

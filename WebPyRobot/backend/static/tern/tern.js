@@ -5,10 +5,10 @@
 // project.
 
 (function(root, mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
+  if (typeof exports === "object" && typeof module === "object") // CommonJS
     return mod(exports, require("./infer"), require("./signal"),
                require("acorn"), require("acorn/dist/walk"));
-  if (typeof define == "function" && define.amd) // AMD
+  if (typeof define === "function" && define.amd) // AMD
     return define(["exports", "./infer", "./signal", "acorn/dist/acorn", "acorn/dist/walk"], mod);
   mod(root.tern || (root.tern = {}), tern, tern.signal, acorn, acorn.walk); // Plain browser env
 })(this, function(exports, infer, signal, acorn, walk) {
@@ -84,18 +84,18 @@
       allowImportExportEverywhere: true,
       ecmaVersion: srv.options.ecmaVersion,
       allowHashBang: true
-    }
-    var text = srv.signalReturnFirst("preParse", file.text, options) || file.text
-    var ast = infer.parse(text, options)
-    srv.signal("postParse", ast, text)
+    };
+    var text = srv.signalReturnFirst("preParse", file.text, options) || file.text;
+    var ast = infer.parse(text, options);
+    srv.signal("postParse", ast, text);
     return ast
   }
 
-  var astral = /[\uD800-\uDBFF]/g
+  var astral = /[\uD800-\uDBFF]/g;
 
   function updateText(file, text, srv) {
     file.text = srv.options.stripCRs ? text.replace(/\r\n/g, "\n") : text;
-    file.hasAstral = astral.test(file.text)
+    file.hasAstral = astral.test(file.text);
     infer.withContext(srv.cx, function() {
       file.ast = parseFile(srv, file)
     });
@@ -108,8 +108,8 @@
     for (var o in defaultOptions) if (!options.hasOwnProperty(o))
       options[o] = defaultOptions[o];
 
-    this.projectDir = options.projectDir.replace(/\\/g, "/")
-    if (!/\/$/.test(this.projectDir)) this.projectDir += "/"
+    this.projectDir = options.projectDir.replace(/\\/g, "/");
+    if (!/\/$/.test(this.projectDir)) this.projectDir += "/";
 
     this.parent = options.parent;
     this.handlers = Object.create(null);
@@ -120,12 +120,12 @@
     this.uses = 0;
     this.pending = 0;
     this.asyncError = null;
-    this.mod = {}
+    this.mod = {};
 
-    this.defs = options.defs.slice(0)
-    this.plugins = Object.create(null)
+    this.defs = options.defs.slice(0);
+    this.plugins = Object.create(null);
     for (var plugin in options.plugins) if (options.plugins.hasOwnProperty(plugin))
-      this.loadPlugin(plugin, options.plugins[plugin])
+      this.loadPlugin(plugin, options.plugins[plugin]);
 
     this.reset();
   };
@@ -134,7 +134,7 @@
       // Don't crash when sloppy plugins pass non-existent parent ids
       if (parent && !(parent in this.fileMap)) parent = null;
       if (!(name in this.fileMap))
-        name = this.normalizeFilename(name)
+        name = this.normalizeFilename(name);
       ensureFile(this, name, parent, text);
     },
     delFile: function(name) {
@@ -142,8 +142,8 @@
       if (file) {
         this.needsPurge.push(file.name);
         for (var i = 0; i < this.files.length; i++) {
-          if (this.files[i] == file) this.files.splice(i--, 1);
-          else if (this.files[i].parent == name) this.files[i].parent = null;
+          if (this.files[i] === file) this.files.splice(i--, 1);
+          else if (this.files[i].parent === name) this.files[i].parent = null;
         }
         delete this.fileMap[file.name];
       }
@@ -198,14 +198,14 @@
     },
 
     addDefs: function(defs, toFront) {
-      if (toFront) this.defs.unshift(defs)
-      else this.defs.push(defs)
+      if (toFront) this.defs.unshift(defs);
+      else this.defs.push(defs);
 
       if (this.cx) this.reset()
     },
 
     deleteDefs: function(name) {
-      for (var i = 0; i < this.defs.length; i++) if (this.defs[i]["!name"] == name) {
+      for (var i = 0; i < this.defs.length; i++) if (this.defs[i]["!name"] === name) {
         this.defs.splice(i, 1);
         if (this.cx) this.reset();
         return;
@@ -213,21 +213,21 @@
     },
 
     loadPlugin: function(name, options) {
-      if (arguments.length == 1) options = this.options.plugins[name] || true
-      if (name in this.plugins || !(name in plugins) || !options) return
-      this.plugins[name] = true
-      var init = plugins[name](this, options)
+      if (arguments.length === 1) options = this.options.plugins[name] || true;
+      if (name in this.plugins || !(name in plugins) || !options) return;
+      this.plugins[name] = true;
+      var init = plugins[name](this, options);
 
       // This is for backwards-compatibilty. Don't rely on it -- use addDef and on directly
-      if (!init) return
-      if (init.defs) this.addDefs(init.defs, init.loadFirst)
+      if (!init) return;
+      if (init.defs) this.addDefs(init.defs, init.loadFirst);
       if (init.passes) for (var type in init.passes) if (init.passes.hasOwnProperty(type))
         this.on(type, init.passes[type])
     },
 
     normalizeFilename: function(name) {
-      var norm = this.options.normalizeFilename(name).replace(/\\/g, "/")
-      if (norm.indexOf(this.projectDir) == 0) norm = norm.slice(this.projectDir.length)
+      var norm = this.options.normalizeFilename(name).replace(/\\/g, "/");
+      if (norm.indexOf(this.projectDir) === 0) norm = norm.slice(this.projectDir.length);
       return norm
     }
   });
@@ -244,14 +244,14 @@
     if (files.length) ++srv.uses;
     for (var i = 0; i < files.length; ++i) {
       var file = files[i];
-      file.name = srv.normalizeFilename(file.name)
-      if (file.type == "delete")
+      file.name = srv.normalizeFilename(file.name);
+      if (file.type === "delete")
         srv.delFile(file.name);
       else
-        ensureFile(srv, file.name, null, file.type == "full" ? file.text : null);
+        ensureFile(srv, file.name, null, file.type === "full" ? file.text : null);
     }
 
-    var timeBudget = typeof doc.timeout == "number" ? [doc.timeout] : null;
+    var timeBudget = typeof doc.timeout === "number" ? [doc.timeout] : null;
     if (!query) {
       analyzeAll(srv, timeBudget, function(){});
       return;
@@ -259,24 +259,24 @@
 
     var queryType = queryTypes[query.type];
     if (queryType.takesFile) {
-      if (typeof query.file != "string") return c(".query.file must be a string");
+      if (typeof query.file !== "string") return c(".query.file must be a string");
       if (!/^#/.test(query.file)) ensureFile(srv, query.file, null);
     }
 
     analyzeAll(srv, timeBudget, function(err) {
       if (err) return c(err);
       var file = queryType.takesFile && resolveFile(srv, files, query.file);
-      if (queryType.fullFile && file.type == "part")
+      if (queryType.fullFile && file.type === "part")
         return c("Can't run a " + query.type + " query on a file fragment");
 
-      infer.resetGuessing()
+      infer.resetGuessing();
       infer.withContext(srv.cx, function() {
         var result, run = function() { result = queryType.run(srv, query, file); };
         try {
           if (timeBudget) infer.withTimeout(timeBudget[0], run);
           else run();
         } catch (e) {
-          if (srv.options.debug && e.name != "TernError") console.error(e.stack);
+          if (srv.options.debug && e.name !== "TernError") console.error(e.stack);
           return c(e);
         }
         c(null, result);
@@ -391,7 +391,7 @@
           try {
             infer.withTimeout(timeBudget[0], function() { analyzeFile(srv, file); });
           } catch(e) {
-            if (e instanceof infer.TimedOut) return c(e)
+            if (e instanceof infer.TimedOut) return c(e);
             else throw e
           }
           timeBudget[0] -= +new Date - startTime;
@@ -438,8 +438,8 @@
     if (!isRef) return srv.findFile(name);
 
     var file = localFiles[isRef[1]];
-    if (!file || file.type == "delete") throw ternError("Reference to unknown file " + name);
-    if (file.type == "full") return srv.fileMap[file.name];
+    if (!file || file.type === "delete") throw ternError("Reference to unknown file " + name);
+    if (file.type === "full") return srv.fileMap[file.name];
 
     // This is a partial file
 
@@ -469,7 +469,7 @@
       var scopeStart = infer.scopeAt(realFile.ast, pos, realFile.scope);
       var scopeEnd = infer.scopeAt(realFile.ast, pos + text.length, realFile.scope);
       var scope = file.scope = scopeDepth(scopeStart) < scopeDepth(scopeEnd) ? scopeEnd : scopeStart;
-      file.ast = parseFile(srv, file)
+      file.ast = parseFile(srv, file);
       infer.analyze(file.ast, file.name, scope);
 
       // This is a kludge to tie together the function types (if any)
@@ -483,9 +483,9 @@
           prop.addType(newInner.fnType);
         } else if (atFunction) {
           var inner = infer.scopeAt(realFile.ast, pos + line.length, realFile.scope);
-          if (inner == scopeStart || !inner.fnType) break tieTogether;
+          if (inner === scopeStart || !inner.fnType) break tieTogether;
           var fOld = inner.fnType, fNew = newInner.fnType;
-          if (!fNew || (fNew.name != fOld.name && fOld.name)) break tieTogether;
+          if (!fNew || (fNew.name !== fOld.name && fOld.name)) break tieTogether;
           for (var i = 0, e = Math.min(fOld.args.length, fNew.args.length); i < e; ++i)
             fOld.args[i].propagate(fNew.args[i]);
           fOld.self.propagate(fNew.self);
@@ -536,14 +536,14 @@
   // Query helpers
 
   function isPosition(val) {
-    return typeof val == "number" || typeof val == "object" &&
-      typeof val.line == "number" && typeof val.ch == "number";
+    return typeof val === "number" || typeof val === "object" &&
+      typeof val.line === "number" && typeof val.ch === "number";
   }
 
   // Baseline query document validation
   function invalidDoc(doc) {
     if (doc.query) {
-      if (typeof doc.query.type != "string") return ".query.type must be a string";
+      if (typeof doc.query.type !== "string") return ".query.type must be a string";
       if (doc.query.start && !isPosition(doc.query.start)) return ".query.start must be a position";
       if (doc.query.end && !isPosition(doc.query.end)) return ".query.end must be a position";
     }
@@ -551,14 +551,14 @@
       if (!Array.isArray(doc.files)) return "Files property must be an array";
       for (var i = 0; i < doc.files.length; ++i) {
         var file = doc.files[i];
-        if (typeof file != "object") return ".files[n] must be objects";
-        else if (typeof file.name != "string") return ".files[n].name must be a string";
-        else if (file.type == "delete") continue;
-        else if (typeof file.text != "string") return ".files[n].text must be a string";
-        else if (file.type == "part") {
-          if (!isPosition(file.offset) && typeof file.offsetLines != "number")
+        if (typeof file !== "object") return ".files[n] must be objects";
+        else if (typeof file.name !== "string") return ".files[n].name must be a string";
+        else if (file.type === "delete") return ;
+        else if (typeof file.text !== "string") return ".files[n].text must be a string";
+        else if (file.type === "part") {
+          if (!isPosition(file.offset) && typeof file.offsetLines !== "number")
             return ".files[n].offset must be a position";
-        } else if (file.type != "full") return ".files[n].type must be \"full\" or \"part\"";
+        } else if (file.type !== "full") return ".files[n].type must be \"full\" or \"part\"";
       }
     }
   }
@@ -566,9 +566,9 @@
   var offsetSkipLines = 25;
 
   function forwardCharacters(file, start, chars) {
-    var pos = start + chars, m
+    var pos = start + chars, m;
     if (file.hasAstral) {
-      astral.lastIndex = start
+      astral.lastIndex = start;
       while ((m = astral.exec(file.text)) && m.index < pos) pos++
     }
     return pos
@@ -590,7 +590,7 @@
   }
 
   var resolvePos = exports.resolvePos = function(file, pos, tolerant) {
-    if (typeof pos != "number") {
+    if (typeof pos !== "number") {
       var lineStart = findLineStart(file, pos.line);
       if (lineStart == null) {
         if (tolerant) pos = file.text.length;
@@ -609,9 +609,9 @@
   };
 
   function charDistanceBetween(file, start, end) {
-    var diff = end - start, m
+    var diff = end - start, m;
     if (file.hasAstral) {
-      astral.lastIndex = start
+      astral.lastIndex = start;
       while ((m = astral.exec(file.text)) && m.index < end) diff--
     }
     return diff
@@ -637,11 +637,11 @@
   var outputPos = exports.outputPos = function(query, file, pos) {
     if (query.lineCharPositions) {
       var out = asLineChar(file, pos);
-      if (file.type == "part")
+      if (file.type === "part")
         out.line += file.offsetLines != null ? file.offsetLines : asLineChar(file.backing, file.offset).line;
       return out;
     } else {
-      return charDistanceBetween(file, 0, pos) + (file.type == "part" ? file.offset : 0);
+      return charDistanceBetween(file, 0, pos) + (file.type === "part" ? file.offset : 0);
     }
   };
 
@@ -657,15 +657,15 @@
   // Built-in query types
 
   function compareCompletions(a, b) {
-    if (typeof a != "string") { a = a.name; b = b.name; }
+    if (typeof a !== "string") { a = a.name; b = b.name; }
     var aUp = /^[A-Z]/.test(a), bUp = /^[A-Z]/.test(b);
-    if (aUp == bUp) return a < b ? -1 : a == b ? 0 : 1;
+    if (aUp === bUp) return a < b ? -1 : a === b ? 0 : 1;
     else return aUp ? 1 : -1;
   }
 
   function isStringAround(node, start, end) {
-    return node.type == "Literal" && typeof node.value == "string" &&
-      node.start == start - 1 && node.end <= end + 1;
+    return node.type === "Literal" && typeof node.value === "string" &&
+      node.start === start - 1 && node.end <= end + 1;
   }
 
   function pointInProp(objNode, point) {
@@ -679,7 +679,7 @@
   var jsKeywords = ("break do instanceof typeof case else new var " +
     "catch finally return void continue for switch while debugger " +
     "function this with default if throw delete in try").split(" ");
-  var jsKeywordsES6 = jsKeywords.concat("export class extends const super yield import let static".split(" "))
+  var jsKeywordsES6 = jsKeywords.concat("export class extends const super yield import let static".split(" "));
 
   var addCompletion = exports.addCompletion = function(query, completions, name, aval, depth) {
     var typeInfo = query.types || query.docs || query.urls || query.origins;
@@ -687,7 +687,7 @@
 
     for (var i = 0; i < completions.length; ++i) {
       var c = completions[i];
-      if ((wrapAsObjs ? c.name : c) == name) return;
+      if ((wrapAsObjs ? c.name : c) === name) return;
     }
     var rec = wrapAsObjs ? {name: name} : name;
     completions.push(rec);
@@ -711,8 +711,8 @@
 
   function findCompletions(srv, query, file) {
     if (query.end == null) throw ternError("missing .query.end field");
-    var fromPlugin = srv.signalReturnFirst("completion", file, query)
-    if (fromPlugin) return fromPlugin
+    var fromPlugin = srv.signalReturnFirst("completion", file, query);
+    if (fromPlugin) return fromPlugin;
 
     var wordStart = resolvePos(file, query.end), wordEnd = wordStart, text = file.text;
     while (wordStart && acorn.isIdentifierChar(text.charCodeAt(wordStart - 1))) --wordStart;
@@ -724,12 +724,12 @@
     function gather(prop, obj, depth, addInfo) {
       // 'hasOwnProperty' and such are usually just noise, leave them
       // out when no prefix is provided.
-      if ((objLit || query.omitObjectPrototype !== false) && obj == srv.cx.protos.Object && !word) return;
+      if ((objLit || query.omitObjectPrototype !== false) && obj === srv.cx.protos.Object && !word) return;
       if (query.filter !== false && word &&
           (query.caseInsensitive ? prop.toLowerCase() : prop).indexOf(word) !== 0) return;
       if (ignoreObj && ignoreObj.props[prop]) return;
       var result = addCompletion(query, completions, prop, obj && obj.props[prop], depth);
-      if (addInfo && result && typeof result != "string") addInfo(result);
+      if (addInfo && result && typeof result !== "string") addInfo(result);
     }
 
     var hookname, prop, objType, isKey;
@@ -749,13 +749,13 @@
           completions: []
         };
 
-      if (exprNode.type == "MemberExpression" && exprNode.object.end < wordStart) {
+      if (exprNode.type === "MemberExpression" && exprNode.object.end < wordStart) {
         memberExpr = exprAt;
       } else if (isStringAround(exprNode, wordStart, wordEnd)) {
         var parent = infer.parentNode(exprNode, file.ast);
-        if (parent.type == "MemberExpression" && parent.property == exprNode)
+        if (parent.type === "MemberExpression" && parent.property === exprNode)
           memberExpr = {node: parent, state: exprAt.state};
-      } else if (exprNode.type == "ObjectExpression") {
+      } else if (exprNode.type === "ObjectExpression") {
         var objProp = pointInProp(exprNode, wordEnd);
         if (objProp) {
           objLit = exprAt;
@@ -775,12 +775,12 @@
       ignoreObj = objLit.node.objType;
     } else if (memberExpr) {
       prop = memberExpr.node.property;
-      prop = prop.type == "Literal" ? prop.value.slice(1) : prop.name;
+      prop = prop.type === "Literal" ? prop.value.slice(1) : prop.name;
       memberExpr.node = memberExpr.node.object;
       objType = infer.expressionType(memberExpr);
-    } else if (text.charAt(wordStart - 1) == ".") {
+    } else if (text.charAt(wordStart - 1) === ".") {
       var pathStart = wordStart - 1;
-      while (pathStart && (text.charAt(pathStart - 1) == "." || acorn.isIdentifierChar(text.charCodeAt(pathStart - 1)))) pathStart--;
+      while (pathStart && (text.charAt(pathStart - 1) === "." || acorn.isIdentifierChar(text.charCodeAt(pathStart - 1)))) pathStart--;
       var path = text.slice(pathStart, wordStart - 1);
       if (path) {
         objType = infer.def.parsePath(path, file.scope).getObjType();
@@ -794,7 +794,7 @@
       if (objType) infer.forAllPropertiesOf(objType, gather);
 
       if (!completions.length && query.guess !== false && objType && objType.guessProperties)
-        objType.guessProperties(function(p, o, d) {if (p != prop && p != "✖" && p != "<i>") gather(p, o, d);});
+        objType.guessProperties(function(p, o, d) {if (p !== prop && p !== "✖" && p !== "<i>") gather(p, o, d);});
       if (!completions.length && word.length >= 2 && query.guess !== false)
         for (var prop in srv.cx.props) gather(prop, srv.cx.props[prop][0], 0);
       hookname = "memberCompletion";
@@ -804,10 +804,10 @@
         (srv.options.ecmaVersion >= 6 ? jsKeywordsES6 : jsKeywords).forEach(function(kw) {
           gather(kw, null, 0, function(rec) { rec.isKeyword = true; });
         });
-      };
-      hookname = "variableCompletion";
+      }
+        hookname = "variableCompletion";
     }
-    srv.signal(hookname, file, wordStart, wordEnd, gather)
+    srv.signal(hookname, file, wordStart, wordEnd, gather);
 
     if (query.sort !== false) completions.sort(compareCompletions);
     srv.cx.completingProperty = null;
@@ -822,19 +822,19 @@
   function findProperties(srv, query) {
     var prefix = query.prefix, found = [];
     for (var prop in srv.cx.props)
-      if (prop != "<i>" && (!prefix || prop.indexOf(prefix) === 0)) found.push(prop);
+      if (prop !== "<i>" && (!prefix || prop.indexOf(prefix) === 0)) found.push(prop);
     if (query.sort !== false) found.sort(compareCompletions);
     return {completions: found};
   }
 
   function inBody(node, pos) {
-    var body = node.body, start, end
-    if (!body) return false
+    var body = node.body, start, end;
+    if (!body) return false;
     if (Array.isArray(body)) {
-      start = body[0].start
+      start = body[0].start;
       end = body[body.length - 1].end
     } else {
-      start = body.start
+      start = body.start;
       end = body.end
     }
     return start <= pos && end >= pos
@@ -853,7 +853,7 @@
       if (!expr) {
         var around = infer.findExpressionAround(file.ast, start, end, file.scope);
         if (around && !inBody(around.node, end) &&
-            (around.node.type == "ObjectExpression" || wide ||
+            (around.node.type === "ObjectExpression" || wide ||
              (start == null ? end : start) - around.node.start < 20 || around.node.end - end < 20))
           expr = around
       }
@@ -878,16 +878,16 @@
       infer.resetGuessing();
       type = infer.expressionType(expr);
     }
-    var typeHandlers = srv.hasHandler("typeAt")
+    var typeHandlers = srv.hasHandler("typeAt");
     if (typeHandlers) {
-      var pos = resolvePos(file, query.end)
+      var pos = resolvePos(file, query.end);
       for (var i = 0; i < typeHandlers.length; i++)
         type = typeHandlers[i](file, pos, expr, type)
     }
     if (!type) throw ternError("No type found at the given position.");
 
     var objProp;
-    if (expr.node.type == "ObjectExpression" && query.end != null &&
+    if (expr.node.type === "ObjectExpression" && query.end != null &&
         (objProp = pointInProp(expr.node, resolvePos(file, query.end)))) {
       var name = objProp.key.name;
       var fromCx = ensureObj(infer.typeFromContext(file.ast, expr));
@@ -900,9 +900,8 @@
       }
     }
     return type;
-  };
-
-  function findTypeAt(srv, query, file) {
+  }
+    function findTypeAt(srv, query, file) {
     var expr = findExpr(file, query), exprName;
     var type = findExprType(srv, query, file, expr), exprType = type;
     if (query.preferFunction)
@@ -911,15 +910,15 @@
       type = type.getType();
 
     if (expr) {
-      if (expr.node.type == "Identifier")
+      if (expr.node.type === "Identifier")
         exprName = expr.node.name;
-      else if (expr.node.type == "MemberExpression" && !expr.node.computed)
+      else if (expr.node.type === "MemberExpression" && !expr.node.computed)
         exprName = expr.node.property.name;
-      else if (expr.node.type == "MethodDefinition" && !expr.node.computed)
+      else if (expr.node.type === "MethodDefinition" && !expr.node.computed)
         exprName = expr.node.key.name
     }
 
-    if (query.depth != null && typeof query.depth != "number")
+    if (query.depth != null && typeof query.depth !== "number")
       throw ternError(".query.depth must be a number");
 
     var result = {guess: infer.didGuess(),
@@ -935,7 +934,7 @@
 
   function parseDoc(query, doc) {
     if (!doc) return null;
-    if (query.docFormat == "full") return doc;
+    if (query.docFormat === "full") return doc;
     var parabreak = /.\n[\s@\n]/.exec(doc);
     if (parabreak) doc = doc.slice(0, parabreak.index + 1);
     doc = doc.replace(/\n\s*/g, " ");
@@ -962,7 +961,7 @@
     if (!out.origin) out.origin = type.origin;
     var ctor, boring = infer.cx().protos;
     if (!out.url && !out.doc && type.proto && (ctor = type.proto.hasCtor) &&
-        type.proto != boring.Object && type.proto != boring.Function && type.proto != boring.Array) {
+        type.proto !== boring.Object && type.proto !== boring.Function && type.proto !== boring.Array) {
       out.url = ctor.url;
       out.doc = parseDoc(query, ctor.doc);
     }
@@ -1031,17 +1030,17 @@
       return function(node, scopeHere, ancestors) {
         var value = {file: file.name,
                      start: outputPos(query, file, node.start),
-                     end: outputPos(query, file, node.end)}
+                     end: outputPos(query, file, node.end)};
         if (isRename) {
-          for (var s = scopeHere; s != scope; s = s.prev) {
+          for (var s = scopeHere; s !== scope; s = s.prev) {
             var exists = s.hasProp(isRename);
             if (exists)
               throw ternError("Renaming `" + name + "` to `" + isRename + "` would make a variable at line " +
                               (asLineChar(file, node.start).line + 1) + " point to the definition at line " +
                               (asLineChar(file, exists.name.start).line + 1));
           }
-          var parent = ancestors[ancestors.length - 2]
-          if (parent && parent.type == "Property" && parent.key == parent.value)
+          var parent = ancestors[ancestors.length - 2];
+          if (parent && parent.type === "Property" && parent.key === parent.value)
             value.isShorthand = true
         }
         refs.push(value);
@@ -1105,20 +1104,20 @@
 
   function findRefs(srv, query, file) {
     var expr = findExprOrThrow(file, query, true);
-    if (expr && expr.node.type == "Identifier") {
+    if (expr && expr.node.type === "Identifier") {
       return findRefsToVariable(srv, query, file, expr);
-    } else if (expr && expr.node.type == "MemberExpression" && !expr.node.computed) {
+    } else if (expr && expr.node.type === "MemberExpression" && !expr.node.computed) {
       var p = expr.node.property;
       expr.node = expr.node.object;
       return findRefsToProperty(srv, query, file, expr, p);
-    } else if (expr && expr.node.type == "ObjectExpression") {
+    } else if (expr && expr.node.type === "ObjectExpression") {
       var pos = resolvePos(file, query.end);
       for (var i = 0; i < expr.node.properties.length; ++i) {
         var k = expr.node.properties[i].key;
         if (k.start <= pos && k.end >= pos)
           return findRefsToProperty(srv, query, file, expr, k);
       }
-    } else if (expr && expr.node.type == "MethodDefinition") {
+    } else if (expr && expr.node.type === "MethodDefinition") {
       var p = expr.node.key;
       return findRefsToProperty(srv, query, file, expr, p);
     }
@@ -1126,9 +1125,9 @@
   }
 
   function buildRename(srv, query, file) {
-    if (typeof query.newName != "string") throw ternError(".query.newName should be a string");
+    if (typeof query.newName !== "string") throw ternError(".query.newName should be a string");
     var expr = findExprOrThrow(file, query);
-    if (!expr || expr.node.type != "Identifier") throw ternError("Not at a variable.");
+    if (!expr || expr.node.type !== "Identifier") throw ternError("Not at a variable.");
 
     var data = findRefsToVariable(srv, query, file, expr, query.newName), refs = data.refs;
     delete data.refs;
@@ -1137,7 +1136,7 @@
     var changes = data.changes = [];
     for (var i = 0; i < refs.length; ++i) {
       var use = refs[i];
-      if (use.isShorthand) use.text = expr.node.name + ": " + query.newName
+      if (use.isShorthand) use.text = expr.node.name + ": " + query.newName;
       else use.text = query.newName;
       changes.push(use);
     }

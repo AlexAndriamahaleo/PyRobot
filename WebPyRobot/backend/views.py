@@ -59,7 +59,6 @@ def index(request):
                    'scripts': request.user.userprofile.ia_set.all(),
                    'active_script': request.user.userprofile.get_active_ai_script(),
                    'players': UserProfile.objects.exclude(pk=current_user.pk),
-                   # 'classement': UserProfile.objects.order_by('-exp'),
                    'classement': Championship.objects.get(pk=champ_pk).players.all().order_by('-exp'),
                    'all_championship': Championship.objects.all(),
                    'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
@@ -106,9 +105,7 @@ class SignUp (FormView):
     form_class = SignUpForm
 
     def get_success_url(self):
-
         self.success_url = reverse('backend:login')
-
         return super().get_success_url()
 
     def get(self, request, *args, **kwargs):
@@ -183,7 +180,7 @@ def fight(request, player_pk=''):
 
     # New battle
     if not battle:
-        users1 = UserProfile.objects.exclude(pk=user1.pk)
+        # users1 = UserProfile.objects.exclude(pk=user1.pk)
         # Get list of players which have level = the current player level +/- 5
         users = Championship.objects.get(pk=champ_pk).players.all()
         if not users:
@@ -301,7 +298,7 @@ def testcpu(request, player_pk='', script_pk=''):
             tank2 = Tank.objects.get(owner=user2)
             ia1 = user1.get_active_ai_script()  # Ia.objects.get(owner=user1)
 
-            script_1 = user1.ia_set.filter(name=ia1) # for pk -> list(script_1)[0].pk
+            script_1 = user1.ia_set.filter(name=ia1)  # for pk -> list(script_1)[0].pk
             old_selected = list(script_1)[0].pk
             old_ia = Ia.objects.get(pk=old_selected)
 
@@ -534,7 +531,7 @@ def createscript(request):
 
 @login_required
 def editorDetail(request, pk):
-    return HttpResponse('page de l editor pour ' + pk)
+    return HttpResponse('page de l\'editor pour ' + pk)
 
 
 @login_required
@@ -568,29 +565,29 @@ def inventory(request):
                'navInv': navSys,
                'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user))
                }
-    return render(request, 'backend/inventaire.html',context)
+    return render(request, 'backend/inventaire.html', context)
+
 
 @login_required
 def parameter(request):
-
     form = ChangeDataForm()
     form.fields['email'].initial = request.user.email
-    form.fields['username'].initial= request.user.username
+    form.fields['username'].initial = request.user.username
     context = {'money': UserProfile.objects.get(user=request.user).money,
                'username': request.user,
                'pageIn': 'accueil',
                'agression': UserProfile.objects.get(user=request.user).agression,
                'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
                'form': form}
-    return render(request, 'backend/parameter.html',context)
+    return render(request, 'backend/parameter.html', context)
 
 
 @login_required
 def help(request):
-    context = {'money' : UserProfile.objects.get(user=request.user).money,
-               'username' : request.user,
+    context = {'money': UserProfile.objects.get(user=request.user).money,
+               'username': request.user,
                'pageIn': 'help'}
-    return render(request, 'backend/aide.html',context)
+    return render(request, 'backend/aide.html', context)
 
 
 @login_required
@@ -631,7 +628,7 @@ def changeStuff(request):
             weapons = inventory[0]
             avail_wps = []
             for wp in weapons:
-                if wp.pk !=  tank.weapon.pk:
+                if wp.pk != tank.weapon.pk:
                     if wp.attackCost <= n.actionValue:
                         avail_wps.append(wp)
             wps = sorted(avail_wps, key=lambda x: x.attackValue, reverse=True)
@@ -659,9 +656,9 @@ def buyStuff (request):
                    'caterpillars': Caterpillar.objects.all(),
                    'navSys': NavSystem.objects.all()
                    }
-        messages.error(request, "Équipement déjà acheter")
+        messages.error(request, "Équipement déjà acheté")
         return render(request, 'backend/boutique.html', context)
-    elif price > user.money :
+    elif price > user.money:
         context = {'money': UserProfile.objects.get(user=request.user).money,
                    'username': request.user,
                    'pageIn': 'market',

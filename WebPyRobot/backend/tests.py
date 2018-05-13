@@ -1,23 +1,13 @@
 from unittest import TestCase
 from django.test import Client, SimpleTestCase
 from django.contrib.auth.models import User
-from .models import Championship, UserProfile
+from django.urls import reverse
+from .models import Championship, UserProfile, Tank
+from .funct.funct import *
+from .game.Game import Game
 from .forms import *
 
 # Create your tests here.
-
-
-# class SimpleTest(TestCase):
-#    def setUp(self):
-#        # Every test needs a client.
-#        self.client = Client()
-
-#     def test_details(self):
-#         # Issue a GET request.
-#         response = self.client.get('/')
-
-#         # Check that the response is 200 OK.
-#         self.assertEqual(response.status_code, 200)
 
 
 # TODO: TESTS UNITAIRE
@@ -119,12 +109,63 @@ class DocumentationTest(unittest.TestCase):
 '''
 
 
+def init_user(**data_user):
+    """
+    Fonction qui crée et initialise un User et le renvoie.
+    Contient :
+        - l'id du User
+        - son nom d'utilisateur
+        - son email
+        - son mot de passe
+    :param int or str data_user:
+    :return: return the User created
+    """
+    user = User(username=data_user['username'], email=data_user['email'], password=data_user['password'])
+    user.id = data_user['id']
+    user.save()
+    return user
+
+
+def init_user_profile(**data_user):
+    """
+    Fonction qui permet de créer et initialiser un UserProfile à partir d'un user, et le renvoie.
+    Contient :
+        - l'id du User
+        - son nom d'utilisateur
+        - son email
+        - son mot de passe
+    :param int or str data_user:
+    :return: Return the UserProfile created
+    """
+    user = init_user(**data_user)
+    user_profile = UserProfile(user=user)
+    user_profile.id = data_user['id']
+    user_profile.save()
+    return user_profile
+
+
+def init_tank(user_profile):
+    i = Ia(owner=user_profile, name='Script de {}'.format(user_profile.user.username.capitalize()), active=True)
+    i.save()
+    w = Weapon(name='Canon', price=100, attackValue=100, range=10, attackCost=10, pathIcon='canon_1.png')
+    w.save()
+    a = Armor(name='Blindage', price=100, armorValue=100, pathIcon='shield_1.png')
+    a.save()
+    c = Caterpillar(name='Chenille', price=100, moveValue=4, pathIcon='cater_1.png')
+    c.save()
+    n = NavSystem(name='Processeur', price=100, actionValue=100, pathIcon='circuit_1.png')
+    n.save()
+    tank = Tank(owner=user_profile, ia=i, weapon=w, armor=a, caterpillar=c, navSystem=n)
+    tank.save()
+    return tank
+
+
 class TestUrlIndex(TestCase):
     def setUp(self):
         self.client = Client()
 
     def test_index(self):
-        response = self.client.get('/')
+        response = self.client.get(reverse('backend:index'))
         self.assertEqual(response.status_code, 200)
 
 
@@ -133,7 +174,7 @@ class TestUrlLogin(TestCase):
         self.client = Client()
 
     def test_login(self):
-        response = self.client.get('/login/')
+        response = self.client.get(reverse('backend:login'))
         self.assertEqual(response.status_code, 200)
 
 
@@ -142,12 +183,9 @@ class TestUrlLogout(SimpleTestCase, TestCase):
         self.client = Client()
 
     def test_logout(self):
-        response = self.client.get('/logout/', follow=True)
-        # print(response.redirect_chain[0])  # Looks like ('/', 302)
-        # excpected_url, status_code = response.redirect_chain[0]  # récupère l'adresse et le code de la redirection
-        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
-
-        self.assertRedirects(response, expected_url='/', status_code=302, target_status_code=200)
+        # Set follow=True to get the attribute redirect_chain
+        response = self.client.get(reverse('backend:logout'), follow=True)
+        self.assertRedirects(response, expected_url=reverse('backend:index'), status_code=302, target_status_code=200)
 
 
 class TestUrlSignUp(TestCase):
@@ -155,7 +193,7 @@ class TestUrlSignUp(TestCase):
         self.client = Client()
 
     def test_sign_up(self):
-        response = self.client.get('/signup/')
+        response = self.client.get(reverse('backend:signUp'))
         self.assertEqual(response.status_code, 200)
 
 
@@ -164,54 +202,44 @@ class TestUrlPassword(SimpleTestCase, TestCase):
         self.client = Client()
 
     def test_password(self):
-        response = self.client.get('/password/', follow=True)
-        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
+        response = self.client.get(reverse('backend:change_password'), follow=True)
         self.assertRedirects(response, expected_url='/login/?next=/password/', status_code=302, target_status_code=200)
 
 
-class TestUrlBattle(SimpleTestCase, TestCase):
+class TestUrlBattle(TestCase):
     def setUp(self):
         self.client = Client()
+
+        self.user1 = init_user_profile(id=1, username='bob', email='bob@bibi.com', password='bobbibi')
+        self.user2 = init_user_profile(id=2, username='marc', email='marc@mi.com', password='marcima')
+
+        self.tank1 = init_tank(self.user1)
+        self.tank2 = init_tank(self.user2)
+
+        self.champ = Championship(name='ch')
+        self.champ.id = 1
+        self.champ.save()
 
     def test_battle(self):
-        response = self.client.get('/battle/', follow=True)
-        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
-        self.assertRedirects(response, expected_url='/login/?next=/battle/', status_code=302, target_status_code=200)
+        response = self.client.get(reverse('backend:fight'), follow=True)
+        SimpleTestCase().assertRedirects(response, expected_url='/login/?next=/battle/', status_code=302,
+                                         target_status_code=200)
 
+    def test_battle_championship(self):
+        self.champ.add_user(self.user1)
+        self.champ.add_user(self.user2)
+        self.champ.save()
+        # print("\n\n{}\n{}\n\n".format(UserProfile.objects.all(), Championship.objects.all()))
+        # print('test = ', self.champ.pk)
 
-class TestUrlBattleWithSinglePlayerPk(TestCase):
-    def setUp(self):
-        self.client = Client()
+        game = Game(self.tank1, self.tank2, self.user1.get_active_ai_script(), self.user2.get_active_ai_script(), self.champ)
+        game.run(0)
 
-    def test_battle_with_single_player_pk(self):
-        user1 = User(username='bob', email='bob@bibi.com', password='bobbibi')
-        user1.id = 1
-        user1.save()
-        UserProfile(user=user1).save()
-        user_1 = UserProfile.objects.get(id=user1.id)
-
-        '''user2 = User(username='marc', email='marc@mi.com', password='marcima')
-        user2.id = 2
-        user2.save()
-        
-        UserProfile(user=user2).save()
-        user_2 = UserProfile.objects.get(id=user2.id)
-
-        print(UserProfile.objects.all())'''
-
-        ch = Championship(name='ch')
-        ch.id = 1
-        ch.save()
-        Championship.objects.get(name='ch').players.create(user=user1)
-        # ch.players.add(user_1)
-        # ch.players.add(user_2)
-        # ch.save()
-        # print("\n{}\n".format(Championship.objects.all()))
-
-        # response = self.client.get('battle/', user1, follow=True)
-        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
+        response = self.client.get(reverse('backend:fight'), player_pk=self.user2.pk, follow=True)
+        # response = self.client.get('battle/2/', player_pk=self.user2.pk, follow=True)
+        print("\n\n{}\n\n".format(response))
         # self.assertEqual(response.status_code, 200)
-        # self.assertRedirects(response, expected_url='/battle/'+str(self.user.pk)+'/', status_code=302, target_status_code=200)
+        # SimpleTestCase.assertRedirects(response, expected_url='/battle/'+str(self.user.pk)+'/', status_code=302, target_status_code=200)
 
 
 class TestUrlTestCPU(SimpleTestCase, TestCase):
@@ -219,8 +247,7 @@ class TestUrlTestCPU(SimpleTestCase, TestCase):
         self.client = Client()
 
     def test_testCPU(self):
-        response = self.client.get('/testcpu/', follow=True)
-        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
+        response = self.client.get(reverse('backend:testcpu'), follow=True)
         self.assertRedirects(response, expected_url='/login/?next=/testcpu/', status_code=302, target_status_code=200)
 
 
@@ -229,15 +256,47 @@ class TestUrlVersus(SimpleTestCase, TestCase):
         self.client = Client()
 
     def test_versus(self):
-        response = self.client.get('/versus/', follow=True)
-        # print("\n\n{}\n\n".format(response.redirect_chain[0]))
+        response = self.client.get(reverse('backend:versus'), follow=True)
         self.assertRedirects(response, expected_url='/login/?next=/versus/', status_code=302, target_status_code=200)
 
 
-class TestUrlReplay(TestCase):
+class TestUrlReplay(SimpleTestCase, TestCase):
     def setUp(self):
         self.client = Client()
 
-    def test_versus(self):
+    def test_replay(self):
         response = self.client.get('/replay/', follow=True)
-        print("\n\n{}\n\n".format(response.redirect_chain[0]))
+        self.assertRedirects(response, expected_url='/login/?next=/replay/', status_code=302, target_status_code=200)
+
+
+class TestUrlEditor(SimpleTestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_editor(self):
+        response = self.client.get('/editor/', follow=True)
+        self.assertRedirects(response, expected_url='/login/?next=/editor/', status_code=302, target_status_code=200)
+
+    def test_editor_detail(self):
+        response = self.client.get('/editor/1/', follow=True)
+        # print("\n\n{}\n\n".format(response.redirect_chain))
+        self.assertRedirects(response, expected_url='/login/?next=/editor/1/', status_code=302, target_status_code=200)
+
+
+class TestUrl(SimpleTestCase, TestCase):
+    pass
+
+
+class TestUrl:
+    def test_url(self):
+        TestUrlIndex.test_index(TestUrlIndex())
+        TestUrlLogin.test_login(TestUrlLogin())
+        TestUrlLogout.test_logout(TestUrlLogout())
+        TestUrlSignUp.test_sign_up(TestUrlSignUp())
+        TestUrlPassword.test_password(TestUrlPassword())
+        TestUrlBattle.test_battle(TestUrlBattle())
+        TestUrlBattle.test_battle_championship(TestUrlBattle())
+        TestUrlTestCPU.test_testCPU(TestUrlTestCPU())
+        TestUrlVersus.test_versus(TestUrlVersus())
+        TestUrlReplay.test_replay(TestUrlReplay())
+        TestUrlEditor.test_editor(TestUrlEditor())

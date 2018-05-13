@@ -92,7 +92,8 @@ class Game(object):
         return numCell // self.__size
 
     def getCellDistance(self, numCellA, numCellB):
-        return (abs(self.getCellPosX(numCellB) - self.getCellPosX(numCellA)) + abs(self.getCellPosY(numCellB) - self.getCellPosY(numCellA)) )
+        return (abs(self.getCellPosX(numCellB) - self.getCellPosX(numCellA)) +
+                abs(self.getCellPosY(numCellB) - self.getCellPosY(numCellA)))
 
     def getCellFromXY(self, x, y):
         return y*self.__size + x
@@ -142,7 +143,7 @@ class Game(object):
                     self.__result.append([self.__current, "moveRight", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x + 1, y)] = self.__current
-                    pm -=1
+                    pm -= 1
                     x += 1
                     pos = self.getPosition(self.__current)
 
@@ -151,8 +152,8 @@ class Game(object):
                 if pm > 0 and self.__map[self.getCellFromXY(x, y-1)] == -1:
                     self.__result.append([self.__current, "moveDown", 0, 0, 0])
                     self.__map[pos] = -1
-                    self.__map[self.getCellFromXY(x , y-1)] = self.__current
-                    pm -=1
+                    self.__map[self.getCellFromXY(x, y-1)] = self.__current
+                    pm -= 1
                     y -= 1
                     pos = self.getPosition(self.__current)
 
@@ -162,7 +163,7 @@ class Game(object):
                     self.__result.append([self.__current, "moveUp", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x, y+1)] = self.__current
-                    pm -=1
+                    pm -= 1
                     y += 1
                     pos = self.getPosition(self.__current)
 
