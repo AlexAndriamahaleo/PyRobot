@@ -164,7 +164,7 @@
     "model": "backend.faq",
     "pk": 1,
     "fields": {
-      "question": "Quelles sont les r\u00e8gles du jeu ",
+      "question": "Quelles sont les règles du jeu ",
       "answer": "<p><strong>Concevez</strong></p>\r\n\r\n<p>... ... la meilleur combinaison d&#39;&eacute;quipement pour votre tank.</p>\r\n\r\n<p><strong>Imaginez et Codez</strong></p>\r\n\r\n<p>... ... ce tank qui prendra l&#39;ascendant sur votre adversaire et vous m&egrave;nera &agrave; la victoire gr&acirc;ce &agrave; vos comp&eacute;tences - ou future comp&eacute;tences - en programmation.</p>\r\n\r\n<p>Nous incluons un syst&egrave;me de niveau et d&#39;exp&eacute;rience. Dans le jeu, vous allez vous confronter &agrave; plus fort que vous. [Bient&ocirc;t] En cas de victoire la r&eacute;compense (sous forme d&#39;exp&eacute;rience) n&#39;en sera que meilleur.</p>\r\n\r\n<p><strong>Plus en d&eacute;tail </strong></p>\r\n\r\n<p>Un combat se d&eacute;roule sur une grille de jeu de 32 cases par 32 cases.</p>\r\n\r\n<p>Comme tout bon programmeur, cela signifie que pour les indices en X et en Y vont de 0 &agrave; 31.</p>\r\n\r\n<p>Vous avez donc 1024 cases sur cette grille. Qui vous permettront de mettre en place votre strat&eacute;gie de jeu.</p>",
       "symbol": "import_contacts"
     }
@@ -200,7 +200,7 @@
     "model": "backend.faq",
     "pk": 5,
     "fields": {
-      "question": "Je n'arrive pas \u00e0 glisser-d\u00e9poser mon fichier depuis mon ordinateur vers l'\u00e9diteur",
+      "question": "Je n'arrive pas à glisser-déposer mon fichier depuis mon ordinateur vers l'éditeur",
       "answer": "<p>L&#39;&eacute;diteur n&#39;accepte que deux extensions:</p>\r\n\r\n<ol>\r\n\t<li>nomdufichier.py</li>\r\n\t<li>nomdufichier.txt</li>\r\n</ol>",
       "symbol": "file_upload"
     }
@@ -233,17 +233,216 @@
     }
   },
   {
-    "model": "backend.Championship",
+    "model": "auth.user",
     "pk": 1,
-    "fields":{
-      "name": "Championnat PyRobot [Default]"
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:01:10.874Z",
+      "is_superuser": true,
+      "username": "admin_pyrobot",
+      "first_name": "Alex",
+      "last_name": "ANDRIAMAHALEO",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-05-10T20:45:40.146Z",
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
-    "model": "backend.Championship",
+    "model": "auth.user",
     "pk": 2,
-    "fields":{
-      "name": "PyRobot Test Champ"
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:07:30.899Z",
+      "is_superuser": false,
+      "username": "ORDI_1",
+      "first_name": "ORDI_1",
+      "last_name": "ORDINATEUR",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-05-10T23:07:29.781Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:10:22.119Z",
+      "is_superuser": false,
+      "username": "ORDI_2",
+      "first_name": "ORDI_2",
+      "last_name": "ORDINATEUR",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-05-10T23:10:20.995Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:11:03.886Z",
+      "is_superuser": false,
+      "username": "ORDI_3",
+      "first_name": "ORDI_3",
+      "last_name": "ORDINATEUR",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-05-10T23:11:02.781Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "backend.userprofile",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "money": 0,
+      "avatar": "",
+      "agression": true,
+      "exp": 0,
+      "srch": 0,
+      "dev": 0,
+      "level": 0,
+      "next_level_exp": 10,
+      "true_level": 1
+    }
+  },
+  {
+    "model": "backend.userprofile",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "money": 0,
+      "avatar": "",
+      "agression": true,
+      "exp": 0,
+      "srch": 0,
+      "dev": 0,
+      "level": 0,
+      "next_level_exp": 10,
+      "true_level": 1
+    }
+  },
+  {
+    "model": "backend.userprofile",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "money": 0,
+      "avatar": "",
+      "agression": true,
+      "exp": 0,
+      "srch": 0,
+      "dev": 0,
+      "level": 0,
+      "next_level_exp": 10,
+      "true_level": 1
+    }
+  },
+  {
+    "model": "backend.ia",
+    "pk": 1,
+    "fields": {
+        "owner": 1,
+        "name": "ORDI_1 Facile",
+        "text": "# CPU_1\r\n# Ne tire pas tant que\r\n# le tank enemy n'est pas\r\n# \u00e0\u00a0 sa port\u00e9e\r\n\r\nenemy = self.getEnemyTankId()\r\nenemypos = self.getPosition(enemy)\r\nenemyRange = self.getRange(enemy)\r\n\r\nmytank = self.getTankId()\r\nmyRange = self.getRange(mytank)\r\n\r\nself.moveTank(enemypos)\r\n\r\nmypos = self.getPosition(mytank)\r\n\r\ndist_btw = self.getCellDistance(mypos,enemypos)\r\n\r\nif dist_btw < enemyRange :\r\n    current_PA = self.getPA(mytank)\r\n    while(current_PA != 0):\r\n        self.shoot()\r\n        current_PA = self.getPA(mytank)\r\n",
+        "active": true
+    }
+},
+{
+    "model": "backend.ia",
+    "pk": 2,
+    "fields": {
+        "owner": 2,
+        "name": "ORDI_2 Intermediaire",
+        "text": "# CPU_2\r\n\r\n#############ENEMY#################\r\nid_enemy = self.getEnemyTankId() # int\r\npos_enemy = self.getPosition(id_enemy) # cell\r\nportee_enemy = self.getRange(id_enemy) # int\r\npos_enemy_X = self.getCellPosX(pos_enemy)\r\npos_enemy_Y = self.getCellPosY(pos_enemy)\r\nlife_enemy = self.getLife(id_enemy)\r\n##################################\r\n\r\n##############MY TANK################\r\nid_tank = self.getTankId()\r\npos_tank = self.getPosition(id_tank)\r\nportee_tank = self.getRange(id_tank)\r\npos_tank_X = self.getCellPosX(pos_tank)\r\npos_tank_Y = self.getCellPosY(pos_tank)\r\nlife_tank = self.getLife(id_tank)\r\n###################################\r\n\r\n###################################\r\nglobal step_1_enemy_pos\r\nstep_1_enemy_pos = []\r\n\r\nfor i in range(4):\r\n    tmp_en_X = pos_enemy_X - 3 + i\r\n    tmp_en_Y = pos_enemy_Y - i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n    step_1_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\nfor i in range(4):\r\n    tmp_en_X = pos_enemy_X + 3 - i\r\n    tmp_en_Y = pos_enemy_Y - i\r\n    if  tmp_en_X < 32 and  tmp_en_Y < 32:\r\n        tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n        tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n        if (tmp_cell, tmp_dist_from_tank) not in step_1_enemy_pos:\r\n            step_1_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\n\r\nglobal step_2_enemy_pos\r\nstep_2_enemy_pos = []\r\nglobal min_dist\r\nmin_dist = 1000\r\n\r\npos_tmp_X = self.getCellPosX(step_1_enemy_pos[0][0])\r\npos_tmp_Y = self.getCellPosY(step_1_enemy_pos[0][0])\r\nfor i in range(4):\r\n    tmp_en_X = pos_tmp_X - 3 + i\r\n    tmp_en_Y = pos_tmp_Y - i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n    if tmp_dist_from_tank < min_dist:\r\n        step_2_enemy_pos = []\r\n        min_dist = tmp_dist_from_tank\r\n    elif tmp_dist_from_tank == min_dist:\r\n        step_2_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\n    else:\r\n        pass\r\nfor i in range(4):\r\n    tmp_en_X = pos_tmp_X + 3 - i\r\n    tmp_en_Y = pos_tmp_Y  - i\r\n    if  tmp_en_X < 32 and  tmp_en_Y < 32:\r\n        tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n        tmp_dist_from_tank = self.getCellDistance(pos_tank, tmp_cell)\r\n        if (tmp_cell, tmp_dist_from_tank) not in step_2_enemy_pos:\r\n            if tmp_dist_from_tank < min_dist:\r\n                step_2_enemy_pos = []\r\n                min_dist = tmp_dist_from_tank\r\n            elif tmp_dist_from_tank == min_dist:\r\n                step_2_enemy_pos.append([tmp_cell, tmp_dist_from_tank])\r\n            else:\r\n                pass\r\n\r\n###################################\r\n\r\n###################################\r\nglobal step_1_tank_pos\r\nstep_1_tank_pos = []\r\n\r\nglobal step_1_tank_pos_2pm\r\nstep_1_tank_pos_2pm = []\r\n\r\n\r\nfor i in range(4):\r\n    tmp_en_X = pos_tank_X + 3 - i\r\n    tmp_en_Y = pos_tank_Y + i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    if  len(step_2_enemy_pos) > 1:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[1][0])\r\n    else:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[0][0])\r\n    \r\n    if tmp_dist_from_en > portee_tank and tmp_dist_from_en not in step_1_tank_pos:\r\n        step_1_tank_pos.append([tmp_cell, tmp_dist_from_en])\r\n        \r\n\r\nfor i in range(3):\r\n    tmp_en_X = pos_tank_X + 2 - i\r\n    tmp_en_Y = pos_tank_Y + i\r\n    tmp_cell = self.getCellFromXY(tmp_en_X, tmp_en_Y)\r\n    if  len(step_2_enemy_pos) > 1:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[1][0])\r\n    else:\r\n        tmp_dist_from_en = self.getCellDistance(tmp_cell, step_2_enemy_pos[0][0])\r\n    \r\n    if tmp_dist_from_en >= portee_tank and tmp_dist_from_en not in step_1_tank_pos_2pm:\r\n        step_1_tank_pos_2pm.append([tmp_cell, tmp_dist_from_en])\r\n\r\n###################################\r\n\r\nif life_enemy == 100:\r\n    if step_1_tank_pos != []:\r\n        new_pos = step_1_tank_pos[1][0]\r\n        self.moveTank(new_pos)\r\n    else:\r\n        dist_btw = self.getCellDistance(pos_tank,pos_enemy)\r\n        if (abs(dist_btw - portee_enemy)) >= 0 and (abs(dist_btw - portee_enemy)) <= 3:\r\n            new_pos = pos_enemy\r\n            self.moveTank(new_pos)\r\n        elif (abs(dist_btw - portee_enemy)) >= 0 and (abs(dist_btw - portee_enemy)) > 4 and (abs(dist_btw - portee_enemy)) <= 6:\r\n            back_to_zero_X = self.getCellPosX(pos_tank) - 1\r\n            back_to_zero_Y = self.getCellPosY(pos_tank)\r\n            new_pos = self.getCellFromXY(back_to_zero_X, back_to_zero_Y)\r\n            self.moveTank(new_pos)\r\n        else:\r\n            pass\r\n    # self.moveTank(pos_enemy)\r\n    new_pos_tank = self.getPosition(id_tank)\r\n    dist_btw = self.getCellDistance(new_pos_tank,pos_enemy)\r\n    \r\n    if dist_btw <= portee_enemy :\r\n        current_PA = self.getPA(id_tank)\r\n        while(current_PA != 0):\r\n            self.shoot()\r\n            current_PA = self.getPA(id_tank)\r\nelse:\r\n    current_PA = self.getPA(id_tank)\r\n    while(current_PA != 0):\r\n        self.shoot()\r\n        current_PA = self.getPA(id_tank)\r\n    if self.getCellPosX(pos_enemy) < self.getCellPosX(pos_tank):\r\n        new_pos = self.getCellFromXY(0, 0)\r\n    else:\r\n        new_pos = self.getCellFromXY(31, 0)\r\n    self.moveTank(new_pos)",
+        "active": true
+    }
+},
+{
+    "model": "backend.ia",
+    "pk": 3,
+    "fields": {
+        "owner": 3,
+        "name": "ORDI_1 Difficile",
+        "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos)\n# Shoot the enemy Gracefuly\nself.shoot()",
+        "active": true
+    }
+},
+  {
+    "model": "backend.tank",
+    "pk": 1,
+    "fields": {
+      "owner": 1,
+      "ia": 1,
+      "weapon": 1,
+      "armor": 1,
+      "caterpillar": 1,
+      "navSystem": 1,
+      "hp_value": 100
+    }
+  },
+  {
+    "model": "backend.tank",
+    "pk": 2,
+    "fields": {
+      "owner": 2,
+      "ia": 2,
+      "weapon": 1,
+      "armor": 1,
+      "caterpillar": 1,
+      "navSystem": 1,
+      "hp_value": 100
+    }
+  },
+  {
+    "model": "backend.tank",
+    "pk": 3,
+    "fields": {
+      "owner": 3,
+      "ia": 3,
+      "weapon": 1,
+      "armor": 1,
+      "caterpillar": 1,
+      "navSystem": 1,
+      "hp_value": 100
+    }
+  },
+  {
+    "model": "backend.championship",
+    "pk": 1,
+    "fields": {
+      "name": "ORDINATEURS",
+      "private_mode": true,
+      "secret_word": "pyrobot",
+      "players": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "backend.championship",
+    "pk": 2,
+    "fields": {
+      "name": "PyRobot [Défault]",
+      "private_mode": false,
+      "secret_word": "",
+      "players": []
     }
   }
 ]

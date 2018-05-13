@@ -12,3 +12,4 @@ WebPyRobot/development.py
 
 /pip3freeze_requirements.txt
 /WebPyRobot/backend/static/tern/pyrobot.json.old
+/WebPyRobot/backend/fixtures/init_db/

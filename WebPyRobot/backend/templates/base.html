@@ -57,31 +57,33 @@
 </main>
 
 <footer class="section" style="background-color: #1a237e">
-    <!--<div class="container">
-        <div class="row">
-            <div class="col s12 m6 l6">
-                <h4 class="yellow-text">Liens utiles</h4>
-                <ul>
-                    <li>
-                        <a class="white-text" href="https://docs.python.org/3/" target="_blank"><i class="fab fa-python"></i> Python</a>
-                    </li>
-                    <li><a class="white-text" href="https://openclassrooms.com" target="_blank"><i class="fab fa-codepen"></i>
-                        Openclassrooms</a></li>
-                    <li><a href="https://www.w3schools.com/" class="white-text" target="_blank"><i
-                            class="fa fa-graduation-cap" aria-hidden="true"></i>
-                        w3schools</a></li>
-                </ul>
-            </div>
-            <div class="col s12 m6 l6">
-                <h4 class="yellow-text">Autres</h4>
-                <ul>
-                    <li><a href="https://www.univ-amu.fr/" class="white-text" target="_blank"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Aix Marseille Université</a></li>
-                    <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fab fa-google"></i> Google</a></li>
-                    <li><a href="https://github.com/" class="white-text" target="_blank"><i class="fab fa-github"></i> Github</a></li>
-                </ul>
+    {% if pageIn == 'editor' %}
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h4 class="yellow-text">Liens utiles</h4>
+                    <ul>
+                        <li>
+                            <a class="white-text" href="https://docs.python.org/3/" target="_blank"><i class="fab fa-python fa-lg"></i> Python</a>
+                        </li>
+                        <li><a class="white-text" href="https://openclassrooms.com" target="_blank"><i class="fab fa-opera fa-lg"></i>
+                            Openclassrooms</a></li>
+                        <li><a href="https://www.w3schools.com/" class="white-text" target="_blank">
+                            <i class="fas fa-graduation-cap fa-lg"></i>
+                            w3schools</a></li>
+                    </ul>
+                </div>
+                <div class="col s12 m6 l6">
+                   <!-- <h4 class="yellow-text">Autres</h4>
+                    <ul>
+                        <li><a href="https://www.univ-amu.fr/" class="white-text" target="_blank"><i class="fas fa-graduation-cap fa-lg"></i>Aix Marseille Université</a></li>
+                        <li><a class="white-text" href="https://www.google.fr/" target="_blank"><i class="fab fa-google fa-lg"></i> Google</a></li>
+                        <li><a href="https://github.com/" class="white-text" target="_blank"><i class="fab fa-github fa-lg"></i> Github</a></li>
+                    </ul>-->
+                </div>
             </div>
         </div>
-    </div>-->
+    {% endif %}
     <div class="footer-copyright">
         {% include 'backend/legalNoticeContact.html' %}
         <div class="container white-text center-align">

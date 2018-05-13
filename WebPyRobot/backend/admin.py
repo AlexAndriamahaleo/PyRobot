@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
 
-from .models import UserProfile, Tank, Armor, Caterpillar, Ia, NavSystem, Weapon, TypeItem, Inventory, DefaultIa, FAQ, BattleHistory
+from .models import UserProfile, Tank, Armor, Caterpillar, Ia, NavSystem, Weapon, TypeItem, Inventory, DefaultIa, FAQ, BattleHistory, Championship
 
 # Register your models here.
 class FAQAdminForm(forms.ModelForm):
@@ -33,6 +33,9 @@ class BattleHistoryAdmin(admin.ModelAdmin):
     get_opp_name.admin_order_field = "opponent__username"
 
 
+class ChampionshipAdmin(admin.ModelAdmin):
+    list_display = ['name', 'private_mode', 'secret_word', 'players']
+
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(UserProfile)
 admin.site.register(Armor)
@@ -46,3 +49,4 @@ admin.site.register(Inventory)
 admin.site.register(DefaultIa)
 # admin.site.register(FAQ)
 admin.site.register(BattleHistory, BattleHistoryAdmin)
+admin.site.register(Championship)

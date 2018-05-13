@@ -33,47 +33,41 @@
 
     <div class="col s12 m12 l4">
         <div class="card sticky-action">
-
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
                 <a class="waves-effect waves-light modal-trigger" href="#versus">
-                    <img class="activator" src="{% static 'img/icons/training.png' %}">
+                    <img id="mode_versus" class="activator" src="{% static 'img/icons/training_info.png' %}">
                 </a>
             </div>
         </div>
     </div>
     <div class="col s12 m12 l4">
         <div class="card sticky-action tooltipped" data-position="bottom" data-delay="50"
-             data-tooltip="Code actif: {{ active_script.name }}">
+             data-tooltip="Code actif: {{ active_script.name }}" >
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
-                <img class="activator" src="{% static 'img/icons/code.png' %}">
-
+                <img id="mode_edit" class="activator" src="{% static 'img/icons/code_info.png' %}">
             </div>
 
             <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4"><i
-                        class="material-icons right">close</i>Vos codes</span>
-                <ul>
+                <span class="card-title grey-text text-darken-4">
+                    <i class="material-icons right">close</i>Vos codes</span>
+
+                <div class="collection">
                     {% for script in scripts %}
-
-                        <!--<div class="card-panel waves-effect waves-block waves-light" onclick="window.location.href='/editor/?script={{ script.pk }}'">
-                            <span class="card-title">
+                        <p>
+                            <a onclick="window.location.href='/editor/?script={{ script.pk }}'" class="collection-item black-text" style="cursor:pointer">
                                 {{ script.name|truncatechars:22 }}
-                            </span>
-                        </div>-->
-
-                        <li>
-                            <p>
-                                {{ script.name|truncatechars:22 }}
-                                <a class="btn-flat right"
-                                   onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>
-                            </p>
-                        </li>
-
+                                {% if script.name ==  active_script.name %}
+                                    <span class="new badge indigo yellow-text darken-4" data-badge-caption="Actif"></span>
+                                {% endif %}
+                            </a>
+                        </p>
                     {% endfor %}
-                </ul>
-            <div class="fixed-action-btn">
-                <a class="waves-effect waves-teal btn-flat" onclick="window.location.href='/editor/'">Éditeur</a>
-            </div>
+                </div>
+
+
+                <div class="fixed-action-btn hide-on-med-and-down">
+                    <a class="waves-effect waves-teal btn-flat" onclick="window.location.href='/editor/'">Éditeur</a>
+                </div>
             </div>
         </div>
     </div>
@@ -81,7 +75,7 @@
         <div class="card sticky-action">
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
                 <a class="waves-effect waves-light modal-trigger" href="#championnat">
-                    <img class="activator" src="{% static 'img/icons/championnat.png' %}">
+                    <img id="mode_championship" class="activator" src="{% static 'img/icons/championnat_info.png' %}">
                 </a>
             </div>
         </div>
@@ -129,13 +123,14 @@
 
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 1 - Facile <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
+                    <div class="collapsible-header" onclick="location.href='/versus/1/1#ORDI_FACILE'"><i class="material-icons">laptop</i>CPU 1 - Facile</div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
+                    <div class="collapsible-header" onclick="location.href='/versus/2/2#ORDI_INTERMEDIAIRE'"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire</div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 3 - Difficile <span class=" badge " data-badge-caption="Bientôt disponible"></span></div>
+                    <div class="collapsible-header" onclick="location.href='/versus/3/3#ORDI_DIFFICILE'"><i class="material-icons">laptop</i>CPU 3 - Difficile <span
+                            class=" badge " data-badge-caption="Bientôt disponible"></span></div>
                 </li>
             </ul>
 
@@ -143,7 +138,8 @@
             <ul>
                 {% for script in scripts %}
                     <li>
-                        <div class="collapsible-header" onclick="location.href='/versus/{{ user.pk }}/{{ script.pk }}#{{ script.name }}'">
+                        <div class="collapsible-header"
+                             onclick="location.href='/versus/{{ user.pk }}/{{ script.pk }}#{{ script.name }}'">
                             <i class="material-icons">insert_drive_file</i> {{ script.name|truncatechars:22 }}
                         </div>
                         <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
@@ -223,43 +219,7 @@
 {% block custom_js %}
     <script src="{% static 'js/accueil.js' %}"></script>
     <script>
-        function searchPlayerChamp() {
-            var input, filter, table, li, div, i;
-            input = document.getElementById("PlayerChamp");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("resultPlayerChamp");
-            li = table.getElementsByTagName("li");
-            for (i = 0; i < li.length; i++) {
-                div = li[i].getElementsByTagName("div")[0];
-                console.log(div);
-                if (div) {
-                    if (div.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        function searchPlayerVersus() {
-            var input, filter, table, li, div, i;
-            input = document.getElementById("modeVersus");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("resultPlayerVersus");
-            li = table.getElementsByTagName("li");
-            for (i = 0; i < li.length; i++) {
-                div = li[i].getElementsByTagName("div")[0];
-                if (div) {
-                    if (div.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
-            }
-        }
-        console.log("{{ championnat }}")
+        console.log("{{ championnat }}");
     </script>
 {% endblock %}
 

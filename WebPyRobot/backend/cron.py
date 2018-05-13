@@ -16,7 +16,8 @@ def TenMinuteJob():
 def displayDataChampionship():
     now = datetime.datetime.now()
     print(str(now), " - Display Championship Objects")
-    championships = Championship.objects.all()
+    # championships = Championship.objects.all()
+    championships = Championship.objects.exclude(pk=Championship.objects.get(pk=1).pk).exclude(pk=Championship.objects.get(pk=2).pk)
     for championship in championships:
         if championship.get_players().count() == 0:
             old_championship = championship.name

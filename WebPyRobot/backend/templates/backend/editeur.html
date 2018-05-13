@@ -56,15 +56,15 @@
 
     <div class="col s12 m4 l3">
         <ul class="collection with-header">
-            <li class="collection-header"><h4 class="indigo-text darken-4">Vos Scripts</h4></li>
+            <li class="collection-header"><h4 class="black-text">Vos codes</h4></li>
             {% for script in scripts %}
                 <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
-                    <div class="indigo-text darken-4">
-                        {{ script.name|truncatechars:16 }}
+                    <div class="black-text">
+                        {{ script.name|truncatechars:20 }}
                         <a href="{% url 'backend:editor' %}?script={{ script.pk }}"
                            class="script-1 secondary-content tooltipped" data-position="right"
                            data-delay="50"
-                           data-tooltip="Charger le script"><i class="fas fa-exchange-alt fa-lg"></i></a>
+                           data-tooltip="Charger le code"><i class="fas fa-exchange-alt fa-lg"></i></a>
                     </div>
                 </li>
             {% endfor %}
@@ -72,7 +72,7 @@
             {% if scripts_count < 5 %}
                 <li class="collection-item {{ addnew }}">
                     <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped indigo-text darken-4"
-                       data-position="right" data-delay="50" data-tooltip="Écrire un nouveau script"><i
+                       data-position="right" data-delay="50" data-tooltip="Nouveau code"><i
                             class="fas fa-download fa-lg"></i></a>
                 </li>
             {% endif %}
@@ -81,15 +81,14 @@
         {% if addnew %}
             <form id="load" name="form_input" enctype="multipart/form-data">
                 <div class="file-field input-field">
-                    <div class="btn">
-                        <span>Fichier</span>
+                    <div class="btn indigo darken-4">
+                        <span>Parcourir..</span><i class="material-icons right">search</i>
                         <input id="myfile" type="file">
                     </div>
                     <div class="file-path-wrapper">
                         <input id="name_file" class="file-path validate" type="text">
-
-                        <button id="entrer" class="btn waves-effect waves-light" type="button">Charger
-                            <i class="material-icons right">send</i>
+                        <button id="entrer" class="btn waves-effect waves-light indigo darken-4" type="button">Charger
+                            <i class="material-icons right">file_download</i>
                         </button>
 
                     </div>

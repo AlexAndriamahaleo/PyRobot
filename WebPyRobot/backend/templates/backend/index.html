@@ -70,26 +70,81 @@
 </div>
 <div id="modalInscription" class="modal">
     <div class="modal-content">
-        <form action="{% url 'backend:signUp' %}" method="post">
+        <form action="{% url 'backend:signup' %}" method="post">
             {% csrf_token %}
             <h4>Inscription</h4>
             <div class="row">
 
-                <div class="input-field col s12">
+                <!--{% for field in form %}
+                  <div class="input-field col s12 m6 l6">
+                    {{ field }}
+                    <label for="{{ field.label }}">{{ field.label }}</label>
+                    {% if field.help_text %}
+                      <span>
+                        {{ field.help_text | safe }}
+                      </span>
+                    {% endif %}
+                    {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endfor %}-->
+
+                <div class="input-field col s12 m12 l12">
                     {{ form.username }}
                     <label for="{{ form.username.label }}">{{ form.username.label }}</label>
+                    {% if form.username.help_text %}
+                      <span>
+                        {{ form.username.help_text | safe }}
+                      </span>
+                    {% endif %}
                 </div>
-                <div class="input-field col s12">
+                <div class="input-field col s12 m6 l6">
+                    {{ form.first_name }}
+                    <label for="{{ form.first_name.label }}">{{ form.first_name.label }}</label>
+                    {% if form.first_name.help_text %}
+                      <span>
+                        {{ form.first_name.help_text | safe }}
+                      </span>
+                    {% endif %}
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    {{ form.last_name }}
+                    <label for="{{ form.last_name.label }}">{{ form.last_name.label }}</label>
+                    {% if form.last_name.help_text %}
+                      <span>
+                        {{ form.last_name.help_text | safe }}
+                      </span>
+                    {% endif %}
+                </div>
+                <div class="input-field col s12 m12 l12">
                     {{ form.email }}
                     <label for="{{ form.email.label }}">{{ form.email.label }}</label>
+                    {% if form.email.help_text %}
+                      <span>
+                        {{ form.email.help_text | safe }}
+                      </span>
+                    {% endif %}
                 </div>
-                <div class="input-field col s12">
-                    {{ form.password }}
-                    <label for="{{ form.password.label }}">{{ form.password.label }}</label>
+                <div class="input-field col s12 m6 l6">
+                    {{ form.password1 }}
+                    <label for="{{ form.password1.label }}">{{ form.password1.label }}</label>
+                    {% if form.password1.help_text %}
+                      <span>
+                        {{ form.password1.help_text | safe }}
+                      </span>
+                    {% endif %}
                 </div>
-
+                <div class="input-field col s12 m6 l6">
+                    {{ form.password2 }}
+                    <label for="{{ form.password2.label }}">{{ form.password2.label }}</label>
+                    {% if form.password2.help_text %}
+                      <span>
+                        {{ form.password2.help_text | safe }}
+                      </span>
+                    {% endif %}
+                </div>
             </div>
-
             <div class="modal-footer">
                 <input type="submit" value="S'inscrire" class=" modal-action waves-effect indigo darken-4 btn">
             </div>
@@ -166,13 +221,23 @@
 
 {% include 'backend/footer.html' %}
 
+</body>
 <script>
     {% if error %}
+        var errors = {{ error | safe }} ;
+        msg_err = "" ;
+        console.log(Object.keys(errors).length);
+        var e;
+        for (e in errors) {
+            for(s in errors[e]){
+                console.log(errors[e][s].message);
+                msg_err += errors[e][s].message ;
+                msg_err += "<br/><br/>";
+            }
+        }
         document.onload = setTimeout(function () {
-            alertify.alert("{{ error }}");
+            alertify.alert(msg_err);
         }, 1000);
     {% endif %}
 </script>
-
-</body>
 </html>

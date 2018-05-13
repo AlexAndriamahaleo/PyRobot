@@ -5,7 +5,7 @@
             <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50" data-tooltip="vos points"
                href="#" style="cursor:default">
                 {{ point }}
-                <i class="fab fa-pinterest-p"></i>
+                <i class="fab fa-product-hunt fa-lg"></i>
             </a>
         </li>
         <li>
@@ -17,7 +17,7 @@
         </li>
         <li>
             <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
-               class="indigo-text darken-4 collection-item ">
+               class="indigo-text darken-4 collection-item">
                 <i class="fas fa-list"></i>
                 Historique de combat
             </a>
@@ -26,17 +26,32 @@
 
     <ul id="index2" class="dropdown-content center">
         <li>
-            <a class="indigo-text darken-4"
-               onclick="window.location.href='/password'">
-                <i class="fab fa-keycdn fa-lg"></i> Changer le mot de passe
+            <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50"
+               data-tooltip="{{ championnat }}" href="#" style="cursor:default">
+                <i class="fas fa-trophy"></i>
+                {{ championnat|truncatechars:50 }}
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
+               class="indigo-text darken-4"><i class="fas fa-history fa-lg"></i> Historique de combat
             </a>
         </li>
         <li>
             <a class="indigo-text darken-4 waves-effect waves-light modal-trigger"
                onclick="window.location.href='/championnat'">
-                <i class="fas fa-cogs"></i> Gestion des championnats</a>
+                <i class="fas fa-cogs"></i> Les championnats</a>
         </li>
-        <li class="divider"></li>
+    </ul>
+
+    <ul id="index4" class="dropdown-content center">
+        <li>
+            <a class="indigo-text darken-4"
+               onclick="window.location.href='/password'">
+                <i class="fab fa-keycdn fa-lg"></i> Changer le mot de passe
+            </a>
+        </li>
         <li>
             <a class="indigo-text darken-4" onclick="window.location.href='/logout'">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
@@ -68,13 +83,30 @@
 
     <nav class="indigo darken-4" role="navigation">
         <div class="container nav-wrapper">
-            <a href="#" class="brand-logo yellow-text" onclick="window.location.href='/'">PyRobot</a>
+            <a href="/" class="brand-logo yellow-text" onclick="window.location.href='/'">PyRobot</a>
             {% if pageIn != 'documentation' and pageIn != 'faq' and pageIn != 'tutoriels' %}
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a class="yellow-text tooltipped" data-position="bottom" data-delay="50"
+                           data-tooltip="vos points" href="#" style="cursor:default">
+                            {{ point }}
+                            <i class="fab fa-product-hunt fa-lg"></i>
+                        </a>
+                    </li>
+                    <!--<li>
+                        <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
+                           class="yellow-text tooltipped" data-position="bottom" data-delay="50"
+                           data-tooltip="Historique de combat">Historique <i class="fas fa-history fa-lg"></i>
+                        </a>
+                    </li>
                     <li>
                         <a class="dropdown-button yellow-text" href="#" data-beloworigin="true" data-activates="index1">Menu
                             <i class="material-icons right">arrow_drop_down</i>
                         </a>
+                    </li>-->
+                    <li>
+                        <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i
+                                class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
                     </li>
                     <li>
                         <a class="yellow-text dropdown-button " href="#" data-beloworigin="true"
@@ -84,8 +116,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i
-                                class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
+                        <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index4">
+                            <i class="fas fa-cog fa-lg"></i>
+                        </a>
                     </li>
                 </ul>
                 <a href="#" data-activates="main_menu" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -102,38 +135,13 @@
             </div>
             <a href="#!name"><span class="white-text name">{{ user }}</span></a>
             <a href="#!email"><span class="white-text email">{{ mail }}</span></a>
+            <a href="#!point"><span class="white-text name">{{ point }} <i class="fab fa-product-hunt fa-lg"></i></span></a>
+            <a href="#!champ"><span class="white-text email"><i class="fas fa-trophy fa-lg"></i>
+                {{ championnat|truncatechars:50 }}</span></a>
         </div>
     </li>
-
     <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-            <li>
-                <a class="indigo-text darken-4 collapsible-header"><i class="fas fa-user-circle"></i> {{ user }}<i
-                        class="material-icons">arrow_drop_down</i> </a>
-                <div class="collapsible-body">
-                    <ul>
-                        <li><a class="indigo-text darken-4"
-                               onclick="window.location.href='/password'">
-                            <i class="fab fa-keycdn fa-lg"></i> Changer le mot de passe
-                        </a>
-                        <li>
-                            <a class="indigo-text darken-4 waves-effect waves-light modal-trigger"
-                               onclick="window.location.href='/championnat'">
-                                <i class="fas fa-cogs"></i> Gestion des championnats</a>
-                        </li>
-                        <li>
-                            <a class="indigo-text darken-4 " style="cursor:pointer"
-                               onclick="window.location.href='/logout'"><i
-                                    class="fas fa-sign-out-alt"></i> Déconnexion</a>
-                        </li>
-                    </ul>
-            </li>
-        </ul>
-    <li>
-        <div class="divider"></div>
-    </li>
-    <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
+        <!--<ul class="collapsible collapsible-accordion">
             <li>
                 <a class="indigo-text darken-4  collapsible-header">Menu<i
                         class="material-icons">arrow_drop_down</i></a>
@@ -141,7 +149,7 @@
                     <ul>
                         <li>
                             <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50"
-                               data-tooltip="vos points" href="#">{{ point }} <i class="fab fa-pinterest-p"></i></a>
+                               data-tooltip="vos points" href="#">{{ point }} <i class="fab fa-product-hunt fa-lg"></i></a>
                         </li>
                         <li>
                             <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50"
@@ -158,6 +166,41 @@
                         </li>
                     </ul>
                 </div>
+            </li>
+        </ul>-->
+        <a style="cursor:pointer" class="waves-effect indigo-text darken-4"
+           onclick="window.location.href='/battle-histories'">
+            <i class="fas fa-list fa-lg"></i>
+            Historique de combat</a>
+    </li>
+    <li class="no-padding">
+        <a class="indigo-text darken-4 waves-effect waves-light modal-trigger"
+           onclick="window.location.href='/championnat'">
+            <i class="fas fa-trophy fa-lg" data-fa-transform="shrink-6" data-fa-mask="fas fa-square fa-lg"></i> Les
+            championnats</a>
+    </li>
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="indigo-text darken-4 collapsible-header"><i class="fas fa-wrench fa-lg"></i> Outils
+                    <i class="material-icons">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li><a class="indigo-text darken-4"
+                               onclick="window.location.href='/password'">
+                            <i class="fab fa-keycdn fa-lg"></i> Changer le mot de passe
+                        </a>
+                            <!--<li>
+                                <a class="indigo-text darken-4 waves-effect waves-light modal-trigger"
+                                   onclick="window.location.href='/championnat'">
+                                    <i class="fas fa-cogs"></i> Les championnats</a>
+                            </li>-->
+                        <li>
+                            <a class="indigo-text darken-4 " style="cursor:pointer"
+                               onclick="window.location.href='/logout'"><i
+                                    class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                        </li>
+                    </ul>
             </li>
         </ul>
     </li>
@@ -195,4 +238,11 @@
             </li>
         </ul>
     </li>
+    <!--<li>
+        <div class="divider"></div>
+    </li>
+    <li class="no-padding">
+        <a class="indigo-text darken-4 " style="cursor:pointer" onclick="window.location.href='/logout'">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+    </li>-->
 </ul>
