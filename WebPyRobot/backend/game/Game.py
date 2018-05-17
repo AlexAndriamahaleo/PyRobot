@@ -1,4 +1,6 @@
 import json
+from math import *
+from random import *
 
 from django.conf import settings
 
@@ -112,62 +114,84 @@ class Game(object):
     def getRange(self, TankID):
         return self.__robots[TankID].getRange()
 
-    def moveTank(self, NumCell):
+    def moveTank(self, NumCell, PA=2):
         if NumCell > self.__size*self.__size - 1:
             return -1
-        pm = self.getPM(self.__current)
+
+        pm = self.getPM(self.__current) # useless
+        pa_init = self.getPA(self.__current) # PA <= 4
+        # print("%s PA: %s > %s" % (self.__current, pa_init, PA))
+        if PA < pa_init:
+            pa = PA
+        else:
+            pa = pa_init
+
+        # if self.__current == 0:
+            # print("MOVE PA (before while): %s" % pa)
+
         pos = self.getPosition(self.__current)
         xp = self.getCellPosX(NumCell)
         yp = self.getCellPosY(NumCell)
         x = self.getCellPosX(pos)
         y = self.getCellPosY(pos)
         cpt = 0
-        while pm > 0 and pos != NumCell:
+        while pa > 0 and pos != NumCell:
             if x > xp:
                 # gauche
-                if pm > 0 and self.__map[self.getCellFromXY(x - 1, y)] == -1:
+                if pa > 0 and self.__map[self.getCellFromXY(x - 1, y)] == -1:
                     self.__result.append([self.__current, "moveLeft", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x - 1, y)] = self.__current
-                    pm -= 1
+                    pa -= 1
                     x -= 1
                     pos = self.getPosition(self.__current)
 
             if x < xp :
                 #droite
-                if pm > 0 and self.__map[self.getCellFromXY(x + 1, y)] == -1:
+                if pa > 0 and self.__map[self.getCellFromXY(x + 1, y)] == -1:
                     self.__result.append([self.__current, "moveRight", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x + 1, y)] = self.__current
-                    pm -=1
+                    pa -=1
                     x += 1
                     pos = self.getPosition(self.__current)
 
             if y > yp :
                 #Bas
-                if pm > 0 and self.__map[self.getCellFromXY(x, y-1)] == -1:
+                if pa > 0 and self.__map[self.getCellFromXY(x, y-1)] == -1:
                     self.__result.append([self.__current, "moveDown", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x , y-1)] = self.__current
-                    pm -=1
+                    pa -=1
                     y -= 1
                     pos = self.getPosition(self.__current)
 
             if y < yp :
                 #Haut
-                if pm > 0 and self.__map[self.getCellFromXY(x, y + 1)] == -1:
+                if pa > 0 and self.__map[self.getCellFromXY(x, y + 1)] == -1:
                     self.__result.append([self.__current, "moveUp", 0, 0, 0])
                     self.__map[pos] = -1
                     self.__map[self.getCellFromXY(x, y+1)] = self.__current
-                    pm -=1
+                    pa -=1
                     y += 1
                     pos = self.getPosition(self.__current)
 
+            # if self.__current == 0:
+                # print("MOVE PA (while): %s" % pa)
+
             cpt += 1
-            if cpt >= self.__robots[self.__current].getPM(): return
+            # if cpt >= self.__robots[self.__current].getPM(): return
+            if PA < pa_init:
+                if cpt >= PA: return
+            else:
+                if cpt >= pa_init: return
 
 
-        self.__robots[self.__current].setPM(pm)
+        self.__robots[self.__current].setPM(pm) # useless
+        if PA < pa_init:
+            self.__robots[self.__current].setPA(pa_init-PA)
+        else:
+            self.__robots[self.__current].setPA(pa)
 
     def shoot(self):
         pos = self.getPosition(self.getEnemyTankId())
@@ -180,17 +204,22 @@ class Game(object):
 
         dist = self.getCellDistance(self.getCellFromXY(x,y),self.getCellFromXY(xp,yp))
 
-        pa = self.__robots[self.__current].getPointAction()
-        paWe = self.__robots[self.__current].getWPa()
+        pa = self.__robots[self.__current].getPointAction() # PA <= 4
 
-        dWe = self.__robots[self.__current].getWeaponDamage()
+        # if self.__current == 0:
+            # print("SHOOT PA: %s" % pa)
 
-        arm = self.__robots[self.__current].gettankarm()
-        reduce_dmg = int(arm*dWe/100)
+        paWe = self.__robots[self.__current].getWPa() # WPA = 1
 
-        real_dmg = dWe - reduce_dmg
+        dWe = self.__robots[self.__current].getWeaponDamage() # WATK = 15
 
-        rest_pv = self.__robots[self.getEnemyTankId()].getLife()-real_dmg
+        arm = self.__robots[self.__current].gettankarm() # useless
+
+        # reduce_dmg = int(arm*dWe/100)
+
+        # real_dmg = dWe - reduce_dmg
+
+        rest_pv = self.__robots[self.getEnemyTankId()].getLife()-dWe
 
         range = self.__robots[self.__current].getRange()
         mid_point = int(self.__size/2)

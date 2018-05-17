@@ -55,55 +55,113 @@
 {% block content %}
 
     <div class="col s12 m4 l3">
-        <ul class="collection with-header">
-            <li class="collection-header"><h4 class="black-text">Vos codes</h4></li>
-            {% for script in scripts %}
-                <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
-                    <div class="black-text">
-                        {{ script.name|truncatechars:20 }}
-                        <a href="{% url 'backend:editor' %}?script={{ script.pk }}"
-                           class="script-1 secondary-content tooltipped" data-position="right"
-                           data-delay="50"
-                           data-tooltip="Charger le code"><i class="fas fa-exchange-alt fa-lg"></i></a>
-                    </div>
-                </li>
-            {% endfor %}
-
-            {% if scripts_count < 5 %}
-                <li class="collection-item {{ addnew }}">
-                    <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped indigo-text darken-4"
-                       data-position="right" data-delay="50" data-tooltip="Nouveau code"><i
-                            class="fas fa-download fa-lg"></i></a>
-                </li>
-            {% endif %}
-        </ul>
-
-        {% if addnew %}
-            <form id="load" name="form_input" enctype="multipart/form-data">
-                <div class="file-field input-field">
-                    <div class="btn indigo darken-4">
-                        <span>Parcourir..</span><i class="material-icons right">search</i>
-                        <input id="myfile" type="file">
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input id="name_file" class="file-path validate" type="text">
-                        <button id="entrer" class="btn waves-effect waves-light indigo darken-4" type="button">Charger
-                            <i class="material-icons right">file_download</i>
-                        </button>
-
-                    </div>
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>
+                <div class="collapsible-header active"><h4><i class="material-icons">code</i>Vos codes</h4>
                 </div>
-            </form>
-        {% endif %}
+                <div class="collapsible-body">
+                    <ul class="collection">
+                        {% for script in scripts %}
+                            <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
+                                <div class="black-text">
+                                    {{ script.name|truncatechars:20 }}
+                                    <a href="{% url 'backend:editor' %}?script={{ script.pk }}"
+                                       class="script-1 secondary-content tooltipped" data-position="right"
+                                       data-delay="50"
+                                       data-tooltip="Charger le code"><i class="fas fa-exchange-alt fa-lg"></i></a>
+                                </div>
+                            </li>
+                        {% endfor %}
 
-        <ul class="collection with-header">
-            <li class="collection-header"><h5>Informations</h5></li>
-            <li class="collection-item">Attaque = {{ tank.weapon.attackValue }}</li>
-            <li class="collection-item">Défense = {{ tank.armor.armorValue }}</li>
-            <li class="collection-item">Points de Vie = {{ tank.hp_value }}</li>
-            <li class="collection-item">PM = {{ tank.caterpillar.moveValue }} </li>
-            <li class="collection-item">PA = {{ tank.navSystem.actionValue }} </li>
+                        {% if scripts_count < 5 %}
+                            <li class="collection-item {{ addnew }}">
+                                <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped indigo-text darken-4"
+                                   data-position="right" data-delay="50" data-tooltip="Nouveau code"><i
+                                        class="fas fa-download fa-lg"></i></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+
+                    {% if addnew %}
+                        <form id="load" name="form_input" enctype="multipart/form-data">
+                            <div class="file-field input-field">
+                                <div class="btn indigo darken-4">
+                                    <span>Parcourir..</span><i class="material-icons right">search</i>
+                                    <input id="myfile" type="file">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input id="name_file" class="file-path validate" type="text">
+                                    <button id="entrer" class="btn waves-effect waves-light indigo darken-4"
+                                            type="button">Charger
+                                        <i class="material-icons right">file_download</i>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><h5><i class="material-icons">info</i>Informations</h5></div>
+                <div class="collapsible-body">
+                    <ul class="collection">
+                        <li class="collection-item">
+                            <p>
+                                Votre objectif ? Détruire le tank adverse.
+                            </p>
+                        </li>
+                        <li class="collection-item">
+                            <p>
+                                Vos tanks ont les mêmes capacités ! <br/>
+                                L'issue du combat se joue donc sur la <br/>
+                                manière dont vous programmez le vôtre.
+                            </p>
+                        </li>
+                        <li class="collection-item">
+                            <p>
+                                Pour gagner il faut toucher 7 fois.
+                            </p>
+                        </li>
+                        <li class="collection-item">
+                            <p>
+                                Pour y parvenir vous avez 4 Points d'Actions (PA).
+                                Ils vous permettent de vous déplacer <br/>
+                                mais aussi de tirer sur le tank adverse. <br/>
+                                Un mouvement ou un tir coûte 1 PA. <br/><br/>
+                                Utilisez les à bon escient !
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="hide-on-med-and-down">
+                <div class="collapsible-header"><h5><i class="material-icons">keyboard</i>Astuces</h5></div>
+                <div class="collapsible-body">
+                    <ul class="collection">
+                        <li class="collection-item">
+                            <p>
+                                Afin de faciliter votre expérience. Nous avons intégrés des raccourcis claviers.
+                            </p>
+                        </li>
+                        <li class="collection-item">Autocomplétion: <br/>Ctrl-Space / Opt-F</li>
+                        <li class="collection-item">Recherche dans le code: <br/>Ctrl-F / Cmd-F</li>
+                        <li class="collection-item">Recherche & Remplace dans le code: <br/>Shift-Ctrl-F / Cmd-Opt-F
+                        </li>
+                        <li class="collection-item">Recherche & Remplace toute occurrence dans le code: <br/>Shift-Ctrl-R
+                            / Shift-Cmd-Opt-F
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
+        <blockquote>
+            <i class="fa fa-exclamation-triangle fa-lg tooltipped" data-position="left"
+               data-delay="50" data-tooltip="Attention" aria-hidden="true"></i> S'il venait à y
+            avoir une erreur, veillez à
+            bien vérifier le code que vous avez écrit.
+        </blockquote>
+
     </div>
 
     <div class="col s12 m8 l9">
@@ -124,11 +182,17 @@
                 <nav>
                     <div class="nav-wrapper yellow lighten-2">
                         <ul class="left hide-on-med-and-down">
-                            <li class="save hoverable">
-                                <input type="submit" class="btn-flat indigo-text darken-4" name="action"
+                            <li class="save hoverable" value="Sauvegarder">
+                                <!--<a id="coucou_save" type="submit" class="indigo-text darken-4">
+                                    SAUVEGARDER
+                                </a>-->
+                                <input id="coucou_save" type="submit" class="btn-flat indigo-text darken-4" name="action"
                                        value="Sauvegarder">
                             </li>
-                            <li class="save hoverable">
+                            <li class="save hoverable" value="Activer">
+                                <!--<a id="coucou_active" type="submit" class="indigo-text darken-4">
+                                    ACTIVER
+                                </a>-->
                                 <input type="submit" class="btn-flat indigo-text darken-4" name="action"
                                        value="Activer">
                             </li>
@@ -151,7 +215,8 @@
                                        value="Activer">
                             </li>
                             <li>
-                                <a class="waves-effect" href="{% url 'backend:versus' %}"><i class="material-icons left">cached</i>Tester</a>
+                                <a class="waves-effect" href="{% url 'backend:versus' %}"><i
+                                        class="material-icons left">cached</i>Tester</a>
                             </li>
                         </ul>
                         <a href="#" data-activates="mobile-demo" class="button-collapse"><i
@@ -173,22 +238,6 @@
 
 
                 <!--p><strong style="font-weight: bold">Active AI:</strong> {{ active_script.name }}</p>-->
-                <blockquote>
-                    <i class="fa fa-sticky-note fa-lg tooltipped" data-position="left" data-delay="50"
-                       data-tooltip="Notes" aria-hidden="true"></i> Appuyez '<i>Ctrl + Space</i>' (Windows)
-                    <strong>OU</strong> '<i>Option + Space</i>' (Apple) pour utliser l'autocomplétion
-                    à tout moment. Veillez bien à remplacer ce qu'il y a entre trois cotes (''') par une
-                    valeur/variable qui correspond.
-                    <br><i class="fa fa-info fa-lg tooltipped" data-position="left" data-delay="50"
-                           data-tooltip="Informations" aria-hidden="true"></i>
-                    Le <a style="cursor:pointer" onclick="window.location.href='/tutoriels'">Drag'n'drop</a> est
-                    disponible pour importer un fichier que vous aurez préalablement taper dans votre espace de
-                    travail.
-                    <br><i class="fa fa-exclamation-triangle fa-lg tooltipped" data-position="left"
-                           data-delay="50" data-tooltip="Attention" aria-hidden="true"></i> S'il venait à y
-                    avoir une erreur, veillez à
-                    bien vérifier que vous avez un script actif.
-                </blockquote>
             </div>
         </form>
     </div>
@@ -231,6 +280,7 @@
     <script src="https://ternjs.net/lib/infer.js"></script>
     <script src="https://ternjs.net/plugin/doc_comment.js"></script>-->
 
+    <script src="{% static 'js/editor.js' %}"></script>
     <script src="{% static 'codemirror/addon/edit/closebrackets.js' %}"></script>
     <script src="{% static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
     <script src="{% static 'codemirror/addon/hint/python-hint.js' %}"></script>
@@ -242,12 +292,11 @@
     <script src="{% static 'codemirror/addon/fold/foldgutter.js' %}"></script>
     <script src="{% static 'codemirror/addon/fold/comment-fold.js' %}"></script>
     <script src="{% static 'codemirror/keymap/sublime.js' %}"></script>
-    <script src="{% static 'js/editor.js' %}"></script>
     <script type="text/javascript">
-    var code = "{{ temporary_text }}";
+        var code = "{{ temporary_text }}";
 
     //onclick="document.getElementById('code').submit()
 
 
-</script>
+    </script>
 {% endblock %}

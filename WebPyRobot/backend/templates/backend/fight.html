@@ -21,7 +21,8 @@
                 <div class="row section padding-section">
                     <div class="col s12 m3 l3"></div>
                     <div class="col s12 m6 l6">
-                        <img style="width: 760px; height: 760px" class="materialboxed" src="{% static 'img/icons/no_players.png' %}">
+                        <img style="width: 760px; height: 760px" class="materialboxed"
+                             src="{% static 'img/icons/no_players.png' %}">
                     </div>
                     <div class="col s12 m3 l3"></div>
                 </div>
@@ -38,7 +39,7 @@
                         <p>
                             {{ request.user.username }}
                         </p>
-                        <div class="progress" >
+                        <div class="progress">
                             <div id="rest-pv-self" class="determinate center-align white-text" style="width: 100%">
                                 100 %
                             </div>
@@ -80,8 +81,10 @@
                                                 <i class="material-icons left">pause_circle_outline</i>Pause</a>
                                         </div>
                                         <div id="fincombat" class="col s12 m12 l6">
-                                            <input class="waves-effect waves-light btn indigo darken-4 yellow-text finish"
-                                                   type="submit" name="action" value="Terminer le combat"/>
+                                            <button class="btn waves-effect waves-light indigo darken-4 yellow-text finish" type="submit" name="action" value="Terminer le combat">
+                                                Terminer le combat
+                                            </button>
+
                                         </div>
                                     </form>
                                 </div>
@@ -90,10 +93,13 @@
                             <div class="row">
                                 <div class="col l8 offset-l2">
                                     <div id="editer" class="col s12 m12 l6">
-                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text" onclick="window.location.href='/editor/'"><i class="material-icons right">edit</i>Éditeur</a>
+                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text"
+                                           onclick="window.location.href='/editor/'"><i class="material-icons right">edit</i>Éditeur</a>
                                     </div>
                                     <div id="editer" class="col s12 m12 l6">
-                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text" onclick="window.location.href='/battle-histories'"><i class="material-icons right">history</i>Historique</a>
+                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text"
+                                           onclick="window.location.href='/battle-histories'"><i
+                                                class="material-icons right">history</i>Historique</a>
                                     </div>
                                 </div>
                             </div>

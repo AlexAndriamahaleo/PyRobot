@@ -367,7 +367,7 @@ def versus(request, player_pk='', script_pk=''):
     if not battle:
         # users1 = UserProfile.objects.exclude(pk=user1.pk)
 
-        users = Championship.objects.get(pk=champ_pk).players.all()
+        users = Championship.objects.get(pk=champ_pk).players.exclude(pk=user1.pk)
 
         if not users:
             messages.error(request, "Aucun joueur disponible pour le training battle")
@@ -891,6 +891,8 @@ class AIScriptView(LoginRequiredMixin, ListView):
 
     def post(self, request, *args, **kwargs):
         action = self.request.POST.get("action")
+
+        # print("DEBUG EDITOR: %s " % action)
 
         # When user clicks on Sauvgarder button
         if action == "Sauvegarder":
