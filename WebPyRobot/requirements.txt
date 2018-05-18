@@ -1,4 +1,5 @@
-Django==1.11.6
+#Django==1.11.6
+Django==2.0.5
 Pillow==4.2.1
 psycopg2==2.7.3.2
 channels==1.1.8

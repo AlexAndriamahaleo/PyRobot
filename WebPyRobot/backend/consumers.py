@@ -39,7 +39,6 @@ def ws_connect(message):
         return
 
 
-
 @channel_session
 def ws_receive(message):
     """
@@ -51,7 +50,6 @@ def ws_receive(message):
         except ValueError:
             log.debug("ws message isn't json")
             return
-
 
         mode = data.get('is_versus')
 
@@ -75,7 +73,6 @@ def ws_receive(message):
                 else:
                     award_battle(battle.opponent.userprofile, battle.user.userprofile, mode)
                 return
-
 
             if battle != None:
                 step = int(data.get("step", 0))

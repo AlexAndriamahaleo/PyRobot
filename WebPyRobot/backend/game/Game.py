@@ -69,11 +69,14 @@ class Game(object):
         self.__robots = [Robot(r1, 0), Robot(r2, 1)]
         self.__robotsia = [ia1, ia2]
         self.__result = []
-        for i in range (self.__size*self.__size):
+        for i in range(self.__size*self.__size):
             self.__map.append(-1)
         self.__map[0] = 0
         self.__map[self.__size*self.__size - 1] = 1
         self.__champ = champ
+
+    def getSize(self):
+        return self.__size
 
     def getTankId(self):
         return self.__current
@@ -91,7 +94,8 @@ class Game(object):
         return numCell // self.__size
 
     def getCellDistance(self, numCellA, numCellB):
-        return (abs(self.getCellPosX(numCellB) - self.getCellPosX(numCellA)) + abs(self.getCellPosY(numCellB) - self.getCellPosY(numCellA)) )
+        return (abs(self.getCellPosX(numCellB) - self.getCellPosX(numCellA)) +
+                abs(self.getCellPosY(numCellB) - self.getCellPosY(numCellA)))
 
     def getCellFromXY(self, x, y):
         return y*self.__size + x
@@ -176,9 +180,6 @@ class Game(object):
                     y += 1
                     pos = self.getPosition(self.__current)
 
-            # if self.__current == 0:
-                # print("MOVE PA (while): %s" % pa)
-
             cpt += 1
             # if cpt >= self.__robots[self.__current].getPM(): return
             if PA < pa_init:
@@ -202,7 +203,7 @@ class Game(object):
         xp = self.getCellPosX(posp)
         yp = self.getCellPosY(posp)
 
-        dist = self.getCellDistance(self.getCellFromXY(x,y),self.getCellFromXY(xp,yp))
+        dist = self.getCellDistance(self.getCellFromXY(x, y), self.getCellFromXY(xp, yp))
 
         pa = self.__robots[self.__current].getPointAction() # PA <= 4
 
@@ -224,10 +225,10 @@ class Game(object):
         range = self.__robots[self.__current].getRange()
         mid_point = int(self.__size/2)
         if pa - paWe >= 0:
-            if(dist > range):
+            if dist > range:
                 self.__result.append([self.__current, "shoot", mid_point, mid_point, 0])
             else:
-                self.__result.append([self.__current, "shoot",x, y, rest_pv])
+                self.__result.append([self.__current, "shoot", x, y, rest_pv])
                 self.__robots[self.getEnemyTankId()].setLife(rest_pv)
             self.__robots[self.__current].setPA(pa-paWe)
 
@@ -254,17 +255,17 @@ class Game(object):
         player = tank1.owner.user
         opponent = tank2.owner.user
         bh = BattleHistory.objects.create(
-                user = player,
-                used_script = tank1.owner.get_active_ai_script(),
-                opp_used_script = tank2.owner.get_active_ai_script(),
-                opponent = opponent,
-                is_victorious = self.is_victorious(),
-                result_stats = json.dumps(self.__result),
-                max_step = len(self.__result),
-                map_name = map_name,
-                mode = is_training,
-                championship_name = self.__champ
-            )
+            user=player,
+            used_script=tank1.owner.get_active_ai_script(),
+            opp_used_script=tank2.owner.get_active_ai_script(),
+            opponent=opponent,
+            is_victorious=self.is_victorious(),
+            result_stats=json.dumps(self.__result),
+            max_step=len(self.__result),
+            map_name=map_name,
+            mode=is_training,
+            championship_name=self.__champ
+        )
         return bh.pk
 
     def set_history_itself(self, map_name, is_training, script_op):
@@ -279,16 +280,16 @@ class Game(object):
         player = tank1.owner.user
         opponent = tank2.owner.user
         bh = BattleHistory.objects.create(
-                user = player,
-                used_script = tank1.owner.get_active_ai_script(),
-                opp_used_script = script_op,
-                opponent = opponent,
-                is_victorious = self.is_victorious(),
-                result_stats = json.dumps(self.__result),
-                max_step = len(self.__result),
-                map_name = map_name,
-                mode = is_training,
-                championship_name = self.__champ
+                user=player,
+                used_script=tank1.owner.get_active_ai_script(),
+                opp_used_script=script_op,
+                opponent=opponent,
+                is_victorious=self.is_victorious(),
+                result_stats=json.dumps(self.__result),
+                max_step=len(self.__result),
+                map_name=map_name,
+                mode=is_training,
+                championship_name=self.__champ
             )
         return bh.pk
 
@@ -305,10 +306,11 @@ class Game(object):
                                     content="Le combat contre %s vient de se terminer" % user1.user.username)
 
     def run(self, i):
-        if i >= 100: return self.__result
+        if i >= 100:
+            return self.__result
 
         self.__current = 0
-        exec (self.__robotsia[0].text)
+        exec(self.__robotsia[0].text)
         self.__result.append([0, "endTurn", 0, 0, 0])
         self.__result.append([0, "endTurn", 0, 0, 0])
 
@@ -317,7 +319,7 @@ class Game(object):
             return self.__result
 
         self.__current = 1
-        exec (self.__robotsia[1].text)
+        exec(self.__robotsia[1].text)
         self.__result.append([1, "endTurn", 0, 0, 0])
         self.__result.append([0, "endTurn", 0, 0, 0])
 
@@ -329,6 +331,5 @@ class Game(object):
         if self.__robots[0].getLife() <= 0:
             self.__result.append([0, "dead", 0, 0, 0])
             return self.__result
-
 
         return self.run(i + 1)
