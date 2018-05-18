@@ -365,7 +365,7 @@ def versus(request, player_pk='', script_pk=''):
 
         users = Championship.objects.get(pk=champ_pk).players.exclude(pk=user1.pk)
 
-        if not users:
+        if not users and script_pk == '':
             messages.error(request, "Aucun joueur disponible pour le training battle")
             context = {
                 "battle_err": True
