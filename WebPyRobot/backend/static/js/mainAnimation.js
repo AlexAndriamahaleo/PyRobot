@@ -138,6 +138,7 @@ var deadPlayer = function (player) {
         document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Voir l\'historique\"/>";
         document.getElementById("editer").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Éditeur\"/>";
         //document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Modifier</a>";
+        // TODO: change these input to button in Materialize
     }
 };
 
