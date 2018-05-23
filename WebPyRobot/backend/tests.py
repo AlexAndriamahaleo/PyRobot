@@ -221,8 +221,8 @@ class TestUrls(SimpleTestCase, TestCase):
         self.assertRedirects(response, expected_url='/login/?next=/testcpu/', status_code=302, target_status_code=200)
 
     def test_versus(self):
-        response = self.client.get(reverse('backend:versus'), follow=True)
-        self.assertRedirects(response, expected_url='/login/?next=/versus/', status_code=302, target_status_code=200)
+        response = self.client.get(reverse('backend:versus', args=[0]), follow=True)
+        self.assertRedirects(response, expected_url='/login/?next=/versus/0/', status_code=302, target_status_code=200)
 
     def test_replay(self):
         response = self.client.get(reverse('backend:replay'), follow=True)
