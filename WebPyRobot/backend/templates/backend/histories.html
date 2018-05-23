@@ -34,7 +34,7 @@
                         <th>Date</th>
                         <th>Mode</th>
                         <th>Adversaire (code)</th>
-                        <th>Votre code</th>
+                        <th class="hide-on-med-and-down">Votre code</th>
                         <th>Résultat</th>
                         <th>Combat</th>
                         <th>Modifier le code utilisé</th>
@@ -50,7 +50,7 @@
                         </td>
                         {% if  history.opponent.username != request.user.username %}
                             <td>{{ history.opponent.username }}</td>
-                            <td>{{ history.used_script.name }}</td>
+                            <td class="hide-on-med-and-down">{{ history.used_script.name }}</td>
                             <td>
                                 {% if history.is_victorious %}Gagné{% else %}Perdu{% endif %}
                             </td>
@@ -64,7 +64,7 @@
                             <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% else %}
                             <td>{{ history.user.username }} ({{ history.used_script.name  }})</td>
-                            <td>{{ history.opp_used_script.name}}</td>
+                            <td class="hide-on-med-and-down">{{ history.opp_used_script.name}}</td>
                             <td>
                                 {% if history.is_victorious %}Perdu{% else %}Gagné{% endif %}
                             </td>

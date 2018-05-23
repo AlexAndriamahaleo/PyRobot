@@ -312,12 +312,12 @@
       "money": 0,
       "avatar": "",
       "agression": true,
-      "exp": 0,
-      "srch": 0,
-      "dev": 0,
+      "points": 0,
+      "coeff_K": 0,
+      "nb_games": 0,
       "level": 0,
-      "next_level_exp": 10,
-      "true_level": 1
+      "next_level_exp": 0,
+      "true_level": 0
     }
   },
   {
@@ -328,12 +328,12 @@
       "money": 0,
       "avatar": "",
       "agression": true,
-      "exp": 0,
-      "srch": 0,
-      "dev": 0,
+      "points": 0,
+      "coeff_K": 0,
+      "nb_games": 0,
       "level": 0,
-      "next_level_exp": 10,
-      "true_level": 1
+      "next_level_exp": 0,
+      "true_level": 0
     }
   },
   {
@@ -344,12 +344,12 @@
       "money": 0,
       "avatar": "",
       "agression": true,
-      "exp": 0,
-      "srch": 0,
-      "dev": 0,
+      "points": 0,
+      "coeff_K": 0,
+      "nb_games": 0,
       "level": 0,
-      "next_level_exp": 10,
-      "true_level": 1
+      "next_level_exp": 0,
+      "true_level": 0
     }
   },
   {

@@ -29,7 +29,7 @@ function Bullet(url, x1, y1, targetDirection, x2, y2,contraint) {
         this.refPlayer.width = this.width / 9.1;
         this.refPlayer.height = this.height / 6;
     }
-    this.image.src = "../../../static/sprites/" + url;
+    this.image.src = "../../../../static/sprites/" + url;
     
     this.stateAnimation = 1;
     this.stateTouch = -1;

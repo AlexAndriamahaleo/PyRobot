@@ -31,7 +31,7 @@ function Player(url, x, y, direction,contraint, name) {
         this.refPlayer.width = this.width / NB_IMAGE;
         this.refPlayer.height = this.height / 8;
     }
-    this.image.src = "../../../static/sprites/" + url;
+    this.image.src = "../../../../static/sprites/" + url;
     this.contraint = contraint;
 }
 

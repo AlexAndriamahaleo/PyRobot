@@ -12,7 +12,7 @@
             });
 
             $('.button-collapse').sideNav({
-                menuWidth: 350,
+                menuWidth: 250,
                 closeOnClick: true,
                 draggable: true
             });

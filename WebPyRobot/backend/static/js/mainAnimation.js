@@ -7,6 +7,8 @@ var div_pv_opponent = document.getElementById('rest-pv-opponent');
 
 var combat_speed = 300 ;
 
+var flag_display_once = true ;
+
 var suprStr = function (stringReceive) {
     var str = "";
     var miniTab = [];
@@ -94,18 +96,21 @@ var deadPlayer = function (player) {
     player.dead();
 
     if (playername == opponent) {
-        document.getElementById("win").innerHTML = "Fin de la battle !";
+        //document.getElementById("win").innerHTML = "Fin de la battle !";
+        Materialize.toast("Fin de la battle !", 10000);
     } else if (player.name == playername) {
         Materialize.toast('Dommage !', 4000);
         div_pv_self.style.width = "0%";
         div_pv_self.innerHTML = "0 %";
-        document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
+        //document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
+        Materialize.toast("Vous avez perdu contre " + opponent, 10000);
     }
     else {
         Materialize.toast('Bravo !', 4000);
         div_pv_opponent.style.width = "0%";
         div_pv_opponent.innerHTML = "0 %";
-        document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
+        //document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
+        Materialize.toast("Vous avez battu " + opponent, 10000);
     }
 
     if (is_replay != "yes") {
@@ -135,8 +140,10 @@ var deadPlayer = function (player) {
         };
         if (socket2.readyState == WebSocket.OPEN) socket2.onopen();
 
-        document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Voir l\'historique\"/>";
-        document.getElementById("editer").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Éditeur\"/>";
+        //document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Voir l\'historique\"/>";
+        document.getElementById("fincombat").innerHTML = "<button class=\"btn waves-effect waves-light indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Voir l\'historique\">Historique</button>";
+        //document.getElementById("editer").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Éditeur\"/>";
+        document.getElementById("editer").innerHTML = "<button class=\"btn waves-effect waves-light indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Éditeur\">Éditeur</button>";
         //document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Modifier</a>";
         // TODO: change these input to button in Materialize
     }
@@ -165,8 +172,9 @@ var shoot = function (player, x, y, i, is_replay) {
 
         if (is_replay == 'yes') {
             if (playername != opponent) {
-                if (tabReceive[i][4] < 0) {
+                if (tabReceive[i][4] < 0 && flag_display_once) {
                     Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                    flag_display_once = false ;
                 }
                 else {
                     //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
@@ -179,8 +187,9 @@ var shoot = function (player, x, y, i, is_replay) {
                 }
             }
         } else {
-            if (tabReceive[i][4] < 0) {
+            if (tabReceive[i][4] < 0 && flag_display_once) {
                 Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                flag_display_once = false ;
             }
             else {
                 //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
@@ -197,10 +206,11 @@ var shoot = function (player, x, y, i, is_replay) {
 
         if (is_replay == 'yes') {
 
-            if (playername == opponent) { // ADVERSAIRE QUI VEUT REVOIR LE COMBAT -> REPLAY
+            if (playername == opponent && flag_display_once) { // ADVERSAIRE QUI VEUT REVOIR LE COMBAT -> REPLAY
                 console.log("opp2: ", opponent, playername);
                 if (tabReceive[i][4] < 0) {
                     Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                    flag_display_once = false ;
                 }
                 else if (tabReceive[i][4] > 0) {
                     //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
@@ -222,10 +232,11 @@ var shoot = function (player, x, y, i, is_replay) {
             if (playername == opponent) { // ADVERSAIRE QUI VEUT REVOIR LE COMBAT -> REPLAY
                 console.log("oppELSE: ", opponent, playername);
 
-            } else if (player.name == playername) { // INITIATEUR DE LA BATTLE -> REPLAY
+            } else if (player.name == playername && flag_display_once) { // INITIATEUR DE LA BATTLE -> REPLAY
                 console.log("playerELSE: ", playername, opponent);
                 if (tabReceive[i][4] < 0) {
                     Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                    flag_display_once = false ;
                 }
                 else if (tabReceive[i][4] > 0) {
                     //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
@@ -237,8 +248,9 @@ var shoot = function (player, x, y, i, is_replay) {
                 }
             }
         } else {
-            if (tabReceive[i][4] < 0) {
+            if (tabReceive[i][4] < 0 && flag_display_once) {
                 Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                flag_display_once = false ;
             }
             else if (tabReceive[i][4] > 0) {
                 //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
@@ -308,6 +320,7 @@ window.onload = function () {
     if (is_replay != "yes") {
         var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
         var socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/" + playername + "-notifications/");
+        Materialize.toast("Bataille en cours...", 10000);
     }
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');

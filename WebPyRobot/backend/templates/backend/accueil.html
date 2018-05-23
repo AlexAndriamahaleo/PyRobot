@@ -19,6 +19,15 @@
         .card .card-image img {
 
         }
+
+        blockquote {
+            margin: 20px 0;
+            padding-left: 1.5rem;
+            border-left: 10px solid #fff176;
+            border-left-width: 10px;
+            border-left-style: solid;
+            border-left-color: rgb(255, 241, 118);
+        }
     </style>
 
 {% endblock %}
@@ -29,25 +38,45 @@
     <div class="col s12 m12 l12">
         <br/>
         <br/>
+        {% if inBattle %}
+            <div class="fixed-action-btn" onclick="$('.tap-target').tapTarget('open')">
+                <a id="active_battle" class="waves-effect waves-light btn btn-floating right light-blue accent-4 pulse"><i
+                        class="material-icons">menu</i></a>
+            </div>
+
+            <div class="tap-target" data-activates="active_battle">
+                <div class="tap-target-content right-align">
+                    <h5>Information !</h5>
+                    <p>
+                        Vous avez une battle en cours.<br/>
+                        <span class="hide-on-med-and-down">Vous ne pourrez pas démarrer un nouveau combat tant que celui qui est en cours n'est pas
+                            terminé.</span>
+                    </p>
+                    <a class="btn-flat" href="{% url 'backend:versus' previous=0 %}">Revenir au combat</a>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <div class="col s12 m12 l4">
         <div class="card sticky-action">
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
-                <a class="waves-effect waves-light modal-trigger" href="#versus">
+                <a class="waves-effect waves-light modal-trigger" {% if not inBattle %} href="#versus" {% else %}
+                   onclick="$('.tap-target').tapTarget('open')" {% endif %}>
                     <img id="mode_versus" class="activator" src="{% static 'img/icons/training_info.png' %}">
                 </a>
             </div>
         </div>
     </div>
     <div class="col s12 m12 l4">
-        <div class="card sticky-action tooltipped" data-position="bottom" data-delay="50"
-             data-tooltip="Code actif: {{ active_script.name }}" >
+        <div class="card sticky-action tooltipped hide-on-med-and-down" data-position="bottom" data-delay="50"
+             data-tooltip="Code actif: {{ active_script.name }}">
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
-                <img id="mode_edit" class="activator" src="{% static 'img/icons/code_info.png' %}">
+                <a class="waves-effect waves-light modal-trigger" href="#editor">
+                    <img id="mode_edit" class="activator" src="{% static 'img/icons/code_info.png' %}">
+                </a>
             </div>
-
-            <div class="card-reveal">
+            <!--<div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">
                     <i class="material-icons right">close</i>Vos codes</span>
 
@@ -68,13 +97,21 @@
                 <div class="fixed-action-btn hide-on-med-and-down">
                     <a class="waves-effect waves-teal btn-flat" onclick="window.location.href='/editor/'">Éditeur</a>
                 </div>
+            </div>-->
+        </div>
+        <div class="card sticky-action show-on-medium-and-down hide-on-large-only">
+            <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
+                <a class="waves-effect waves-light modal-trigger" href="#editor">
+                    <img id="mode_edit" class="activator" src="{% static 'img/icons/code_info.png' %}">
+                </a>
             </div>
         </div>
     </div>
     <div class="col s12 m12 l4">
         <div class="card sticky-action">
             <div class="card-image indigo darken-4 waves-effect waves-block waves-light">
-                <a class="waves-effect waves-light modal-trigger" href="#championnat">
+                <a class="waves-effect waves-light modal-trigger" {% if not inBattle %} href="#championnat" {% else %}
+                   onclick="$('.tap-target').tapTarget('open')" {% endif %}>
                     <img id="mode_championship" class="activator" src="{% static 'img/icons/championnat_info.png' %}">
                 </a>
             </div>
@@ -82,149 +119,248 @@
     </div>
 
     <div id="versus" class="modal modal-fixed-footer">
-        <div class="modal-content">
-            <h4>Mode versus</h4>
-            <p>Liste des scripts disponible pour un entrainement</p>
-            <h4>Joueurs du championnat</h4>
-            <nav class="indigo darken-4">
-                <div class="nav-wrapper">
-                    <form>
-                        <div class="input-field">
-                            <input id="modeVersus" type="search" onkeyup="searchPlayerVersus()" required>
-                            <label class="label-icon" for="modeVersus"><i class="material-icons">search</i></label>
-                            <i class="material-icons">close</i>
+        <form action="{% url 'backend:select_player_for_training' %}" method="POST">
+            <div>
+                {% csrf_token %}
+                <div class="modal-content">
+                    <h4>Entraînement - {{ championnat|truncatechars:50 }}</h4>
+                    <p>Le code "{{ active_script.name }}" servira d'entraînement face à ...</p>
+                    <blockquote class="hide-on-med-and-down">
+                        Cochez une case pour sélectionner 1 adversaire. Cliquez sur les noms pour en sélectionner
+                        plusieurs (choix aléatoire parmis ceux sélectionnés).
+                    </blockquote>
+                    <h4>Joueurs du championnat</h4>
+                    <nav class="indigo darken-4">
+                        <div class="nav-wrapper">
+                            <form>
+                                <div class="input-field">
+                                    <input id="modeVersus" type="search" onkeyup="searchPlayerVersus()">
+                                    <label class="label-icon" for="modeVersus"><i
+                                            class="material-icons">search</i></label>
+                                    <i class="material-icons">close</i>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
-            </nav>
-            <div style="max-height: 350px; overflow: auto;">
-                <ul id="resultPlayerVersus" class="collapsible" data-collapsible="accordion">
-                    {% if classement|length == 1 %}
-                        <li>
-                            <div class="collapsible-header">
-                                Vous êtes seul(e) dans ce championnat
-                            </div>
-                        </li>
-                    {% else %}
-                        {% for player in classement %}
-                            {% if player.user != user %}
+                    </nav>
+                    <div style="max-height: 350px; overflow: auto;">
+                        <ul id="resultPlayerVersus" class="collapsible" data-collapsible="accordion">
+                            {% if classement|length == 1 %}
                                 <li>
-                                    <div class="collapsible-header"
-                                         onclick="location.href='/versus/{{ player.pk }}'">
-                                        <i class="material-icons">face</i>{{ player.user }} avec {{ player.exp }} points
+                                    <div class="collapsible-header">
+                                        Vous êtes seul(e) dans ce championnat
                                     </div>
                                 </li>
+                            {% else %}
+                                {% for player in classement %}
+                                    {% if player.user != user %}
+                                        <li class="player_check">
+                                            <!--<div class="collapsible-header" onclick="location.href='/versus/{{ player.pk }}'">
+                                                <i class="material-icons">face</i>{{ player.user }} avec {{ player.points }}
+                                                points
+                                            </div>-->
+                                            <div class="collapsible-header">
+                                                <i class="material-icons">face</i>{{ player.user }}
+                                                avec {{ player.points }}
+                                                points.
+                                                <span class="badge">
+                                                    <input type="checkbox" id="{{ player.pk }}_training" name="check_training"
+                                                           value="/versus/0/{{ player.pk }}"/>
+                                                    <!--<input type="hidden" name="player" value="{{ player.pk }}"/>-->
+                                                    <label for="{{ player.pk }}_training"></label>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             {% endif %}
+                        </ul>
+                    </div>
+                    <h4>Code Ordinateur</h4>
+
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li class="player_check">
+                            <div class="collapsible-header">
+                                <i class="material-icons">laptop</i>Ordinateur - Facile
+                                <span class="badge">
+                                <input type="checkbox" id="ordi1" name="check_training" value="/versus/0/1/1#ORDI_FACILE"/>
+                                <label for="ordi1"></label>
+                            </span>
+                            </div>
+                        </li>
+                        <li class="player_check">
+                            <div class="collapsible-header">
+                                <i class="material-icons">laptop</i>Ordinateur - Intermédiaire
+                                <span class="badge">
+                                <input type="checkbox" id="ordi2" name="check_training"
+                                       value="/versus/0/2/2#ORDI_INTERMEDIAIRE"/>
+                                <label for="ordi2"></label>
+                            </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">laptop</i>Ordinateur - Difficile
+                                <span
+                                        class=" badge " data-badge-caption="Bientôt disponible"></span></div>
+                            <!--<div class="collapsible-header" onclick="location.href='/versus/3/3#ORDI_DIFFICILE'"><i class="material-icons">laptop</i>CPU 3 - Difficile <span
+                                    class=" badge " data-badge-caption="Bientôt disponible"></span></div>-->
+                        </li>
+                    </ul>
+
+                    <h4>Vos codes</h4>
+                    <ul class="collapsible">
+                        {% for script in scripts %}
+
+                            {% if script.pk != active_script.pk %}
+                                <li class="player_check">
+                                    <div class="collapsible-header">
+                                        <i class="material-icons">insert_drive_file</i>
+                                        {{ script.name|truncatechars:22 }}
+                                        <span class="badge">
+                                            <input type="checkbox" id="{{ script.pk }}_training" name="check_training"
+                                                   value="/versus/0/{{ user.pk }}/{{ script.pk }}#{{ script.name }}"/>
+                                            <label for="{{ script.pk }}_training"></label>
+                                        </span>
+                                    </div>
+                                    <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
+                                </li>
+                            {% else %}
+                                <li class="player_check">
+                                    <div class="collapsible-header">
+                                        <i class="material-icons">insert_drive_file</i>
+                                        {{ script.name|truncatechars:22 }}
+                                        <span class="new badge indigo yellow-text darken-4"
+                                              data-badge-caption="Actif"></span>
+                                    </div>
+                                    <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
+                                </li>
+                            {% endif %}
+
                         {% endfor %}
-                    {% endif %}
-                </ul>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <a onclick="window.location.href='/versus/0/'"
+                       class="modal-action modal-close waves-effect waves-green btn-flat left hide-on-med-and-down">Aléatoire</a>
+                    <input type="hidden" name="trigger_page" value="index"/>
+                    <button id="player_select" class="btn waves-effect waves-light indigo darken-4" type="submit"
+                            name="action" value="training">S'entraîner
+                        <i class="material-icons right">play_arrow</i>
+                    </button>
+                </div>
             </div>
-            <h4>Code Ordinateur</h4>
+        </form>
+    </div>
 
-            <ul class="collapsible" data-collapsible="accordion">
-                <li>
-                    <div class="collapsible-header" onclick="location.href='/versus/1/1#ORDI_FACILE'"><i class="material-icons">laptop</i>CPU 1 - Facile</div>
-                </li>
-                <li>
-                    <div class="collapsible-header" onclick="location.href='/versus/2/2#ORDI_INTERMEDIAIRE'"><i class="material-icons">laptop</i>CPU 2 - Intermédiaire</div>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">laptop</i>CPU 3 - Difficile <span
-                            class=" badge " data-badge-caption="Bientôt disponible"></span></div>
-                    <!--<div class="collapsible-header" onclick="location.href='/versus/3/3#ORDI_DIFFICILE'"><i class="material-icons">laptop</i>CPU 3 - Difficile <span
-                            class=" badge " data-badge-caption="Bientôt disponible"></span></div>-->
-                </li>
-            </ul>
-
-            <h4>Vos codes</h4>
-            <ul>
+    <div id="editor" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Vos Codes</h4>
+            <div class="collection">
                 {% for script in scripts %}
-
-                    {% if script.pk != active_script.pk %}
-                    <li>
-                        <div class="collapsible-header"
-                             onclick="location.href='/versus/{{ user.pk }}/{{ script.pk }}#{{ script.name }}'">
-                            <i class="material-icons">insert_drive_file</i> {{ script.name|truncatechars:22 }}
-                        </div>
-                        <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
-                    </li>
-                    {% else %}
-                    <li>
-                        <div class="collapsible-header">
-                            <i class="material-icons">insert_drive_file</i> {{ script.name|truncatechars:22 }}
-                             <span class="new badge indigo yellow-text darken-4" data-badge-caption="Actif"></span>
-                        </div>
-                        <!--<a class="btn-flat" onclick="window.location.href='/editor/?script={{ script.pk }}'">Modifier</a>-->
-                    </li>
-                    {% endif %}
-
+                    <p>
+                        <a onclick="window.location.href='/editor/?script={{ script.pk }}'"
+                           class="collection-item black-text" style="cursor:pointer">
+                            {{ script.name|truncatechars:22 }}
+                            {% if script.name ==  active_script.name %}
+                                <span class="new badge indigo yellow-text darken-4" data-badge-caption="Actif"></span>
+                            {% endif %}
+                        </a>
+                    </p>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
         <div class="modal-footer">
-            <a onclick="window.location.href='/versus'"
-               class="modal-action modal-close waves-effect waves-green btn-flat">Random in championship</a>
+            <a class="waves-effect waves-teal btn-flat" onclick="window.location.href='/editor/'">Éditeur</a>
         </div>
     </div>
 
     <div id="championnat" class="modal modal-fixed-footer">
-        <div class="modal-content">
-            <h4>{{ championnat|truncatechars:50 }}</h4>
-            <p>Liste des joueurs du championnat et leur classement</p>
-            <nav class="indigo darken-4">
-                <div class="nav-wrapper">
-                    <form>
-                        <div class="input-field">
-                            <input id="PlayerChamp" type="search" onkeyup="searchPlayerChamp()" required>
-                            <label class="label-icon" for="PlayerChamp"><i class="material-icons">search</i></label>
-                            <i class="material-icons">close</i>
-                        </div>
-                    </form>
-                </div>
-            </nav>
-            <div style="max-height: 350px; overflow: auto;">
-
-                <ul id="resultPlayerChamp">
-                    {% for player in classement %}
-
-                        {% if player.user == user %}
-                            <li>
-                                <div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ]
-                                    - {{ player.user }} avec {{ player.exp }} points (pk={{ player.pk }})
-                                </div>
-                            </li>
-                        {% else %}
-                            <li>
-                                <div class="collapsible-header grey lighten-2"
-                                     onclick="window.location.href='/battle/{{ player.pk }}'">[ {{ forloop.counter }} ]
-                                    - {{ player.user }} avec {{ player.exp }} points (pk={{ player.pk }})
-                                </div>
-                            </li>
-                        {% endif %}
-
-                    {% endfor %}
-                </ul>
-            </div>
+        <form action="{% url 'backend:select_player_for_championship' %}" method="POST">
             <div>
-                <h4>Votre classement</h4>
-                <ul>
-                    {% for player in classement %}
-                        {% if player.user == user %}
-                            <li>
-                                <div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ]
-                                    - {{ player.user }} avec {{ player.exp }} points (pk={{ player.pk }})
+                {% csrf_token %}
+                <div class="modal-content">
+                    <h4>{{ championnat|truncatechars:50 }}<span class="badge"
+                                                                onclick="window.location.href='/championnat'"
+                                                                style="cursor: pointer"><i class="fas fa-cog fa-2x"></i></span>
+                    </h4>
+                    <!--<p>Liste des joueurs du championnat et leur classement</p>-->
+                    <p>Le code "{{ active_script.name }}" est engagé dans le championnat.</p>
+                    <nav class="indigo darken-4">
+                        <div class="nav-wrapper">
+                            <form>
+                                <div class="input-field">
+                                    <input id="PlayerChamp" type="search" onkeyup="searchPlayerChamp()">
+                                    <label class="label-icon" for="PlayerChamp"><i
+                                            class="material-icons">search</i></label>
+                                    <i class="material-icons">close</i>
                                 </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                            </form>
+                        </div>
+                    </nav>
+                    <div style="max-height: 350px; overflow: auto;">
+
+                        <ul id="resultPlayerChamp" class="collapsible">
+                            {% for player in classement %}
+
+                                {% if player.user == user %}
+                                    <li>
+                                        <!--<div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ]
+                                    - {{ player.user }} avec {{ player.points }} points (pk={{ player.pk }})
+                                </div>-->
+                                        <div class="collapsible-header indigo darken-4 yellow-text">
+                                            [ {{ forloop.counter }} ]
+                                            - {{ player.user }} avec {{ player.points }} points
+                                        </div>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <!--<div class="collapsible-header grey lighten-2"
+                                     onclick="window.location.href='/battle/{{ player.pk }}'">[ {{ forloop.counter }} ]
+                                    - {{ player.user }} avec {{ player.points }} points (pk={{ player.pk }})
+                                </div>-->
+                                        <div class="collapsible-header grey lighten-2">
+                                            [ {{ forloop.counter }} ]
+                                            - {{ player.user }} avec {{ player.points }} points
+                                            <span class="badge">
+                                        <input type="checkbox" id="{{ player.user }}" name="check_championship" value="/battle/{{ player.pk }}"/>
+                                        <label for="{{ player.user }}"></label>
+                                    </span>
+                                        </div>
+                                    </li>
+                                {% endif %}
+
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Votre classement</h4>
+                        <ul>
+                            {% for player in classement %}
+                                {% if player.user == user %}
+                                    <li>
+                                        <!--<div class="collapsible-header indigo darken-4 yellow-text">[ {{ forloop.counter }} ]
+                                    - {{ player.user }} avec {{ player.points }} points (pk={{ player.pk }})
+                                </div>-->
+                                        <div class="collapsible-header indigo darken-4 yellow-text">
+                                            [ {{ forloop.counter }} ]
+                                            - {{ player.user }} avec {{ player.points }} points
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a onclick="window.location.href='/battle'"
+                       class="modal-action modal-close waves-effect waves-green btn-flat left hide-on-med-and-down">Aléatoire</a>
+                    <button class="btn waves-effect waves-light indigo darken-4" type="submit" name="action" value="championnat">Défier
+                        <i class="material-icons right">play_arrow</i>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <a onclick="window.location.href='/battle'"
-               class="modal-action modal-close waves-effect waves-green btn-flat">Random in championship</a>
-        </div>
+        </form>
     </div>
+
 
 {% endblock %}
 

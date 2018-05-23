@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+    PyRobot - Profil
+{% endblock %}
+
+{% block content %}
+    <div class="col s12 m2 l2">
+        <br/>
+        <br/>
+    </div>
+    <div class="col s12 m8 l8">
+
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <!-- Promo Content 3 goes here -->
+            </div>
+            <div class="col s4 m4 l4">
+                 <img src="../static/img/user_avatar/{{ current_user.avatar }}" alt="{{ current_user.avatar }}"
+                     class="responsive-img circle" width="350">
+            </div>
+            <div class="col s4 m4 l4">
+                <!-- Promo Content 3 goes here -->
+            </div>
+            <div class="col s12 m12 l12">
+                <p>{{ current_user.points }}</p>
+                <p>{{ user.username }}</p>
+                <p>{{ user.email }}</p>
+                <p>{{ user.first_name }}</p>
+                <p>{{ user.last_name }}</p>
+            </div>
+
+        </div>
+    </div>
+    <div class="col s12 m2 l2">
+        <br/>
+        <br/>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+{% endblock %}

@@ -30,11 +30,11 @@
         {% else %}
             <div class="col s12 m12 l12">
                 <div class="row section padding-section">
-                    <div class="card-panel yellow lighten-2">
+                    <!--<div class="card-panel yellow lighten-2">
                     <span id="win" class="indigo-text darken-4">
                         Bataille en cours...
                     </span>
-                    </div>
+                    </div>-->
                     <div class="col s12 m3 l3">
                         <p>
                             {{ request.user.username }}
@@ -75,6 +75,7 @@
                                         <input type="hidden" name="history_pk" value="{{ history_pk }}"/>
                                         <input type="hidden" name="mode" value="{{ is_versus }}"/>
                                         <input type="hidden" name="script_pk" value="{{ script_used }}"/>
+                                        <input type="hidden" name="previous_page" value="{{ from_editor }}"/>
                                         <div id="editer" class="col s12 m12 l6">
                                             <a id="logo-container" style="cursor:pointer" href="#pause"
                                                class="waves-effect waves-light btn indigo darken-4 yellow-text modal-trigger">
@@ -121,7 +122,7 @@
                         l'animation.</p>
                 </div>
                 <div class="modal-footer">
-                    <a onclick="window.history.go(-1)"
+                    <a href="{% url 'backend:index' %}"
                        class="modal-action modal-close waves-effect waves-green btn-flat ">Continuer</a>
                     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Retour</a>
                 </div>
@@ -143,6 +144,7 @@
             var step_index = {{ step }};
             var map_name = "{{ map_name }}";
             var is_replay = "{{ is_replay }}";
+            var from_editor = "{{ from_editor }}";
             var is_versus = "{{ is_versus }}"
         </script>
         {% include 'backend/headAnimation.html' %}

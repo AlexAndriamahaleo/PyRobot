@@ -28,13 +28,15 @@ from .funct.funct import getItemByType, getBoolInventory
 from .game.Game import Game
 from .models import Weapon, Armor, Caterpillar, NavSystem, TypeItem, Inventory, DefaultIa
 from .models import UserProfile, Tank, Ia, BattleHistory, Notification, FAQ, Championship
-from .utils import validate_ai_script, award_battle
+from .utils import validate_ai_script, award_battle_elo
 
 
 def index(request):
     if request.user.is_authenticated:
 
         current_user = UserProfile.objects.get(user=request.user)
+
+        battle = current_user.get_running_battle()
 
         champ_pk = UserProfile.objects.get(user=request.user).championship_set.all()[0].pk
 
@@ -57,23 +59,40 @@ def index(request):
 
         # print(cpu_1.pk, cpu_2.pk, cpu_3.pk)
 
-        classement = Championship.objects.get(pk=champ_pk).players.all().order_by('-exp')
+        classement = Championship.objects.get(pk=champ_pk).players.all().order_by('-points')
         # classement = Championship.objects.get(pk=champ_pk).players.exclude(user=cpu_1.user).exclude(user=cpu_2.user).exclude(user=cpu_3.user).order_by('-exp')
         # print(classement)
 
-        context = {'money': UserProfile.objects.get(user=request.user).money,
-                   'username': request.user,
-                   'pageIn': 'accueil',
-                   # 'point' : UserProfile.objects.get(user=request.user).exp,
-                   'agression': UserProfile.objects.get(user=request.user).agression,
-                   'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
-                   'scripts': request.user.userprofile.ia_set.all(),
-                   'active_script': request.user.userprofile.get_active_ai_script(),
-                   'players': UserProfile.objects.exclude(pk=current_user.pk),
-                   # 'classement' : UserProfile.objects.order_by('-exp'),
-                   'classement': classement,
-                   # 'all_championship': Championship.objects.all(),
-                   'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
+        if not battle:
+            context = {'money': UserProfile.objects.get(user=request.user).money,
+                       'username': request.user,
+                       'pageIn': 'accueil',
+                       # 'point' : UserProfile.objects.get(user=request.user).exp,
+                       'agression': UserProfile.objects.get(user=request.user).agression,
+                       'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
+                       'scripts': request.user.userprofile.ia_set.all(),
+                       'active_script': request.user.userprofile.get_active_ai_script(),
+                       'players': UserProfile.objects.exclude(pk=current_user.pk),
+                       # 'classement' : UserProfile.objects.order_by('-exp'),
+                       'classement': classement,
+                       # 'all_championship': Championship.objects.all(),
+                       'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
+        else:
+            context = {'money': UserProfile.objects.get(user=request.user).money,
+                       'username': request.user,
+                       'pageIn': 'accueil',
+                       'inBattle': True ,
+                       # 'point' : UserProfile.objects.get(user=request.user).exp,
+                       'agression': UserProfile.objects.get(user=request.user).agression,
+                       'tank': Tank.objects.get(owner=UserProfile.objects.get(user=request.user)),
+                       'scripts': request.user.userprofile.ia_set.all(),
+                       'active_script': request.user.userprofile.get_active_ai_script(),
+                       'players': UserProfile.objects.exclude(pk=current_user.pk),
+                       # 'classement' : UserProfile.objects.order_by('-exp'),
+                       'classement': classement,
+                       # 'all_championship': Championship.objects.all(),
+                       'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name}
+
         return render(request, "backend/accueil.html", context)
     else:
         form = SignUpForm()
@@ -131,7 +150,9 @@ def signup(request):
 
             user = User.objects.get(username=username)
 
-            UserProfile(user=user, money=0, next_level_exp=int(1 / settings.EXP_CONSTANT), agression=True).save()
+            # UserProfile(user=user, money=0, next_level_exp=int(1 / settings.EXP_CONSTANT), agression=True).save()
+            UserProfile(user=user, points=0, coeff_K=40, nb_games=0, agression=True).save()
+
 
             # create ia file default
             userProfile = UserProfile.objects.get(user=user)
@@ -201,7 +222,8 @@ class SignUp(FormView):
             user = User.objects.create_user(username, email, password)
 
             # create User
-            UserProfile(user=user, money=0, next_level_exp=int(1 / settings.EXP_CONSTANT), agression=True).save()
+            # UserProfile(user=user, money=0, next_level_exp=int(1 / settings.EXP_CONSTANT), agression=True).save()
+            UserProfile(user=user, points=0, coeff_K=40, nb_games=0, agression=True).save()
 
             # create ia file default
             userProfile = UserProfile.objects.get(user=user)
@@ -350,8 +372,13 @@ def fight(request, player_pk=''):
 
 
 @login_required
-def versus(request, player_pk='', script_pk=''):
+def versus(request, previous='', player_pk='', script_pk=''):
     user1 = UserProfile.objects.get(user=request.user)
+
+    if previous == '1':
+        from_editor = True
+    else:
+        from_editor = False
 
     champ = UserProfile.objects.get(user=request.user).championship_set.all()[0]
     champ_pk = champ.pk
@@ -497,6 +524,7 @@ def versus(request, player_pk='', script_pk=''):
         'map_name': map_name,
         'history_pk': bh_pk,
         'is_versus': 'yes',
+        'from_editor': from_editor,
         'script_used': script_user,
         'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name
     }
@@ -852,7 +880,13 @@ class AIScriptView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AIScriptView, self).get_context_data(**kwargs)
+        current_user = UserProfile.objects.get(user=self.request.user)
+        battle = current_user.get_running_battle()
+        champ_pk = UserProfile.objects.get(user=self.request.user).championship_set.all()[0].pk
+        if battle :
+            context['inBattle'] = True
         context['pageIn'] = 'editor'
+        context['classement'] = Championship.objects.get(pk=champ_pk).players.all().order_by('-points')
         context['scripts'] = self.request.user.userprofile.ia_set.all()
         context['active_script'] = self.request.user.userprofile.get_active_ai_script()
         context['scripts_count'] = self.request.user.userprofile.ia_set.count()
@@ -914,7 +948,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
             text = request.POST.get('ia', '')
             if validate_ai_script(text):
                 if addnew == "yes":
-                    if request.user.userprofile.ia_set.count() < 5:
+                    if request.user.userprofile.ia_set.count() < 8:
                         if text.strip() == '':
                             messages.error(request, "Veuillez taper le code de votre IA")
                         else:
@@ -925,7 +959,7 @@ class AIScriptView(LoginRequiredMixin, ListView):
                             )
                             messages.success(request, "L'Intelligence Artificielle %s a bien été ajoutée" % ia_name)
                     else:
-                        messages.error(request, "Vous avez atteint le nombre maximum d'IA autorisé (5)")
+                        messages.error(request, "Vous avez atteint le nombre maximum d'IA autorisé (8)")
                 else:
                     try:
                         selected = Ia.objects.get(pk=selected_pk)
@@ -971,23 +1005,40 @@ def finish_battle(request):
         mode = request.POST.get('mode')
         script = request.POST.get('script_pk')
         action = request.POST.get('action')
+        previous_page = request.POST.get('previous_page')
 
         try:
             battle = BattleHistory.objects.get(pk=bh_pk)
             battle.is_finished = True
             battle.save()
 
-            if battle.is_victorious:
-                award_battle(battle.user.userprofile, battle.opponent.userprofile, mode)
-            else:
-                award_battle(battle.opponent.userprofile, battle.user.userprofile, mode)
+            battle = BattleHistory.objects.get(pk=bh_pk)
+            battle.is_finished = True
+            battle.save()
 
             messages.success(request, "Fin du combat")
+
+
+            if battle.is_victorious:
+                award_battle_elo(battle.user.userprofile, battle.opponent.userprofile, mode)
+                # award_battle(battle.user.userprofile, battle.opponent.userprofile, mode)
+                messages.success(request, "Vous avez gagné !")
+            else:
+                award_battle_elo(battle.opponent.userprofile, battle.user.userprofile, mode)
+                # award_battle(battle.opponent.userprofile, battle.user.userprofile, mode)
+                messages.success(request, "Vous avez perdu")
+
+            battle.is_finished = True
+            battle.save()
+
+
+
+            if action == "Éditeur" or previous_page == 'True':
+                battle.is_finished = True
+                battle.save()
+                return redirect("/editor/?script=" + script)
         except:
             messages.error(request, "Aucun combat en cours")
-
-        if action == "Éditeur":
-            return redirect("/editor/?script=" + script)
 
     return redirect("backend:battle_histories")
 
@@ -1117,3 +1168,48 @@ def change_password(request):
         'championnat': UserProfile.objects.get(user=request.user).championship_set.all()[0].name,
         'form': form
     })
+
+@login_required
+def get_user_profile(request):
+    current_user = UserProfile.objects.get(user=request.user)
+    user = User.objects.get(username=current_user.user)
+    return render(request, 'backend/user_profile.html', {
+        "user":user,
+        "current_user": current_user,
+    })
+
+@login_required
+def select_player_for_training(request):
+
+    if request.method == 'POST':
+        player_select = request.POST.getlist('check_training')
+        page = request.POST.get('trigger_page')
+
+        if player_select != []:
+            final = random.choice(player_select)
+            return redirect(final)
+        else:
+            messages.error(request, "Vous n'avez pas sélectionné de joueur.")
+            if page == 'index':
+                return redirect('backend:index')
+            else:
+                return redirect('backend:editor')
+
+    messages.error(request, "ERREUR DANS LE FORMULAIRE !")
+    return redirect('backend:versus', previous=0)
+
+
+@login_required
+def select_player_for_championship(request):
+
+    if request.method == 'POST':
+        player_select = request.POST.get('check_championship')
+
+        if player_select is not None:
+            return redirect(player_select)
+        else:
+            messages.error(request, "Vous n'avez pas sélectionné de joueur.")
+            return redirect('backend:index')
+
+    messages.error(request, "ERREUR DANS LE FORMULAIRE !")
+    return redirect('backend:fight')

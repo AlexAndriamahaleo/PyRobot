@@ -34,3 +34,16 @@ function searchPlayerVersus() {
         }
     }
 }
+
+
+$('.tap-target').tapTarget('open');
+
+$('input[type="checkbox"]').on('change', function () {
+    $('input[type="checkbox"]').not(this).prop('checked', false);
+});
+
+$('.player_check').click(function ()
+{
+    var checkbox = $(this).find('input[type=checkbox]');
+    checkbox.prop("checked", !checkbox.prop("checked"));
+});

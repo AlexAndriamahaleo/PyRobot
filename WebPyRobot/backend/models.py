@@ -12,19 +12,23 @@ from django.core.files.images import get_image_dimensions
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     money = models.PositiveIntegerField(default=0)
-    avatar = models.ImageField(blank=True)
+    avatar = models.ImageField(blank=True, upload_to='img/user_avatar')
     # avatar = models.ImageField(upload_to='img/user_avatar')
     agression = models.BooleanField(default=False)
 
     # championship = models.ForeignKey(Championship)
 
     # Exp - R&D
-    exp = models.PositiveIntegerField(default=0)
-    srch = models.PositiveIntegerField(default=0)
-    dev = models.PositiveIntegerField(default=0)
-    level = models.PositiveIntegerField(default=0)
-    next_level_exp = models.PositiveIntegerField(default=int(1 / settings.EXP_CONSTANT))
-    true_level = models.PositiveIntegerField(default=1)
+    points = models.PositiveIntegerField(default=0) # future points ELO
+    # exp
+    coeff_K = models.PositiveIntegerField(default=40) # coefficient K
+    # srch
+    nb_games = models.PositiveIntegerField(default=0) # nb games played
+    # dev
+
+    level = models.PositiveIntegerField(default=0) # useless
+    next_level_exp = models.PositiveIntegerField(default=0) # useless
+    true_level = models.PositiveIntegerField(default=1) # useless
 
     def __str__(self):
         return self.user.username
@@ -305,7 +309,7 @@ class BattleHistory(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     difficult_level = models.CharField(max_length=10, default="normal")
     mode = models.BooleanField(null=False, default=False)
-    championship_name = models.CharField(max_length=60, default="Championnat PyRobot [Default]")
+    championship_name = models.CharField(max_length=60, default="PyRobot [Default]")
 
     def player_name(self):
         return self.user.username

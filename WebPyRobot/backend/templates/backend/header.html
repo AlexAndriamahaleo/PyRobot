@@ -25,27 +25,33 @@
     </ul>
 
     <ul id="index2" class="dropdown-content center">
-        <li>
+        <!--<li>
             <a class="indigo-text darken-4 tooltipped" data-position="right" data-delay="50"
                data-tooltip="{{ championnat }}" href="#" style="cursor:default">
                 <i class="fas fa-trophy"></i>
                 {{ championnat|truncatechars:50 }}
             </a>
         </li>
-        <li class="divider"></li>
+        <li class="divider"></li>-->
         <li>
             <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
                class="indigo-text darken-4"><i class="fas fa-history fa-lg"></i> Historique de combat
             </a>
         </li>
-        <li>
+        <!--<li>
             <a class="indigo-text darken-4 waves-effect waves-light modal-trigger"
                onclick="window.location.href='/championnat'">
                 <i class="fas fa-cogs"></i> Les championnats</a>
-        </li>
+        </li>-->
     </ul>
 
     <ul id="index4" class="dropdown-content center">
+        <li>
+            <a class="indigo-text darken-4" onclick="window.location.href='/profile'">
+                <i class="material-icons">portrait</i>
+                Mon profil
+            </a>
+        </li>
         <li>
             <a class="indigo-text darken-4"
                onclick="window.location.href='/password'">
@@ -66,13 +72,12 @@
                 <i class="fas fa-book"></i>
                 Documentation</a>
         </li>
-
-        <li>
+        <!--<li>
             <a onclick="window.open('/faq', 'Foire au questions','width=1080, height=720')"
                class="indigo-text darken-4 collection-item ">
                 <i class="fas fa-question"></i>
                 FAQ</a>
-        </li>
+        </li>-->
         <li>
             <a onclick="window.open('/tutoriels', 'Tutoriels', 'width=1080, height=720')"
                class="indigo-text darken-4 collection-item ">
@@ -87,26 +92,10 @@
             {% if pageIn != 'documentation' and pageIn != 'faq' and pageIn != 'tutoriels' %}
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
-                        <a class="yellow-text tooltipped" data-position="bottom" data-delay="50"
-                           data-tooltip="vos points" href="#" style="cursor:default">
+                        <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2">
                             {{ point }}
-                            <i class="fab fa-product-hunt fa-lg"></i>
+                            <i class="fab fa-product-hunt fa-lg"></i><i class="material-icons right">arrow_drop_down</i>
                         </a>
-                    </li>
-                    <!--<li>
-                        <a style="cursor:pointer" onclick="window.location.href='/battle-histories'"
-                           class="yellow-text tooltipped" data-position="bottom" data-delay="50"
-                           data-tooltip="Historique de combat">Historique <i class="fas fa-history fa-lg"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-button yellow-text" href="#" data-beloworigin="true" data-activates="index1">Menu
-                            <i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    </li>-->
-                    <li>
-                        <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index2"><i
-                                class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
                     </li>
                     <li>
                         <a class="yellow-text dropdown-button " href="#" data-beloworigin="true"
@@ -116,12 +105,24 @@
                         </a>
                     </li>
                     <li>
+                        <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index4"><i
+                                class="fas fa-user-circle fa-lg"></i> {{ user }}<i class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                    <!--<li>
                         <a class="yellow-text dropdown-button" href="#" data-beloworigin="true" data-activates="index4">
                             <i class="fas fa-cog fa-lg"></i>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
                 <a href="#" data-activates="main_menu" class="button-collapse"><i class="material-icons">menu</i></a>
+            {% else %}
+                <ul class="right">
+                    <li>
+                        <a class="yellow-text" href="JavaScript:window.close()">
+                            <i class="material-icons">close</i>
+                        </a>
+                    </li>
+                </ul>
             {% endif %}
         </div>
     </nav>
@@ -134,6 +135,8 @@
                 <img src="{% static 'img/black_wall.jpg' %}">
             </div>
             <a href="#!name"><span class="white-text name">{{ user }}</span></a>
+            <a href="#!prenom"><span class="white-text email">{{ username.first_name }}</span></a>
+            <a href="#!nom"><span class="white-text name">{{ username.last_name }}</span></a>
             <a href="#!email"><span class="white-text email">{{ mail }}</span></a>
             <a href="#!point"><span class="white-text name">{{ point }} <i class="fab fa-product-hunt fa-lg"></i></span></a>
             <a href="#!champ"><span class="white-text email"><i class="fas fa-trophy fa-lg"></i>
@@ -220,13 +223,12 @@
                                 <i class="fas fa-book"></i>
                                 Documentation</a>
                         </li>
-
-                        <li>
+                        <!--<li>
                             <a onclick="window.open('/faq', 'Foire au questions','width=1080, height=720')"
                                class="indigo-text darken-4 collection-item ">
                                 <i class="fas fa-question"></i>
                                 FAQ</a>
-                        </li>
+                        </li>-->
                         <li>
                             <a onclick="window.open('/tutoriels', 'Tutoriels', 'width=1080, height=720')"
                                class="indigo-text darken-4 collection-item ">

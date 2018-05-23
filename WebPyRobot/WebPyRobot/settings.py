@@ -162,6 +162,9 @@ MESSAGE_TAGS = {
 
 
 NOT_ALLOWED_KW = ['import', 'exec']
+ELO_PTS_MAX_DIFF = 400
+ELO_PTS_AWARD_WIN = 1
+ELO_PTS_AWARD_LOSE = 0
 
 
 BATTLE_MAP_NAMES = ['terre', 'premiere']
