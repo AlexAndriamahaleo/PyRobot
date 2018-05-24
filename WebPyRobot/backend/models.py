@@ -58,6 +58,12 @@ class UserProfile(models.Model):
             return list(ai_scripts)[0]
         return None
 
+    def get_temporary_ai_script(self):
+        ai_scripts = self.ia_set.filter(edit=True)
+        if ai_scripts:
+            return list(ai_scripts)[0]
+        return None
+
     def change_active_ai(self, new_ai):
         old_ai = self.get_active_ai_script()
         if old_ai:
@@ -155,6 +161,7 @@ class Ia(models.Model):
     name = models.CharField(max_length=50, default='')
     text = models.TextField()
     active = models.BooleanField(default=False)
+    edit = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

@@ -49,7 +49,8 @@
     <div class="col s12 m4 l3">
         <ul class="collapsible" data-collapsible="accordion">
             <li>
-                <div class="collapsible-header active"><h4><i class="material-icons">code</i>Vos codes</h4>
+                <div class="collapsible-header active">
+                    <h4><i class="material-icons">code</i>Vos codes</h4>
                 </div>
                 <div class="collapsible-body">
                     <ul class="collection">
@@ -72,29 +73,28 @@
                         {% if scripts_count < 8 %}
                             <li class="collection-item {{ addnew }}">
                                 <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped green-text darken-4"
-                                   data-position="right" data-delay="50" data-tooltip="Nouveau code"><i class="fas fa-file-medical fa-2x"></i></a>
+                                   data-position="right" data-delay="50" data-tooltip="Nouveau code"><i class="material-icons" style="font-size: 3rem">add</i></a>
                             </li>
                         {% endif %}
                     </ul>
 
-                    {% if addnew %}
-                        <form id="load" name="form_input" enctype="multipart/form-data">
-                            <div class="file-field input-field">
-                                <div class="btn indigo darken-4">
-                                    <span>Parcourir..</span><i class="material-icons right">search</i>
-                                    <input id="myfile" type="file">
-                                </div>
-                                <div class="file-path-wrapper">
-                                    <input id="name_file" class="file-path validate" type="text">
-                                    <button id="entrer" class="btn waves-effect waves-light indigo darken-4"
-                                            type="button">Charger
-                                        <i class="material-icons right">file_download</i>
-                                    </button>
-
-                                </div>
+                    <form id="load" name="form_input" enctype="multipart/form-data">
+                        <div class="file-field input-field">
+                            <div class="btn indigo darken-4">
+                                <span>Parcourir..</span><i class="material-icons right">search</i>
+                                <input id="myfile" type="file">
                             </div>
-                        </form>
-                    {% endif %}
+                            <div class="file-path-wrapper">
+                                <input id="name_file" class="file-path validate" type="text" placeholder="Charger un fichier">
+                                <button id="entrer" class="btn waves-effect waves-light indigo darken-4"
+                                        type="button">Charger
+                                    <i class="material-icons right">file_download</i>
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </li>
             <li>
@@ -371,6 +371,7 @@
                     <a onclick="window.location.href='/versus/1/'"
                        class="modal-action modal-close waves-effect waves-green btn-flat left">Aléatoire</a>
                     <input type="hidden" name="trigger_page" value="editor"/>
+                    <input type="hidden" name="selected_pk_training" value="{{ selected.pk }}"/>
                     <button id="player_select" class="btn waves-effect waves-light indigo darken-4" type="submit"
                             name="action" value="training">S'entraîner
                         <i class="material-icons right">play_arrow</i>

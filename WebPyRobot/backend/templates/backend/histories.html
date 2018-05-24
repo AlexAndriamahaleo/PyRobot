@@ -28,7 +28,7 @@
     <div id="container1" class="container">
 
         <div class="col s12 m2 l12">
-            <table class="striped">
+            <table class="highlight centered responsive-table">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -45,36 +45,20 @@
                 {% for history in object_list %}
                     <tr class="historic">
                         <td>{{ history.timestamp|date:'l d F Y' }}, {{ history.timestamp|time:'H:i' }}</td>
-                        <td>
-                            {% if history.mode %}VERSUS{% else %}CHAMPIONNAT{% endif %}
-                        </td>
+                        <td>{% if history.mode %}ENTRAÎNEMENT{% else %}CHAMPIONNAT{% endif %}</td>
                         {% if  history.opponent.username != request.user.username %}
                             <td>{{ history.opponent.username }}</td>
                             <td class="hide-on-med-and-down">{{ history.used_script.name }}</td>
-                            <td>
-                                {% if history.is_victorious %}Gagné{% else %}Perdu{% endif %}
-                            </td>
-                            <td>
-                                <a class="waves-effect waves-light indigo darken-4 yellow-text btn"
-                                   href="{% url 'backend:replay' %}?bh_pk={{ history.pk }}">Voir</a>
-                            </td>
-                            <td>
-                                <a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a>
-                            </td>
+                            <td>{% if history.is_victorious %}Gagné{% else %}Perdu{% endif %}</td>
+                            <td><a class="waves-effect waves-light indigo darken-4 yellow-text btn" href="{% url 'backend:replay' %}?bh_pk={{ history.pk }}">Voir</a></td>
+                            <td><a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a></td>
                             <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% else %}
                             <td>{{ history.user.username }} ({{ history.used_script.name  }})</td>
                             <td class="hide-on-med-and-down">{{ history.opp_used_script.name}}</td>
-                            <td>
-                                {% if history.is_victorious %}Perdu{% else %}Gagné{% endif %}
-                            </td>
-                            <td>
-                                <a class="waves-effect waves-light indigo darken-4 yellow-text btn"
-                                   href="{% url 'backend:replay' %}?bh_pk={{ history.pk }}">Voir</a>
-                            </td>
-                            <td>
-                                <a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a>
-                            </td>
+                            <td>{% if history.is_victorious %}Perdu{% else %}Gagné{% endif %}</td>
+                            <td><a class="waves-effect waves-light indigo darken-4 yellow-text btn" href="{% url 'backend:replay' %}?bh_pk={{ history.pk }}">Voir</a></td>
+                            <td><a class="waves-effect waves-light indigo darken-4 yellow-text btn" onclick="window.location.href='/editor/?script={{ history.used_script.pk }}'">Modifier</a></td>
                             <td>{{ history.championship_name|truncatechars:25 }}</td>
                         {% endif %}
                     </tr>
@@ -90,9 +74,8 @@
     <script>
         sr.reveal('.historic', {
             reset: true ,
-            mobile: true,
-            viewFactor: 0.35,
-            viewOffset: { top: 48 },
+            mobile: false,
+            viewFactor: 0.05,
             duration: 2000
         });
     </script>

@@ -141,9 +141,13 @@ var deadPlayer = function (player) {
         if (socket2.readyState == WebSocket.OPEN) socket2.onopen();
 
         //document.getElementById("fincombat").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Voir l\'historique\"/>";
-        document.getElementById("fincombat").innerHTML = "<button class=\"btn waves-effect waves-light indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Voir l\'historique\">Historique</button>";
+        document.getElementById("fincombat").innerHTML = "<button class=\"btn waves-effect waves-light indigo darken-4 yellow-text\" type=\"submit\" name=\"action_2\" value=\"Voir l\'historique\" style=\"display: none\">Historique</button>";
+        document.getElementById("next_goto").innerHTML = "Aller vers...<i class=\"material-icons\">arrow_drop_down</i>";
+        document.getElementById("next_goto_mobile").innerHTML = "Aller vers...<i class=\"material-icons\">arrow_drop_down</i>";
+        document.getElementById("dropdown_fight").innerHTML = "<li><a onclick=\"window.location.href='/'\" class=\"indigo-text darken-4\"><i class=\"material-icons\">home</i> Accueil</a></li>\n" +
+            "                                                <li><a onclick=\"window.location.href='/battle-histories'\" class=\"indigo-text darken-4\"><i class=\"material-icons\">list</i> Historique</a></li>";
         //document.getElementById("editer").innerHTML = "<input class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Éditeur\"/>";
-        document.getElementById("editer").innerHTML = "<button class=\"btn waves-effect waves-light indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"Éditeur\">Éditeur</button>";
+        document.getElementById("editer").innerHTML = "<button class=\"btn waves-effect waves-light indigo darken-4 yellow-text\" type=\"submit\" name=\"action\" value=\"editeur\">Éditeur</button>";
         //document.getElementById("editer").innerHTML = "<a class=\"waves-effect waves-light btn indigo darken-4 yellow-text\" onclick=\"window.location.href=\'/editor/\'\">Modifier</a>";
         // TODO: change these input to button in Materialize
     }
@@ -178,7 +182,8 @@ var shoot = function (player, x, y, i, is_replay) {
                 }
                 else {
                     //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
-                    console.log("ATK: ", i);
+                    //console.log("ATK: ", i);
+                    console.log("[OPPONENT BULLET ?] 1");
                     if (tabReceive[i][4] != 0) {
                         self_rest_pv = tabReceive[i][4] + '%';
                         div_pv_self.style.width = self_rest_pv;
@@ -193,6 +198,7 @@ var shoot = function (player, x, y, i, is_replay) {
             }
             else {
                 //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                console.log("[OPPONENT BULLET ?] 2");
                 if (tabReceive[i][4] != 0) {
                     self_rest_pv = tabReceive[i][4] + '%';
                     div_pv_self.style.width = self_rest_pv;
@@ -212,13 +218,13 @@ var shoot = function (player, x, y, i, is_replay) {
                     Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
                     flag_display_once = false ;
                 }
-                else if (tabReceive[i][4] > 0) {
+                /*else if (tabReceive[i][4] > 0) {
                     //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
 
-                }
+                }*/
             }
         }
-
+        console.log("[MY BULLET]");
         if (tabReceive[i][4] > 0) {
             self_rest_pv = tabReceive[i][4] + '%';
             div_pv_opponent.style.width = self_rest_pv;
@@ -241,6 +247,7 @@ var shoot = function (player, x, y, i, is_replay) {
                 else if (tabReceive[i][4] > 0) {
                     //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
                     if (tabReceive[i][4] != 0) {
+                        console.log("[OPPONENT BULLET] 1");
                         self_rest_pv = tabReceive[i][4] + '%';
                         div_pv_self.style.width = self_rest_pv;
                         div_pv_self.innerHTML = tabReceive[i][4] + ' %';
@@ -254,6 +261,7 @@ var shoot = function (player, x, y, i, is_replay) {
             }
             else if (tabReceive[i][4] > 0) {
                 //Materialize.toast("Il vous reste " + tabReceive[i][4] + " PV", 4000, 'rounded');
+                console.log("[OPPONENT BULLET] 2");
                 if (tabReceive[i][4] != 0) {
                     self_rest_pv = tabReceive[i][4] + '%';
                     div_pv_self.style.width = self_rest_pv;
