@@ -131,7 +131,12 @@ def login(request):
 @never_cache
 def logout(request):
     system_logout(request)
-    return redirect(reverse('backend:index'))
+    #return redirect(reverse('backend:index'))
+    context = {
+        'error': {'username': [{"code": "unique",
+                                "message": 'À bientôt sur PyRobot'}]}
+    }
+    return render(request, 'backend/index.html', context)
 
 
 def signup(request):
