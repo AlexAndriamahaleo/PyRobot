@@ -57,15 +57,20 @@
                         {% for script in scripts %}
                             {% if script.pk != active_script.pk %}
                                 <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
-                                <div style="cursor: pointer" onclick="location.href='{% url "backend:editor" %}?script={{ script.pk }}'">
-                                    <a class="black-text" href="{% url 'backend:editor' %}?script={{ script.pk }}">{{ script.name|truncatechars:20 }}</a>
-                                </div>
-                            </li>
+                                    <div style="cursor: pointer"
+                                         onclick="location.href='{% url "backend:editor" %}?script={{ script.pk }}'">
+                                        <a class="black-text" href="{% url 'backend:editor' %}?script={{ script.pk }}">
+                                            {{ script.name|truncatechars:20 }}</a>
+                                    </div>
+                                </li>
                             {% else %}
                                 <li class="collection-item {% if script.pk == selected.pk %} active {% endif %}">
-                                <div style="cursor: pointer" onclick="location.href='{% url "backend:editor" %}?script={{ script.pk }}'">
-                                    <a class="black-text" href="{% url 'backend:editor' %}?script={{ script.pk }}">{{ script.name|truncatechars:20 }}</a>
-                                     <span class="new badge indigo yellow-text darken-4" data-badge-caption="Actif"></span>
+                                <div style="cursor: pointer"
+                                     onclick="location.href='{% url "backend:editor" %}?script={{ script.pk }}'">
+                                    <a class="black-text" href="{% url 'backend:editor' %}?script={{ script.pk }}">
+                                        {{ script.name|truncatechars:20 }}</a>
+                                    <span class="new badge indigo yellow-text darken-4"
+                                          data-badge-caption="Actif"></span>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -73,7 +78,8 @@
                         {% if scripts_count < 8 %}
                             <li class="collection-item {{ addnew }}">
                                 <a href="{% url 'backend:editor' %}?addnew=yes" class="tooltipped green-text darken-4"
-                                   data-position="right" data-delay="50" data-tooltip="Nouveau code"><i class="material-icons" style="font-size: 3rem">add</i></a>
+                                   data-position="right" data-delay="50" data-tooltip="Nouveau code"><i
+                                        class="material-icons" style="font-size: 3rem">add</i></a>
                             </li>
                         {% endif %}
                     </ul>
@@ -85,7 +91,8 @@
                                 <input id="myfile" type="file">
                             </div>
                             <div class="file-path-wrapper">
-                                <input id="name_file" class="file-path validate" type="text" placeholder="Charger un fichier">
+                                <input id="name_file" class="file-path validate" type="text"
+                                       placeholder="Charger un fichier">
                                 <button id="entrer" class="btn waves-effect waves-light indigo darken-4"
                                         type="button">Charger
                                     <i class="material-icons right">file_download</i>
@@ -139,7 +146,7 @@
                                 Afin de faciliter votre expérience. Nous avons intégrés des raccourcis claviers.
                             </p>
                         </li>
-                        <li class="collection-item">Annuler la dernière action: <br/>Ctrl-Z / Cmd-Z(?) </li>
+                        <li class="collection-item">Annuler la dernière action: <br/>Ctrl-Z / Cmd-Z(?)</li>
                         <li class="collection-item">Autocomplétion: <br/>Ctrl-Space / Opt-F</li>
                         <li class="collection-item">Dupliquer une ligne: <br/>Ctrl-Shift-D / Shift-Cmd-D</li>
                         <li class="collection-item">Multi-curseur: <br/>Ctrl-Clic Gauche/ ...</li>
@@ -195,13 +202,15 @@
                 </div>
                 <nav>
                     <div class="nav-wrapper yellow lighten-2">
-                        <a href="#" data-activates="editor_menu" class="button-collapse"><i class="material-icons">menu</i></a>
+                        <a href="#" data-activates="editor_menu" class="button-collapse"><i
+                                class="material-icons">menu</i></a>
                         <ul class="left hide-on-med-and-down">
                             <li class="save hoverable" value="Sauvegarder">
                                 <!--<a id="coucou_save" type="submit" class="indigo-text darken-4">
                                     SAUVEGARDER
                                 </a>-->
-                                <input id="coucou_save" type="submit" class="btn-flat indigo-text darken-4" name="action"
+                                <input id="coucou_save" type="submit" class="btn-flat indigo-text darken-4"
+                                       name="action"
                                        value="Sauvegarder">
                             </li>
                             <li class="save hoverable" value="Activer">
@@ -217,6 +226,11 @@
                                     <a class="modal-trigger indigo-text darken-4" href="#versus">ENTRAÎNEMENT</a>
                                 </li>
                             {% endif %}
+                        </ul>
+                        <ul class="right hide-on-med-and-down">
+                            <li class="hoverable">
+                                <a class="indigo-text darken-4 modal-trigger" href="#delete_script">SUPPRIMER LE CODE</a>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -247,7 +261,7 @@
                 </li>
                 {% if not inBattle %}
                     <li>
-                        <a class="waves-effect modal-trigger indigo-text darken-4"  href="#versus">ENTRAÎNEMENT</a>
+                        <a class="waves-effect modal-trigger indigo-text darken-4" href="#versus">ENTRAÎNEMENT</a>
                     </li>
                 {% endif %}
             </ul>
@@ -295,7 +309,8 @@
                                                 avec {{ player.points }}
                                                 points.
                                                 <span class="badge">
-                                                    <input type="checkbox" id="{{ player.pk }}" name="check_training" value="/versus/1/{{ player.pk }}"/>
+                                                    <input type="checkbox" id="{{ player.pk }}" name="check_training"
+                                                           value="/versus/1/{{ player.pk }}"/>
                                                     <!--<input type="hidden" name="player" value="{{ player.pk }}"/>-->
                                                     <label for="{{ player.pk }}"></label>
                                                 </span>
@@ -313,16 +328,18 @@
                             <div class="collapsible-header">
                                 <i class="material-icons">laptop</i>Ordinateur - Facile
                                 <span class="badge">
-                                <input type="checkbox" id="ordi1" name="check_training" value="/versus/1/1/1#ORDI_FACILE"/>
+                                <input type="checkbox" id="ordi1" name="check_training"
+                                       value="/versus/1/1/1#ORDI_FACILE"/>
                                 <label for="ordi1"></label>
                             </span>
                             </div>
                         </li>
-                        <li class="player_check" >
+                        <li class="player_check">
                             <div class="collapsible-header">
                                 <i class="material-icons">laptop</i>Ordinateur - Intermédiaire
                                 <span class="badge">
-                                <input type="checkbox" id="ordi2" name="check_training" value="/versus/1/2/2#ORDI_INTERMEDIAIRE"/>
+                                <input type="checkbox" id="ordi2" name="check_training"
+                                       value="/versus/1/2/2#ORDI_INTERMEDIAIRE"/>
                                 <label for="ordi2"></label>
                             </span>
                             </div>
@@ -346,7 +363,8 @@
                                         <i class="material-icons">insert_drive_file</i>
                                         {{ script.name|truncatechars:22 }}
                                         <span class="badge">
-                                            <input type="checkbox" id="{{ script.pk }}" name="check_training" value="/versus/1/{{ user.pk }}/{{ script.pk }}#{{ script.name }}"/>
+                                            <input type="checkbox" id="{{ script.pk }}" name="check_training"
+                                                   value="/versus/1/{{ user.pk }}/{{ script.pk }}#{{ script.name }}"/>
                                             <label for="{{ script.pk }}"></label>
                                         </span>
                                     </div>
@@ -379,6 +397,15 @@
                 </div>
             </div>
         </form>
+    </div>
+
+    <div id="delete_script" class="modal">
+        <div class="modal-content">
+            <h4>Bientôt disponible</h4>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+        </div>
     </div>
 
 {% endblock %}
@@ -438,13 +465,12 @@
             $('input[type="checkbox"]').not(this).prop('checked', false);
         });
 
-        $('.player_check').click(function ()
-        {
+        $('.player_check').click(function () {
             var checkbox = $(this).find('input[type=checkbox]');
             checkbox.prop("checked", !checkbox.prop("checked"));
         });
 
-    //onclick="document.getElementById('code').submit()
+        //onclick="document.getElementById('code').submit()
 
 
     </script>

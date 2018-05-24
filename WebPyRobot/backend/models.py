@@ -12,7 +12,7 @@ from django.core.files.images import get_image_dimensions
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     money = models.PositiveIntegerField(default=0)
-    avatar = models.ImageField(blank=True, upload_to='img/user_avatar')
+    avatar = models.ImageField(blank=True, upload_to='img/user_avatar', default="img/user_avatar/default.png")
     # avatar = models.ImageField(upload_to='img/user_avatar')
     agression = models.BooleanField(default=False)
 

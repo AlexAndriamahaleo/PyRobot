@@ -1,4 +1,6 @@
 from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 from . import api_views
@@ -42,4 +44,4 @@ urlpatterns = [
     url(r'^profile/$', views.get_user_profile, name='profile_perso'),
     url(r'^training/$', views.select_player_for_training, name='select_player_for_training'),
     url(r'^championship/$', views.select_player_for_championship, name='select_player_for_championship'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

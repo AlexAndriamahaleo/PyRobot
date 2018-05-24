@@ -1254,9 +1254,18 @@ def change_password(request):
 @login_required
 def get_user_profile(request):
     current_user = UserProfile.objects.get(user=request.user)
+    queryset = BattleHistory.objects.filter(Q(user=request.user) | Q(opponent=request.user))
+    queryset_win = queryset.filter(is_finished=True, mode=False, is_victorious=True)
+    queryset_lose = queryset.filter(is_finished=True, mode=False, is_victorious=False)
+    print(queryset_win.count())
+    print(queryset_lose.count())
+    script = request.user.userprofile.get_active_ai_script()
     user = User.objects.get(username=current_user.user)
     return render(request, 'backend/user_profile.html', {
         "user":user,
+        "script_used":script,
+        "nb_win" : queryset_win.count(),
+        "nb_lose" : queryset_lose.count(),
         "current_user": current_user,
     })
 
