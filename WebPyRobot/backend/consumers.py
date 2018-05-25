@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from channels import Group
 from channels.sessions import channel_session
 
-from .utils import award_battle
+from .utils import award_battle_elo
 
 
 def ws_message(message):
@@ -69,9 +69,9 @@ def ws_receive(message):
                 battle.is_finished = True
                 battle.save()
                 if battle.is_victorious:
-                    award_battle(battle.user.userprofile, battle.opponent.userprofile, mode)
+                    award_battle_elo(battle.user.userprofile, battle.opponent.userprofile, mode)
                 else:
-                    award_battle(battle.opponent.userprofile, battle.user.userprofile, mode)
+                    award_battle_elo(battle.opponent.userprofile, battle.user.userprofile, mode)
                 return
 
             if battle != None:
