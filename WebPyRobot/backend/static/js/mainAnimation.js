@@ -97,20 +97,26 @@ var deadPlayer = function (player) {
 
     if (playername == opponent) {
         //document.getElementById("win").innerHTML = "Fin de la battle !";
-        Materialize.toast("Fin de la battle !", 10000);
+        if(is_replay != 'yes'){
+            Materialize.toast("Fin de la battle !", 10000);
+        }
     } else if (player.name == playername) {
-        Materialize.toast('Dommage !', 4000);
         div_pv_self.style.width = "0%";
         div_pv_self.innerHTML = "0 %";
         //document.getElementById("win").innerHTML = "Vous avez perdu contre " + opponent;
-        Materialize.toast("Vous avez perdu contre " + opponent, 10000);
+        if(is_replay != 'yes'){
+            Materialize.toast("Vous avez perdu contre " + opponent, 10000);
+            Materialize.toast('Dommage !', 4000);
+        }
     }
     else {
-        Materialize.toast('Bravo !', 4000);
         div_pv_opponent.style.width = "0%";
         div_pv_opponent.innerHTML = "0 %";
         //document.getElementById("win").innerHTML = "Vous avez battu " + opponent;
-        Materialize.toast("Vous avez battu " + opponent, 10000);
+        if(is_replay != 'yes'){
+            Materialize.toast("Vous avez battu " + opponent, 10000);
+            Materialize.toast('Bravo !', 4000);
+        }
     }
 
     if (is_replay != "yes") {
@@ -121,7 +127,8 @@ var deadPlayer = function (player) {
                 msg_content: "Le combat contre " + playername + " est terminé",
                 msg_type: "notification",
                 msg_class: "success",
-                is_versus: is_versus
+                is_versus: is_versus,
+                battle_pk: history_pk
             };
             socket.send(JSON.stringify(message));
         };
@@ -134,7 +141,8 @@ var deadPlayer = function (player) {
                 msg_class: "success",
                 finished: "yes",
                 username: playername,
-                is_versus: is_versus
+                is_versus: is_versus,
+                battle_pk: history_pk
             };
             socket2.send(JSON.stringify(message));
         };
@@ -156,7 +164,7 @@ var shoot = function (player, x, y, i, is_replay) {
     var ctx = canvas.getContext('2d');
     var bullet;
 
-    //console.log(player.name); // CELUI QUI TIR
+    console.log(player.name); // CELUI QUI TIR
 
     player.shoot(player.x, player.y, x, y);
 
@@ -176,7 +184,7 @@ var shoot = function (player, x, y, i, is_replay) {
         if (is_replay == 'yes') {
             if (playername != opponent) {
                 if (tabReceive[i][4] < 0 && flag_display_once) {
-                    Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                    //Materialize.toast("Votre tank a été détruit - 1", 4000, 'rounded');
                     flag_display_once = false ;
                 }
                 else {
@@ -212,9 +220,9 @@ var shoot = function (player, x, y, i, is_replay) {
         if (is_replay == 'yes') {
 
             if (playername == opponent && flag_display_once) { // ADVERSAIRE QUI VEUT REVOIR LE COMBAT -> REPLAY
-                console.log("opp2: ", opponent, playername);
+                //console.log("opp2: ", opponent, playername);
                 if (tabReceive[i][4] < 0) {
-                    Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                    //Materialize.toast("Votre tank a été détruit - 2", 4000, 'rounded');
                     flag_display_once = false ;
                 }
                 /*else if (tabReceive[i][4] > 0) {
@@ -240,7 +248,7 @@ var shoot = function (player, x, y, i, is_replay) {
             } else if (player.name == playername && flag_display_once) { // INITIATEUR DE LA BATTLE -> REPLAY
                 console.log("playerELSE: ", playername, opponent);
                 if (tabReceive[i][4] < 0) {
-                    Materialize.toast("Votre tank a été détruit", 4000, 'rounded');
+                    //Materialize.toast("Votre tank a été détruit - 3", 4000, 'rounded');
                     flag_display_once = false ;
                 }
                 else if (tabReceive[i][4] > 0) {

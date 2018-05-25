@@ -131,12 +131,12 @@ def login(request):
 @never_cache
 def logout(request):
     system_logout(request)
-    #return redirect(reverse('backend:index'))
-    context = {
-        'error': {'username': [{"code": "unique",
-                                "message": 'À bientôt sur PyRobot'}]}
-    }
-    return render(request, 'backend/index.html', context)
+    # context = {
+    #     'error': {'username': [{"code": "unique",
+    #                             "message": 'À bientôt sur PyRobot'}]}
+    # }
+    return redirect(reverse('backend:index'))
+    # return render(request, 'backend/index.html', context)
 
 
 def signup(request):
@@ -306,9 +306,9 @@ def fight(request, player_pk=''):
             user2 = UserProfile.objects.get(pk=player_pk)
             is_in_champ = user2.championship_set.all()[0].pk
             if champ_pk != is_in_champ:
-                user2 = random.choice(list(users))
-                messages.warning(request,
-                                 "L'adversaire choisie n'est pas dans votre championnat. Une battle contre un joueur au hasard a été démarré")
+                # user2 = random.choice(list(users))
+                messages.warning(request, "L'adversaire choisie n'est pas dans votre championnat.")
+                return redirect('backend:index')
 
         # Send realtime notification to the opponent if he's online
         notify = NotificationMessage()
@@ -330,12 +330,15 @@ def fight(request, player_pk=''):
         game = Game(tank1, tank2, ia1, ia2, champ.name)
         res = game.run(0)
 
+        launcher = user1.user.username
         opponent = user2.user.username
         player_x = settings.PLAYER_INITIAL_POS_X
         player_y = settings.PLAYER_INITIAL_POS_Y
         opponent_x = settings.OPPONENT_INITIAL_POS_X
         opponent_y = settings.OPPONENT_INITIAL_POS_Y
         script_user = ia1.pk
+        script_player = ia1.name
+        script_opponent = ia2.name
         step = 0
         map_name = random.choice(settings.BATTLE_MAP_NAMES)
         bh_pk = game.set_history(map_name, False)
@@ -348,12 +351,16 @@ def fight(request, player_pk=''):
             print("ValueError - battle result: %s" % res_stats)
             res = []
 
+        print(battle.user.username)
+        launcher = battle.user.username
         opponent = battle.opponent.username
         player_x = battle.player_x
         player_y = battle.player_y
         opponent_x = battle.opponent_x
         opponent_y = battle.opponent_y
         script_user = battle.used_script.pk
+        script_player = battle.used_script.name
+        script_opponent = battle.opp_used_script.name
         step = battle.step
         map_name = battle.map_name
         bh_pk = battle.pk
@@ -362,6 +369,7 @@ def fight(request, player_pk=''):
     context = {
         'result': res,
         'pageIn': 'battle',
+        'launcher': launcher,
         'opponent': opponent,
         'player_x': player_x,
         'player_y': player_y,
@@ -372,6 +380,8 @@ def fight(request, player_pk=''):
         'history_pk': bh_pk,
         'is_versus': 'no',
         'script_used': script_user,
+        'script_player': script_player,
+        'script_opponent': script_opponent,
         'championnat': user1.championship_set.all()[0].name
     }
     return render(request, "backend/fight.html", context)
@@ -487,6 +497,7 @@ def versus(request, previous='', player_pk='', script_pk=''):
             is_victorious = "no"
         # opponent = "CPU"
         script_user = ia1.pk
+        launcher = user1.user.username
         script_player = ia1.name
         script_opponent = ia2.name
         player_x = 0
@@ -510,6 +521,7 @@ def versus(request, previous='', player_pk='', script_pk=''):
             res = []
 
         opponent = battle.opponent.username
+        launcher = battle.user.username
         is_victorious = "no"
         if battle.is_victorious:
             is_victorious = "yes"
@@ -528,6 +540,7 @@ def versus(request, previous='', player_pk='', script_pk=''):
     context = {
         'result': res,
         'pageIn': 'battle',
+        'launcher': launcher,
         'opponent': opponent,
         'is_victorious': is_victorious,
         'player_x': player_x,
@@ -573,6 +586,7 @@ def replay(request):
         print("ValueError - battle result: %s" % res_stats)
         res = []
 
+    launcher = battle.user.username
     opponent = battle.opponent.username
     map_name = battle.map_name
     bh_pk = battle.pk
@@ -587,6 +601,7 @@ def replay(request):
     context = {
         'result': res,
         'pageIn': 'accueil',
+        'launcher': launcher,
         'opponent': opponent,
         'player_x': player_x,
         'player_y': player_y,
@@ -1305,3 +1320,29 @@ def select_player_for_championship(request):
 
     messages.error(request, "ERREUR DANS LE FORMULAIRE !")
     return redirect('backend:fight')
+
+@login_required
+def delete_script(request):
+
+    current_user = UserProfile.objects.get(user=request.user)
+    active_script = request.user.userprofile.get_active_ai_script()
+
+    if request.method == 'POST':
+        script_to_delete = request.POST.get('delete_code')
+        script_to_delete_name = request.POST.get('delete_code_name')
+
+        #print(active_script.pk == int(script_to_delete))
+        if active_script.pk == int(script_to_delete):
+            messages.error(request, "Impossible de supprimer ce code ! Ce code est actif en championnat.")
+        else:
+            to_delete = Ia.objects.get(pk=int(script_to_delete))
+            to_delete.delete()
+            messages.success(request,"Le code "+ script_to_delete_name +" a été supprimé avec succès.")
+
+        print(current_user, active_script, active_script.pk, script_to_delete)
+    else:
+        messages.error(request, "ERREUR SUPPRESSION DU CODE")
+
+    return redirect(reverse('backend:editor'))
+
+

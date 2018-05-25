@@ -128,7 +128,7 @@ def award_battle_elo(winner, loser, mode):
     Increase players points (based on ELO)
     :param winner: UserProfile of winner
     :param loser: UserProfile of loser
-    :param mode: yes [VERSUS] - no [CHAMPIONNAT]
+    :param mode: yes [ENTRAINEMENT] - no [CHAMPIONNAT]
     :return: void
     """
 
@@ -147,7 +147,8 @@ def award_battle_elo(winner, loser, mode):
         new_pts_lose = trunc(loser.points + player_K_lose * (settings.ELO_PTS_AWARD_LOSE - p_D_lose))
 
         if new_pts_lose < 0:
-            new_pts_lose = loser.points
+            # new_pts_lose = loser.points
+            new_pts_lose = loser.points + 10*new_pts_win/100
 
 
         print("New points win %s (%s) - lose %s (%s)" % (new_pts_win, player_K_win * (settings.ELO_PTS_AWARD_WIN - p_D_win), new_pts_lose, player_K_lose * (settings.ELO_PTS_AWARD_LOSE - p_D_lose)))

@@ -27,7 +27,7 @@
 {% block content %}
     <div id="container1" class="container">
 
-        <div class="col s12 m2 l12">
+        <div class="col s12 m12 l12">
             <table class="highlight centered responsive-table">
                 <thead>
                     <tr>
@@ -41,7 +41,7 @@
                         <th>Championnat</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="reveal">
                 {% for history in object_list %}
                     <tr class="historic">
                         <td>{{ history.timestamp|date:'l d F Y' }}, {{ history.timestamp|time:'H:i' }}</td>
@@ -74,9 +74,11 @@
     <script>
         sr.reveal('.historic', {
             reset: true ,
-            mobile: false,
-            viewFactor: 0.05,
-            duration: 2000
+            mobile: true,
+            viewFactor: 0.20,
+            duration: 2000,
+            container: '.reveal',
+            rotate: {x: 65}
         });
     </script>
 {% endblock %}

@@ -264,6 +264,9 @@
                         <a class="waves-effect modal-trigger indigo-text darken-4" href="#versus">ENTRAÎNEMENT</a>
                     </li>
                 {% endif %}
+                <li>
+                    <a class="indigo-text darken-4 modal-trigger" href="#delete_script">SUPPRIMER LE CODE</a>
+                </li>
             </ul>
         </form>
     </div>
@@ -400,12 +403,19 @@
     </div>
 
     <div id="delete_script" class="modal">
-        <div class="modal-content">
-            <h4>Bientôt disponible</h4>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
-        </div>
+        <form id="delete_script_form" action="{% url 'backend:delete_script' %}" method="POST">
+            {% csrf_token %}
+            <div class="modal-content">
+                <h4>Confirmation</h4>
+                <p>Vous êtes sur le point de supprimer {{ selected.name }}. Voulez-vous continuer ?</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="delete_code" value="{{ selected.pk }}"/>
+                <input type="hidden" name="delete_code_name" value="{{ selected.name }}"/>
+                <a onclick="$('#delete_script_form').submit()" class="modal-action modal-close waves-effect waves-green btn-flat">Oui</a>
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Non</a>
+            </div>
+        </form>
     </div>
 
 {% endblock %}
