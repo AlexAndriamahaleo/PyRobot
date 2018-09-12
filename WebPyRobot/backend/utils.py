@@ -148,7 +148,7 @@ def award_battle_elo(winner, loser, mode):
 
         if new_pts_lose < 0:
             # new_pts_lose = loser.points
-            new_pts_lose = loser.points + 10*new_pts_win/100
+            new_pts_lose = loser.points + 10*(player_K_win * (settings.ELO_PTS_AWARD_WIN - p_D_win))/100
 
 
         print("New points win %s (%s) - lose %s (%s)" % (new_pts_win, player_K_win * (settings.ELO_PTS_AWARD_WIN - p_D_win), new_pts_lose, player_K_lose * (settings.ELO_PTS_AWARD_LOSE - p_D_lose)))

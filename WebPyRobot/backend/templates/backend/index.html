@@ -126,16 +126,18 @@
                       </span>
                     {% endif %}
                 </div>
-                <div class="input-field col s12 m6 l6">
+                <div class="input-field col s12 m12 l12">
                     {{ form.password1 }}
                     <label for="{{ form.password1.label }}">{{ form.password1.label }}</label>
+                </div>
+                <div class="col s12 m12 l12">
                     {% if form.password1.help_text %}
                       <span>
                         {{ form.password1.help_text | safe }}
                       </span>
                     {% endif %}
                 </div>
-                <div class="input-field col s12 m6 l6">
+                <div class="input-field col s12 m12 l12">
                     {{ form.password2 }}
                     <label for="{{ form.password2.label }}">{{ form.password2.label }}</label>
                     {% if form.password2.help_text %}

@@ -14,7 +14,7 @@
                 <div class="collapsible-header active"><i class="material-icons">child_care</i>Débuter sur PyRobot
                 </div>
                 <div class="collapsible-body">
-                    <video class="responsive-video materialboxed" controls controlsList="nodownload">
+                    <video class="responsive-video materialboxed" autoplay="autoplay" controls="controls" controlsList="nodownload">
                         <source src="{% static 'img/tutoriel/tuto_accueil_pyrobot.mp4' %}" type="video/mp4">
                         Votre navigateur internet ne supporte pas la balise vidéo HTML version 5
                     </video>
@@ -25,7 +25,12 @@
                     <i class="material-icons">visibility</i>
                     Comment utiliser l'interface de programmation (API) de notre application ?
                 </div>
-                <div class="collapsible-body"><span>En cours de construction</span></div>
+                <div class="collapsible-body">
+                    <video class="responsive-video materialboxed" controls="controls" autoplay="autoplay">
+                        <source src="{% static 'img/tutoriel/tuto_accueil_pyrobot.mp4' %}" type="video/mp4">
+                        Votre navigateur internet ne supporte pas la balise vidéo HTML version 5
+                    </video>
+                </div>
             </li>
            <!--<li>
                 <div class="collapsible-header"><i class="material-icons">priority_high</i>Informations utiles</div>
