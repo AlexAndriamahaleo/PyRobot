@@ -1,0 +1,147 @@
+{
+  "!name": "pyrobot",
+  "self": {
+    "!type": "fn() -> self.fn",
+    "getSize()": {
+      "!type": "fn() -> number",
+      "!doc": "Renvoie la taille de la map."
+    },
+    "getEnemyTankId()": {
+      "!type": "fn() -> number",
+      "!doc": "Renvoie l'ID du tank ennemie."
+    },
+    "getTankId()": {
+      "!type": "fn() -> number",
+      "!doc": "Renvoie l'ID de votre tank."
+    },
+    "getCellDistance(num_cell_1, num_cell_2)": {
+      "!type": "fn(num_cell_1: number, num_cell_2: number) -> number",
+      "!doc": "Renvoie la distance entre la cellule num_cell_1 et la cellule num_cell_2."
+    },
+    "getCellFromXY(X, Y)": {
+      "!type": "fn(pos_x: number, pos_y: number) -> number",
+      "!doc": "Renvoie le numéro d'une cellule à partir des coordonnées X et Y."
+    },
+    "getCellPosY(num_cell)": {
+      "!type": "fn(num_cell: number) -> number",
+      "!doc": "Renvoie l'ordonnée Y d'une cellule num_cell."
+    },
+    "getCellPosX(num_cell)": {
+      "!type": "fn(num_cell: number) -> number",
+      "!doc": "Renvoie l'ordonnée X d'une cellule num_cell."
+    },
+    "getPosition(TankID)": {
+      "!type": "fn(tankId: number) -> number",
+      "!doc": "Renvoie le numéro de la cellule sur laquelle se trouve le tank qui a pour identifiant TankID."
+    },
+    "getRange(TankId)": {
+      "!type": "fn(tankId: number) -> number",
+      "!doc": "Renvoie la portée du tank d'identifiant TankID."
+    },
+    "getPA(TankID)": {
+      "!type": "fn(tankId: number) -> number",
+      "!doc": "Permet de connaître le nombre de Point d'Action actuel (ou restant) du tank d'identifiant TankID."
+    },
+    "moveTank(num_cell)": {
+      "!type": "fn(num_cell: number)",
+      "!doc": "Déplace le tank vers num_cell en utlisant 2 PA."
+    },
+    "moveTank(num_cell, n)": {
+      "!type": "fn(num_cell: number, n: number)",
+      "!doc": "Déplace le tank vers num_cell en utlisant n PA."
+    },
+    "shoot()": {
+      "!type": "fn() ",
+      "!doc": "Faire feu sur le tank s'il est à portée. Au centre de la carte sinon."
+    },
+    "getLife(TankID)": {
+      "!type": "fn(TankID: number) -> number",
+      "!doc": "Vous donne les PV restant du tank TankID."
+    }
+  },
+  "while": {
+    "!type": "fn()",
+    "!doc": "contrôler le flux du programme. ATTENTION à la condition d'arrêt.",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "for": {
+    "!type": "fn()",
+    "!doc": "parcourir les éléments d'une collection dans l'ordre d'apparition",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "in": {
+    "!type": "fn()",
+    "!doc": "(doc à venir)",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "break": {
+    "!type": "fn()",
+    "!doc": "interrompre la boucle, si nécessaire",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "if": {
+    "!type": "fn()",
+    "!doc": "utilisé pour déterminer, quelles instructions vont être exécutées",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "elif": {
+    "!type": "fn()",
+    "!doc": "signifie else if. Si le premier test est évalué à Faux, alors il continue avec le suivant",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "else": {
+    "!type": "fn()",
+    "!doc": "est optionnel. L'instruction après le mot clé else est exécutée, sauf si la condition est True",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "is": {
+    "!type": "fn()",
+    "!doc": "tests pour l'identité de l'objet",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "not": {
+    "!type": "fn()",
+    "!doc": "nie une valeur booléenne",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "and": {
+    "!type": "string",
+    "!doc": "toutes les conditions dans une expression booléenne doivent être satisfaites",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "or": {
+    "!type": "string",
+    "!doc": "au moins une condition doit être remplie",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "pass": {
+    "!type": "fn()",
+    "!doc": "ne fait rien",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "abs(n)": {
+    "!type": "fn(n: number)",
+    "!doc": "Renvoie la valeur absolue de n.",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "range(n)": {
+    "!type": "fn(n: number)",
+    "!doc": "itérer sur une suite de chiffre. ex: range(10) alors 0..9",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "range(n,m)": {
+    "!type": "fn(n: number, m: number)",
+    "!doc": "itérer sur une suite de chiffre. ex: range(1,11) alors 1..10",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "random()": {
+    "!type": "fn()",
+    "!doc": "Renvoie un nombre aléatoire",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  },
+  "radint(n,m)": {
+    "!type": "fn() -> number",
+    "!doc": "Renvoie un nombre aléatoire en n (inclut) et m (inclut).",
+    "!url": "https://docs.python.org/fr/3/index.html"
+  }
+}

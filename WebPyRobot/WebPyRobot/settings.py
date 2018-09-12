@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'backend',
     'pure_pagination',
     'ckeditor',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'WebPyRobot.urls'
 
@@ -104,7 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -136,6 +139,19 @@ CHANNEL_LAYERS = {
 }
 
 
+CRONJOBS = [
+    ("* * * * *", "backend.cron.OneMinuteJob", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/cronOneMinuteJob.log'),
+    ("* * * * *", "backend.cron.displayDataChampionship", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/displayDataChampionship.log'),
+    ("*/10 * * * *", "backend.cron.TenMinuteJob", '>> ~/Master/M1/TER/MaturePyRobots/WebPyRobot/backend/cronTenMinuteJob.log'),
+    # Idk if it's the right way, may be different for deployment version
+    # btw it works
+
+    # ("* * * * *", "backend.cron.test", '>> cron.log')
+    # seems not being executed
+]
+
+CRONTAB_COMMAND_SUFFIX = '2>&1'
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'deep-purple',
     messages.INFO: 'blue',
@@ -146,6 +162,9 @@ MESSAGE_TAGS = {
 
 
 NOT_ALLOWED_KW = ['import', 'exec']
+ELO_PTS_MAX_DIFF = 400
+ELO_PTS_AWARD_WIN = 1
+ELO_PTS_AWARD_LOSE = 0
 
 
 BATTLE_MAP_NAMES = ['terre', 'premiere']

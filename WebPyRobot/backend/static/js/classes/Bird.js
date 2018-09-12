@@ -24,7 +24,7 @@ function Bird(url, x1, y1, direction, x2, y2,contraint) {
         this.refPlayer.width = this.width / 6;
         this.refPlayer.height = this.height / 4;
     }
-    this.image.src = "../static/sprites/" + url;
+    this.image.src = "../../../../static/sprites/" + url;
     this.contraint = contraint;
 }
 

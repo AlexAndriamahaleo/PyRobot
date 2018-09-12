@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from channels import Group
 from channels.sessions import channel_session
 
-from .utils import award_battle
+from .utils import award_battle_elo
 
 
 def ws_message(message):
@@ -39,7 +39,6 @@ def ws_connect(message):
         return
 
 
-
 @channel_session
 def ws_receive(message):
     """
@@ -51,6 +50,8 @@ def ws_receive(message):
         except ValueError:
             log.debug("ws message isn't json")
             return
+
+        mode = data.get('is_versus')
 
         # Battle data from the frontend side
         if data.get('msg_type') == "battle_step":
@@ -68,18 +69,19 @@ def ws_receive(message):
                 battle.is_finished = True
                 battle.save()
                 if battle.is_victorious:
-                    award_battle(battle.user.userprofile, battle.opponent.userprofile)
+                    award_battle_elo(battle.user.userprofile, battle.opponent.userprofile, mode)
                 else:
-                    award_battle(battle.opponent.userprofile, battle.user.userprofile)
+                    award_battle_elo(battle.opponent.userprofile, battle.user.userprofile, mode)
                 return
 
-            step = int(data.get("step", 0))
-            battle.step = step
-            battle.player_x = data.get('player_x', 0)
-            battle.player_y = data.get('player_y', 0)
-            battle.opponent_y = data.get('opponent_y', 0)
-            battle.opponent_x = data.get('opponent_x', 0)
-            battle.save()
+            if battle != None:
+                step = int(data.get("step", 0))
+                battle.step = step
+                battle.player_x = data.get('player_x', 0)
+                battle.player_y = data.get('player_y', 0)
+                battle.opponent_y = data.get('opponent_y', 0)
+                battle.opponent_x = data.get('opponent_x', 0)
+                battle.save()
         else:
             label = message.channel_session['label']
             Group(label, channel_layer=message.channel_layer).send({'text': message['text']})

@@ -4,7 +4,7 @@ function Map(name,contraint) {
 	var xhr = getXMLHttpRequest();
 		
 	// Chargement du fichier
-	xhr.open("GET", '../static/maps/' + name + '.json', false);
+	xhr.open("GET", '../../../../static/maps/' + name + '.json', false);
 	xhr.send(null);
 	if(xhr.readyState != 4 || (xhr.status != 200 && xhr.status != 0)) // Code == 0 en local
 		throw new Error("Impossible de charger la carte nommé \"" + name + "\" (code HTTP : " + xhr.status + ").");

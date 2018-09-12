@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+    PyRobot - Profil
+{% endblock %}
+
+{% block custom_css %}
+    <style>
+        body {
+            background-color: #455a64;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="col s12 m2 l2">
+        <br/>
+        <br/>
+    </div>
+    <div class="col s12 m8 l8 white-text">
+
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <!-- Mise en page -->
+            </div>
+            <div class="col s4 m4 l4">
+                <img src="{{ current_user.avatar.url }}" alt="{{ current_user.avatar.url }}"
+                     class="responsive-img circle materialboxed" width="350">
+            </div>
+            <div class="col s4 m4 l4">
+                <!-- Mise en page -->
+            </div>
+
+            <div class="col s12 m12 l12">
+                <div class="row">
+                    <div class="col s12 m4 l4">
+                        <h4 class="center-align">Statistiques en championnat</h4>
+                        <p><i class="fas fa-trophy"></i> {{ current_user.nb_games }} parties jouées.</p>
+                        <p><i class="fas fa-thumbs-up"></i> {{ nb_win }} victoires</p>
+                        <p><i class="fas fa-thumbs-down"></i> {{ nb_lose }} défaites</p>
+                    </div>
+                    <div class="col s12 m4 l4 ">
+                        <h4 class="center-align">Informations joueur</h4>
+                        <p><i class="fas fa-user fa-lg"></i> {{ user.username }}</p>
+                        <p><i class="fas fa-code"></i> {{ script_used }}</p>
+                        <p>{{ current_user.points }} point(s).</p>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <h4 class="center-align">Informations personnelles</h4>
+                        <p><i class="fas fa-at"></i> {{ user.email }}</p>
+                        <p>{{ user.first_name }}</p>
+                        <p>{{ user.last_name }}</p>
+                        <p><a class="waves-effect waves-green modal-trigger white-text btn-flat" href="#avatar_img">Changer
+                            d'avatar</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col s12 m2 l2">
+        <br/>
+        <br/>
+    </div>
+    <div id="avatar_img" class="modal">
+        <div class="modal-content">
+            <h4>Bientôt disponible</h4>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+
+    </script>
+{% endblock %}

@@ -2,63 +2,193 @@
 
 {% load static %}
 
-{% block title %} MaturePyRobot - Combat {% endblock %}
+{% block title %} PyRobot - Combat {% endblock %}
+
+{% block custom_css %}
+    <style>
+        #canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+
+{% endblock %}
 
 {% block content %}
-    {% if battle_err %}
-        <div class="col s12 m9 l10 pad">
-            <div class="row z-depth-1 section padding-section" id="show_str"></div>
-        </div>
-    {% else %}
-        <div class="col s12 m9 l10 pad">
-            <div class="row z-depth-1 section padding-section">
-                <div class="card-panel yellow lighten-2">
-                    <span id="win" class="indigo-text darken-4">Bataille en cours...</span>
+    <div class="container">
+        {% if battle_err %}
+            <div class="col s12 m12 l12">
+                <div class="row section padding-section">
+                    <div class="col s12 m3 l3"></div>
+                    <div class="col s12 m6 l6">
+                        <img style="width: 760px; height: 760px" class="materialboxed"
+                             src="{% static 'img/icons/no_players.png' %}">
+                    </div>
+                    <div class="col s12 m3 l3"></div>
                 </div>
-
-                <canvas class="col l8 offset-l2" id="canvas"></canvas>
-
-                <div class="col l4 offset-l5">&nbsp;</div>
-
-                <div class="col l5 offset-l4">
-                    {% if not is_replay %}
-                        <div class="row">
-                            <div class="col l5">
-                                <a id="logo-container" style="cursor:pointer" onclick="window.history.go(-1)"
-                                   class="waves-effect waves-light btn">Pause&nbsp;<i class="fas fa-pause-circle fa-lg"></i>
-                                </a>
-                            </div>
-                            <div class="col l4">
-                                <form action="{% url 'backend:finish_battle' %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="history_pk" value="{{ history_pk }}"/>
-                                    <div id="fincombat">
-                                        <input class="waves-effect waves-light btn" type="submit" value="Terminer le combat"/>
-                                    </div>
-                                </form>
+            </div>
+        {% else %}
+            <div class="col s12 m12 l12">
+                <div class="row section padding-section">
+                    <!--<div class="card-panel yellow lighten-2">
+                    <span id="win" class="indigo-text darken-4">
+                        Bataille en cours...
+                    </span>
+                    </div>-->
+                    <div class="col s12 m3 l3">
+                        <p>
+                            <i class="fas fa-user fa-lg"></i> {{ launcher }}
+                        </p>
+                        <p>
+                            <i class="fas fa-code fa-lg"></i> {{ script_player }}
+                        </p>
+                        <div class="progress">
+                            <div id="rest-pv-self" class="determinate center-align white-text" style="width: 100%">
+                                100 %
                             </div>
                         </div>
-                     {% endif %}
-                </div>
+                    </div>
 
+                    <canvas class="materialboxed col s12 m6 l6" id="canvas"></canvas>
+
+                    <div class="col s12 m3 l3">
+                        <p class="right-align">
+                            {{ opponent }} <i class="fas fa-user fa-lg"></i>
+                        </p>
+                        <p class="right-align">
+                            {{ script_opponent }} <i class="fas fa-code fa-lg"></i>
+                        </p>
+                        <div class="progress">
+                            <div id="rest-pv-opponent" class="determinate center-align white-text" style="width: 100%">
+                                100 %
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m12 l12">&nbsp;</div>
+
+                    <div class="col s12 m8 offset-m2 l8 offset-l2">
+                        {% if not is_replay %}
+                            <div class="row">
+                                <!--<div id="editer" class="col s12 m6 l6">
+                                    <a id="logo-container" style="cursor:pointer" href="#pause"
+                                       class="waves-effect waves-light btn indigo darken-4 yellow-text modal-trigger">
+                                        <i class="material-icons left">pause_circle_outline</i>Pause</a>
+                                </div>-->
+                                <div class="col l8 offset-l2">
+                                    <form id="end_battle" action="{% url 'backend:finish_battle' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="history_pk" value="{{ history_pk }}"/>
+                                        <input type="hidden" name="mode" value="{{ is_versus }}"/>
+                                        <input type="hidden" name="script_pk" value="{{ script_used }}"/>
+                                        <input type="hidden" name="previous_page" value="{{ from_editor }}"/>
+                                        <input type="hidden" name="action" value="historique" id="myaction"/>
+                                        <div id="editer" class="col s12 m6 l6">
+                                            <a id="logo-container" style="cursor:pointer" href="#pause"
+                                               class="waves-effect waves-light btn indigo darken-4 yellow-text modal-trigger">
+                                                <i class="material-icons left">pause_circle_outline</i>Pause</a>
+                                        </div>
+                                        <div id="redirect" class="col s12 m6 l6">
+                                            <a id="next_goto" class="dropdown-button btn waves-effect waves-light indigo darken-4 yellow-text" href="#" data-beloworigin="true" data-activates="dropdown_fight">Terminer<i class="material-icons">arrow_drop_down</i></a>
+                                            <ul id="dropdown_fight" class="dropdown-content">
+                                                <li><a id="accueil_button" class="indigo-text darken-4"><i class="material-icons">home</i> Accueil</a></li>
+                                                <li><a id="historic_button" class="indigo-text darken-4"><i class="material-icons">list</i> Historique</a></li>
+                                                <li><a id="editor_button" class="indigo-text darken-4"><i class="material-icons">edit</i> Éditeur</a></li>
+                                            </ul>
+                                        </div>
+                                        <div id="fincombat" class="col s12 m12 l6">
+                                            <button class="btn waves-effect waves-light indigo darken-4 yellow-text finish"
+                                                    type="submit" name="action_2" value="Terminer le combat" style="display: none">
+                                                Terminer le combat
+                                            </button>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="col l8 offset-l2">
+                                    <div id="editer" class="col s12 m12 l6">
+                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text"
+                                           onclick="window.location.href='/editor/'"><i class="material-icons right">edit</i>Éditeur</a>
+                                    </div>
+                                    <div id="editer" class="col s12 m12 l6">
+                                        <a class="waves-effect waves-light btn indigo darken-4 yellow-text"
+                                           onclick="window.location.href='/battle-histories'"><i
+                                                class="material-icons right">history</i>Historique</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
-    {% endif %}
+            <div id="pause" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <h4>Pause</h4>
+                    <p>Vous êtes sur le point de mettre votre battle sur [PAUSE].</p>
+                    <p>Vous allez retourner à la page d'accueil.</p>
+                    <p>
+                        Tant que le combat ne sera pas terminé vous ne pourrez pas démarrer d'autre battle (en mode
+                        VERSUS
+                        ou en mode CHAMPIONNAT) face à un autre joueur.
+                    </p>
+                    <p>Cliquer sur terminer le combat pour voir le résultat de la battle sans attendre la fin de
+                        l'animation.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'backend:index' %}"
+                       class="modal-action modal-close waves-effect waves-green btn-flat ">Continuer</a>
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Retour</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block custom_js %}
     {% if not battle_err %}
         <script type="text/javascript">
             var a = "{{ result }}".replace(/&#39;/g, "\"");
+            var current = "{{ request.user.username }}";
+            var launcher = "{{ launcher }}";
             var opponent = "{{ opponent }}";
-            var playername = "{{ request.user.username }}";
+            var playername = "{{ launcher }}";
             var player_x = {{ player_x }};
             var player_y = {{ player_y }};
             var opponent_x = {{ opponent_x }};
             var opponent_y = {{ opponent_y }};
             var step_index = {{ step }};
-            var map_name = "{{ map_name }}"
-            var is_replay = "{{ is_replay }}"
+            var map_name = "{{ map_name }}";
+            var is_replay = "{{ is_replay }}";
+            var from_editor = "{{ from_editor }}";
+            var is_versus = "{{ is_versus }}";
+            var history_pk = "{{ history_pk }}";
+
+            $('#accueil_button').click(function () {
+                $('#myaction').attr({
+                    "value":"accueil"
+                });
+                $('#end_battle').submit()
+            });
+
+
+            $('#historic_button').click(function () {
+                $('#myaction').attr({
+                    "value":"historique"
+                });
+                $('#end_battle').submit()
+            });
+
+            $('#editor_button').click(function () {
+                $('#myaction').attr({
+                    "value":"editeur"
+                });
+                $('#end_battle').submit()
+            });
+
+
         </script>
         {% include 'backend/headAnimation.html' %}
     {% endif %}

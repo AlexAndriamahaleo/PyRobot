@@ -11,5 +11,5 @@
       - pip install -r WebPyRobot/requirements.txt
 
     script:
-      - python WebPyRobot/manage.py test backend.tests.SimpleTest.test_details
+      - python WebPyRobot/manage.py test backend.tests
 

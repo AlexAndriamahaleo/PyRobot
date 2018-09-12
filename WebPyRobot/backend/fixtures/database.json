@@ -5,11 +5,10 @@
     "fields": {
       "name": "Canon niv.1",
       "price": "500",
-      "attackValue": "20",
-      "range": "15",
-      "pathIcon" : "canon_1.png",
-      "attackCost" : 1
-
+      "attackValue": "15",
+      "range": "20",
+      "pathIcon": "canon_1.png",
+      "attackCost": 1
     }
   },
   {
@@ -20,8 +19,8 @@
       "price": "3000",
       "attackValue": "60",
       "range": "25",
-      "pathIcon" : "canon_2.png",
-      "attackCost" : 2
+      "pathIcon": "canon_2.png",
+      "attackCost": 2
     }
   },
   {
@@ -32,20 +31,18 @@
       "price": "10000",
       "attackValue": "80",
       "range": "40",
-      "pathIcon" : "canon_3.png",
-      "attackCost" : 3
-
+      "pathIcon": "canon_3.png",
+      "attackCost": 3
     }
   },
-
   {
     "model": "backend.Armor",
     "pk": 1,
     "fields": {
       "name": "Blindage niv.1",
       "price": "500",
-      "armorValue": "10",
-      "pathIcon" : "shield_1.png"
+      "armorValue": "70",
+      "pathIcon": "shield_1.png"
     }
   },
   {
@@ -55,8 +52,7 @@
       "name": "Blindage niv.2",
       "price": "3000",
       "armorValue": "30",
-      "pathIcon" : "shield_2.png"
-
+      "pathIcon": "shield_2.png"
     }
   },
   {
@@ -66,18 +62,17 @@
       "name": "Blindage niv.3",
       "price": "10000",
       "armorValue": "50",
-      "pathIcon" : "shield_3.png"
+      "pathIcon": "shield_3.png"
     }
   },
-
   {
     "model": "backend.Caterpillar",
     "pk": 1,
     "fields": {
       "name": "Chenille niv.1",
       "price": "500",
-      "moveValue": "2",
-      "pathIcon" : "cater_1.png"
+      "moveValue": "3",
+      "pathIcon": "cater_1.png"
     }
   },
   {
@@ -87,7 +82,7 @@
       "name": "Chenille niv.2",
       "price": "3000",
       "moveValue": "5",
-      "pathIcon" : "cater_2.png"
+      "pathIcon": "cater_2.png"
     }
   },
   {
@@ -97,18 +92,17 @@
       "name": "Chenille niv.3",
       "price": "10000",
       "moveValue": "8",
-      "pathIcon" : "cater_3.png"
+      "pathIcon": "cater_3.png"
     }
   },
-
   {
     "model": "backend.NavSystem",
     "pk": 1,
     "fields": {
       "name": "Processeur niv.1",
       "price": "500",
-      "actionValue": "2",
-      "pathIcon" : "circuit_1.png"
+      "actionValue": "4",
+      "pathIcon": "circuit_1.png"
     }
   },
   {
@@ -118,7 +112,7 @@
       "name": "Processeur niv.2",
       "price": "3000",
       "actionValue": "4",
-      "pathIcon" : "circuit_2.png"
+      "pathIcon": "circuit_2.png"
     }
   },
   {
@@ -128,7 +122,7 @@
       "name": "Processeur niv.3",
       "price": "10000",
       "actionValue": "6",
-      "pathIcon" : "circuit_3.png"
+      "pathIcon": "circuit_3.png"
     }
   },
   {
@@ -160,11 +154,298 @@
     }
   },
   {
-    "model":"backend.DefaultIa",
+    "model": "backend.DefaultIa",
     "pk": 1,
     "fields": {
       "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos)\n# Shoot the enemy Gracefuly\nself.shoot()"
     }
   },
-  {"model": "backend.faq", "pk": 1, "fields": {"question": "Quelles sont les r\u00e8gles du jeu ", "answer": "<p><strong>Concevez</strong></p>\r\n\r\n<p>... ... la meilleur combinaison d&#39;&eacute;quipement pour votre tank.</p>\r\n\r\n<p><strong>Imaginez et Codez</strong></p>\r\n\r\n<p>... ... ce tank qui prendra l&#39;ascendant sur votre adversaire et vous m&egrave;nera &agrave; la victoire gr&acirc;ce &agrave; vos comp&eacute;tences - ou future comp&eacute;tences - en programmation.</p>\r\n\r\n<p>Nous incluons un syst&egrave;me de niveau et d&#39;exp&eacute;rience. Dans le jeu, vous allez vous confronter &agrave; plus fort que vous. [Bient&ocirc;t] En cas de victoire la r&eacute;compense (sous forme d&#39;exp&eacute;rience) n&#39;en sera que meilleur.</p>\r\n\r\n<p><strong>Plus en d&eacute;tail </strong></p>\r\n\r\n<p>Un combat se d&eacute;roule sur une grille de jeu de 32 cases par 32 cases.</p>\r\n\r\n<p>Comme tout bon programmeur, cela signifie que pour les indices en X et en Y vont de 0 &agrave; 31.</p>\r\n\r\n<p>Vous avez donc 1024 cases sur cette grille. Qui vous permettront de mettre en place votre strat&eacute;gie de jeu.</p>", "symbol": "fa-book"}}, {"model": "backend.faq", "pk": 2, "fields": {"question": "Pourquoi \"MaturePyRobot\"", "answer": "<p>Le pr&eacute;c&eacute;dent projet s&#39;intitulait &quot;WebPyRobot&quot;. Bien que ce soit l&eacute;gitime, car sur navigateur Web, nous avons d&eacute;cid&eacute; de nous d&eacute;marquer. Nous avons men&eacute; ce projet &agrave; maturit&eacute;, pour que les foncitonnalit&eacute;es de base soient op&eacute;rationnelles &agrave; 100%. ... (&agrave; compl&eacute;ter)</p>", "symbol": "fa-question"}}, {"model": "backend.faq", "pk": 3, "fields": {"question": "\u00c0 quoi sert le Mode Passif ", "answer": "<p>Le mode passif te permet de ne pas te faire &quot;agresser&quot; par d&#39;autre utilisateur pendant que tu modifies ton tank.</p>", "symbol": "fa-power-off"}}, {"model": "backend.faq", "pk": 4, "fields": {"question": "Comment fonctionne le Drag'n'Drop ", "answer": "<p><strong>Wikipedia</strong> &quot;Les glisser-d&eacute;poser est, dans une interface graphique, une m&eacute;thode consistant &agrave; utiliser une souris [..] pour d&eacute;placer d&#39;un endroit &agrave; un autre un &eacute;l&eacute;ment graphiquep r&eacute;sent sur l&#39;&eacute;cran [..] d&#39;un ordinateur.&quot;</p>\r\n\r\n<p>1 - Faire un clique sur le script &agrave; importer et maintenir la pression sur le bouton.</p>\r\n\r\n<p>2 - D&eacute;placer votre souris, toujours en maintenant le clic, vers la zone final (l&#39;&eacute;diteur python).</p>\r\n\r\n<p>3 - Une fois sur l&#39;&eacute;diteur, l&acirc;cher le clic. Et HOP !! Votre script est import&eacute;. Sauvegardez le et continuez &agrave; travailler dessus en ligne.</p>", "symbol": "fa-clone"}}, {"model": "backend.faq", "pk": 5, "fields": {"question": "L'animation est bizarre, pourquoi ", "answer": "<p>Les tanks tirent au mileux ? Et au bout d&#39;un certain temps, se tire dessus ? C&#39;est normal, on essaie tant bien que mal de reproduire l&#39;execution de votre code. Ce ne sont pas des bugs. Il bien entendu un gagnant et un perdant. Une notification vous l&#39;indiquera.</p>", "symbol": "fa-television"}}, {"model": "backend.faq", "pk": 6, "fields": {"question": "Je n'arrive pas \u00e0 glisser-d\u00e9poser mon fichier depuis mon ordinateur vers l'\u00e9diteur", "answer": "<p>L&#39;&eacute;diteur n&#39;accepte que deux extensions:</p>\r\n\r\n<ol>\r\n\t<li>nomdufichier.py</li>\r\n\t<li>nomdufichier.txt</li>\r\n</ol>", "symbol": "fa-file-text"}}, {"model": "backend.faq", "pk": 7, "fields": {"question": "Comment sauvegarder un script en ligne sur mon ordinateur ", "answer": "<ol>\r\n\t<li>Ouvrir votre &eacute;diteur pr&eacute;f&eacute;r&eacute; (sublime text, visual studio code, bloc-note, notpad++,...)</li>\r\n\t<li>Copier/Coller le code &eacute;crit dans l&#39;&eacute;diteur dans un nouveau fichier portant l&#39;extension .py ou .txt</li>\r\n\t<li>Enregistrer ce fichier sur votre ordinateur, il sera possible de le charger en ligne avec le Drag&#39;n&#39;Drop</li>\r\n</ol>", "symbol": "fa-files-o"}}, {"model": "backend.faq", "pk": 8, "fields": {"question": "J'ai atteint mon quota de script (max 5), comment supprimer un script ", "answer": "<ol>\r\n\t<li>Charger le script &agrave; supprimer dans l&#39;&eacute;diteur</li>\r\n\t<li>&Eacute;crire le nouveau script &agrave; la place</li>\r\n\t<li>Changer &eacute;ventuellement le nom pour le nouveau script</li>\r\n\t<li>Sauvegarder</li>\r\n</ol>", "symbol": "fa-bars"}}, {"model": "backend.faq", "pk": 9, "fields": {"question": "En cas d'erreur que faire ", "answer": "<p>Si une erreur survient, la plupart du temps, l&#39;&eacute;diteur est mis en cause.</p>\r\n\r\n<p>Tentez d&#39;identifier d&#39;eventuel erreur:<br />\r\n- indentation du code<br />\r\n- variable utilis&eacute;e<br />\r\n- syntaxe python respect&eacute;e</p>\r\n\r\n<p>En cas d&#39;echec lors de la v&eacute;rification contacter le support technique.</p>", "symbol": "fa-exclamation"}}
+  {
+    "model": "backend.faq",
+    "pk": 1,
+    "fields": {
+      "question": "Quelles sont les règles du jeu ",
+      "answer": "<p><strong>Concevez</strong></p>\r\n\r\n<p>... ... la meilleur combinaison d&#39;&eacute;quipement pour votre tank.</p>\r\n\r\n<p><strong>Imaginez et Codez</strong></p>\r\n\r\n<p>... ... ce tank qui prendra l&#39;ascendant sur votre adversaire et vous m&egrave;nera &agrave; la victoire gr&acirc;ce &agrave; vos comp&eacute;tences - ou future comp&eacute;tences - en programmation.</p>\r\n\r\n<p>Nous incluons un syst&egrave;me de niveau et d&#39;exp&eacute;rience. Dans le jeu, vous allez vous confronter &agrave; plus fort que vous. [Bient&ocirc;t] En cas de victoire la r&eacute;compense (sous forme d&#39;exp&eacute;rience) n&#39;en sera que meilleure.</p>\r\n\r\n<p><strong>Plus en d&eacute;tails </strong></p>\r\n\r\n<p>Un combat se d&eacute;roule sur une grille de jeu de 32 cases par 32 cases.</p>\r\n\r\n<p>Comme tout bon programmeur, cela signifie que pour les indices en X et en Y vont de 0 &agrave; 31.</p>\r\n\r\n<p>Vous avez donc 1024 cases sur cette grille. Qui vous permettront de mettre en place votre strat&eacute;gie de jeu.</p>",
+      "symbol": "import_contacts"
+    }
+  },
+  {
+    "model": "backend.faq",
+    "pk": 2,
+    "fields": {
+      "question": "Pourquoi \"MaturePyRobot\"",
+      "answer": "<p>Le pr&eacute;c&eacute;dent projet s&#39;intitulait &quot;WebPyRobot&quot;. Bien que ce soit l&eacute;gitime, car sur navigateur Web, nous avons d&eacute;cid&eacute; de nous d&eacute;marquer. Nous avons men&eacute; ce projet &agrave; maturit&eacute;, pour que les fonctionnalit&eacute;s de base soient op&eacute;rationnelles &agrave; 100%. ... (&agrave; compl&eacute;ter)</p>",
+      "symbol": "question_answer"
+    }
+  },
+  {
+    "model": "backend.faq",
+    "pk": 3,
+    "fields": {
+      "question": "Comment fonctionne le Drag'n'Drop ",
+      "answer": "<p><strong>Wikipedia</strong> &quot;Les glisser-d&eacute;poser est, dans une interface graphique, une m&eacute;thode consistant &agrave; utiliser une souris [..] pour d&eacute;placer d&#39;un endroit &agrave; un autre un &eacute;l&eacute;ment graphique pr&eacute;sent sur l&#39;&eacute;cran [..] d&#39;un ordinateur.&quot;</p>\r\n\r\n<p>1 - Faire un clic sur le script &agrave; importer et maintenir la pression sur le bouton.</p>\r\n\r\n<p>2 - D&eacute;placer votre souris, toujours en maintenant le clic, vers la zone finale (l&#39;&eacute;diteur python).</p>\r\n\r\n<p>3 - Une fois sur l&#39;&eacute;diteur, l&acirc;cher le clic. Et HOP !! Votre script est import&eacute;. Sauvegardez le et continuez &agrave; travailler dessus en ligne.</p>",
+      "symbol": "content_copy"
+    }
+  },
+  {
+    "model": "backend.faq",
+    "pk": 4,
+    "fields": {
+      "question": "L'animation est bizarre, pourquoi ",
+      "answer": "<p>Les tanks tirent au milieu ? Et au bout d&#39;un certain temps, se tirent dessus ? C&#39;est normal, on essaie tant bien que mal de reproduire l&#39;ex&ecute;cution de votre code. Ce ne sont pas des bugs. Il y a bien entendu un gagnant et un perdant. Une notification vous l&#39;indiquera.</p>",
+      "symbol": "live_tv"
+    }
+  },
+  {
+    "model": "backend.faq",
+    "pk": 5,
+    "fields": {
+      "question": "Je n'arrive pas à glisser-déposer mon fichier depuis mon ordinateur vers l'éditeur",
+      "answer": "<p>L&#39;&eacute;diteur n&#39;accepte que deux extensions:</p>\r\n\r\n<ol>\r\n\t<li>nomdufichier.py</li>\r\n\t<li>nomdufichier.txt</li>\r\n</ol>",
+      "symbol": "file_upload"
+    }
+  },
+  {
+    "model": "backend.faq",
+    "pk": 6,
+    "fields": {
+      "question": "Comment sauvegarder un script en ligne sur mon ordinateur ",
+      "answer": "<ol>\r\n\t<li>Ouvrir votre &eacute;diteur pr&eacute;f&eacute;r&eacute; (sublime text, visual studio code, bloc-note, notpad++,...)</li>\r\n\t<li>Copier/Coller le code &eacute;crit dans l&#39;&eacute;diteur dans un nouveau fichier portant l&#39;extension .py ou .txt</li>\r\n\t<li>Enregistrer ce fichier sur votre ordinateur, il sera possible de le charger en ligne avec le Drag&#39;n&#39;Drop</li>\r\n</ol>",
+      "symbol": "description"
+    }
+  },
+  {
+    "model": "backend.faq",
+    "pk": 7,
+    "fields": {
+      "question": "J'ai atteint mon quota de script (max 5), comment supprimer un script ",
+      "answer": "<ol>\r\n\t<li>Charger le script &agrave; supprimer dans l&#39;&eacute;diteur</li>\r\n\t<li>&Eacute;crire le nouveau script &agrave; la place</li>\r\n\t<li>Changer &eacute;ventuellement le nom pour le nouveau script</li>\r\n\t<li>Sauvegarder</li>\r\n</ol>",
+      "symbol": "filter_5"
+    }
+  },
+  {
+    "model": "backend.faq",
+    "pk": 8,
+    "fields": {
+      "question": "En cas d'erreur que faire ",
+      "answer": "<p>Si une erreur survient, la plupart du temps, l&#39;&eacute;diteur est mis en cause.</p>\r\n\r\n<p>Tentez d&#39;identifier d&#39;eventuelles erreurs:<br />\r\n- indentation du code<br />\r\n- variables utilis&eacute;es<br />\r\n- syntaxe python respect&eacute;e</p>\r\n\r\n<p>En cas d&#39;echec lors de la v&eacute;rification, contacter le support technique.</p>",
+      "symbol": "bug_report"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:01:10.874Z",
+      "is_superuser": true,
+      "username": "admin_pyrobot",
+      "first_name": "Alex",
+      "last_name": "ANDRIAMAHALEO",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-05-10T20:45:40.146Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:07:30.899Z",
+      "is_superuser": false,
+      "username": "ORDI_1",
+      "first_name": "ORDI_1",
+      "last_name": "ORDINATEUR",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-05-10T23:07:29.781Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:10:22.119Z",
+      "is_superuser": false,
+      "username": "ORDI_2",
+      "first_name": "ORDI_2",
+      "last_name": "ORDINATEUR",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-05-10T23:10:20.995Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e5WKoHo0hPY1$ie4e+0vsS6GN4/tt105Pz7xQgv+Pf9e63y6zZ1Qd+Z8=",
+      "last_login": "2018-05-10T23:11:03.886Z",
+      "is_superuser": false,
+      "username": "ORDI_3",
+      "first_name": "ORDI_3",
+      "last_name": "ORDINATEUR",
+      "email": "contactpyrobot@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-05-10T23:11:02.781Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "backend.userprofile",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "money": 0,
+      "avatar": "",
+      "agression": true,
+      "points": 0,
+      "coeff_K": 0,
+      "nb_games": 0,
+      "level": 0,
+      "next_level_exp": 0,
+      "true_level": 0
+    }
+  },
+  {
+    "model": "backend.userprofile",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "money": 0,
+      "avatar": "",
+      "agression": true,
+      "points": 0,
+      "coeff_K": 0,
+      "nb_games": 0,
+      "level": 0,
+      "next_level_exp": 0,
+      "true_level": 0
+    }
+  },
+  {
+    "model": "backend.userprofile",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "money": 0,
+      "avatar": "",
+      "agression": true,
+      "points": 0,
+      "coeff_K": 0,
+      "nb_games": 0,
+      "level": 0,
+      "next_level_exp": 0,
+      "true_level": 0
+    }
+  },
+  {
+    "model": "backend.ia",
+    "pk": 1,
+    "fields": {
+        "owner": 1,
+        "name": "ORDI_1 Facile",
+        "text": "# CPU_1\r\n\r\nenemy = self.getEnemyTankId()\r\nenemypos = self.getPosition(enemy)\r\nenemyRange = self.getRange(enemy)\r\n\r\nmytank = self.getTankId()\r\nmyRange = self.getRange(mytank) \r\n\r\nmypos = self.getPosition(mytank)\r\n\r\ndist_btw = self.getCellDistance(mypos,enemypos)\r\n\r\nif dist_btw > (myRange+5):\r\n\tself.moveTank(enemypos,4)\r\nelse:\r\n    self.moveTank(enemypos) # Default by use 2 PA to move\r\n\r\ncurrent_PA = self.getPA(mytank)\r\n\r\nwhile(current_PA != 0):\r\n    self.shoot()\r\n    current_PA = self.getPA(mytank)",
+        "active": true,
+        "edit": true
+    }
+  },
+  {
+    "model": "backend.ia",
+    "pk": 2,
+    "fields": {
+        "owner": 2,
+        "name": "ORDI_2 Intermediaire",
+        "text": "global pm_used, backtrack_origin, real_pm_used, step_1_enemy_pos, step_2_enemy_pos, old_index_tab, index_tab, my_pos_tab\r\nid_enemy  = self.getEnemyTankId() # int\r\npos_enemy  = self.getPosition(id_enemy ) # cell entre 0 et 1023\r\npos_enemy_X  = self.getCellPosX(pos_enemy ) # ordon\u00e9e X\r\npos_enemy_Y  = self.getCellPosY(pos_enemy ) # abscisse Y\r\nportee_enemy  = self.getRange(id_enemy ) # 20\r\nlife_enemy  = self.getLife(id_enemy )\r\nid_tank  = self.getTankId() # int\r\npos_tank  = self.getPosition(id_tank ) # cell entre 0 et 1023\r\npos_tank_X  = self.getCellPosX(pos_tank ) # ordon\u00e9e X\r\npos_tank_Y  = self.getCellPosY(pos_tank ) # abscisse Y\r\nportee_tank  = self.getRange(id_tank ) # 20\r\nlife_tank  = self.getLife(id_tank )\r\ndist_to_enemy  = self.getCellDistance(pos_tank , pos_enemy )\r\ndist_to_origin  = self.getCellDistance(1023, pos_enemy ) # determine how many PA is used to move\r\nif dist_to_origin  == 0 or (dist_to_origin  >= 58 and dist_to_origin  <= 62):\r\n    pm_used  = dist_to_origin \r\n    backtrack_origin  = pos_tank \r\n    old_real_pm_used  = 0\r\n    real_pm_used  = 4 # max because we suppose that the opponent wants to get closer to us ASAP\r\n    step_1_enemy_pos  = []\r\n    index_tab  = 0\r\nelse:\r\n    pm_used_before  = pm_used \r\n    pm_used  = dist_to_origin \r\n    old_real_pm_used  = real_pm_used \r\n    real_pm_used  = abs(pm_used  - pm_used_before)\r\nmy_pos_tab = []\r\nstep_2_enemy_pos  = []\r\nold_index_tab  = index_tab \r\nindex_tab  = int(real_pm_used /2)\r\nold_step_1_enemy_pos  = step_1_enemy_pos \r\nstep_1_enemy_pos  = []\r\nfor i in range(real_pm_used +1):\r\n    if backtrack_origin == 0:\r\n        step_1_cell_enemy  = self.getCellFromXY(pos_enemy_X  - real_pm_used  + i, pos_enemy_Y  - i)\r\n    else:\r\n        step_1_cell_enemy  = self.getCellFromXY(pos_enemy_X  + real_pm_used  - i, pos_enemy_Y  + i)\r\n    step_1_enemy_pos .append(step_1_cell_enemy )\r\ndist_to_enemy_from_tab  = self.getCellDistance(pos_tank , step_1_enemy_pos [index_tab ])\r\nif dist_to_enemy_from_tab  < portee_enemy  and real_pm_used /index_tab  != old_real_pm_used   and index_tab  == old_index_tab :\r\n    step_1_enemy_pos  = []\r\n    for j in range(index_tab +1):\r\n        if backtrack_origin == 0:\r\n            step_1_cell_enemy  = self.getCellFromXY(pos_enemy_X  - index_tab  + j, pos_enemy_Y  - j)\r\n        else:\r\n            step_1_cell_enemy  = self.getCellFromXY(pos_enemy_X  + index_tab  - j, pos_enemy_Y  + j)\r\n        step_1_enemy_pos .append(step_1_cell_enemy )\r\n    new_pos_enemy  = step_1_enemy_pos [int(index_tab /2)]\r\n    index_tab_2  = int(index_tab /2)\r\n    new_pos_enemy_X  = self.getCellPosX(new_pos_enemy )\r\n    new_pos_enemy_Y  = self.getCellPosY(new_pos_enemy )\r\n    for k in range(index_tab +1):\r\n        if backtrack_origin == 0:\r\n            step_1_cell_enemy  = self.getCellFromXY(new_pos_enemy_X  - index_tab  + k, new_pos_enemy_Y  - k)\r\n        else:\r\n             step_1_cell_enemy  = self.getCellFromXY(new_pos_enemy_X  + index_tab  - k, new_pos_enemy_Y  + k)\r\n        step_2_enemy_pos .append(step_1_cell_enemy )\r\nelse:\r\n    new_pos_enemy  = step_1_enemy_pos [index_tab ]\r\n    index_tab_2  = index_tab \r\n    new_pos_enemy_X  = self.getCellPosX(new_pos_enemy )\r\n    new_pos_enemy_Y  = self.getCellPosY(new_pos_enemy )\r\n    for l in range(real_pm_used +1):\r\n        if backtrack_origin == 0:\r\n            step_1_cell_enemy  = self.getCellFromXY(new_pos_enemy_X  - real_pm_used  + l, new_pos_enemy_Y  - l)\r\n        else:\r\n            step_1_cell_enemy  = self.getCellFromXY(new_pos_enemy_X  + real_pm_used  - l, new_pos_enemy_Y  + l)\r\n        step_2_enemy_pos .append(step_1_cell_enemy )\r\npresvision_pos_enemy = step_2_enemy_pos[index_tab_2]\r\nfor x in range(5):\r\n    if backtrack_origin == 0:\r\n        next = self.getCellFromXY(pos_tank_X + 4 - x, pos_tank_Y + x)\r\n    else:\r\n        next = self.getCellFromXY(pos_tank_X - 4 + x, pos_tank_Y - x)\r\n    if self.getCellDistance(next, presvision_pos_enemy) <= portee_enemy:\r\n        pass\r\n    else:\r\n        my_pos_tab.append(next)\r\nif my_pos_tab:\r\n    self.moveTank(pos_enemy, 4)\r\nelse:\r\n    my_pos_tab = []\r\n    for c in range(4):\r\n        if backtrack_origin == 0:\r\n            next = self.getCellFromXY(pos_tank_X + 3 - c, pos_tank_Y + c)\r\n        else:\r\n            next = self.getCellFromXY(pos_tank_X - 3 + c, pos_tank_Y - c)\r\n        if self.getCellDistance(next, presvision_pos_enemy) <= portee_enemy:\r\n            pass\r\n        else:\r\n            my_pos_tab.append(next)\r\n    if my_pos_tab:\r\n        self.moveTank(my_pos_tab[index_tab_2])\r\n    else:\r\n        if life_tank >= 45:\r\n            for t in range(4):\r\n                if dist_to_enemy <= portee_tank:\r\n                    self.shoot()\r\n                else:\r\n                    pass\r\n        else:\r\n            if dist_to_enemy <= portee_tank:\r\n                for t in range(5):\r\n                    self.moveTank(backtrack_origin,1)\r\n            else:\r\n                self.moveTank(pos_enemy,1)\r\n                for t in range(4):\r\n                    self.shoot()\r\n                self.moveTank(backtrack_origin)",
+        "active": true,
+        "edit": true
+    }
+  },
+  {
+    "model": "backend.ia",
+    "pk": 3,
+    "fields": {
+      "owner": 3,
+      "name": "ORDI_3 Difficile",
+      "text": "# Default ia\n# Get the enemy position in the game\nenemy = self.getEnemyTankId()\nenemypos = self.getPosition(enemy)\n# Move foward to the enemy\nself.moveTank(enemypos,2)\n# Shoot the enemy Gracefuly\nself.shoot()",
+      "active": true,
+        "edit": true
+    }
+  },
+  {
+    "model": "backend.tank",
+    "pk": 1,
+    "fields": {
+      "owner": 1,
+      "ia": 1,
+      "weapon": 1,
+      "armor": 1,
+      "caterpillar": 1,
+      "navSystem": 1,
+      "hp_value": 100
+    }
+  },
+  {
+    "model": "backend.tank",
+    "pk": 2,
+    "fields": {
+      "owner": 2,
+      "ia": 2,
+      "weapon": 1,
+      "armor": 1,
+      "caterpillar": 1,
+      "navSystem": 1,
+      "hp_value": 100
+    }
+  },
+  {
+    "model": "backend.tank",
+    "pk": 3,
+    "fields": {
+      "owner": 3,
+      "ia": 3,
+      "weapon": 1,
+      "armor": 1,
+      "caterpillar": 1,
+      "navSystem": 1,
+      "hp_value": 100
+    }
+  },
+  {
+    "model": "backend.championship",
+    "pk": 1,
+    "fields": {
+      "name": "ORDINATEURS",
+      "private_mode": true,
+      "secret_word": "pyrobot",
+      "players": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "backend.championship",
+    "pk": 2,
+    "fields": {
+      "name": "PyRobot [Défault]",
+      "private_mode": false,
+      "secret_word": "",
+      "players": []
+    }
+  }
 ]

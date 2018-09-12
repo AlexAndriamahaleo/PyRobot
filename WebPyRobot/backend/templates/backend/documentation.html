@@ -1,100 +1,127 @@
 {% extends "base.html" %}
 
 {% block title %}
-MaturePyRobot - Documentation
+PyRobot - Documentation
+{% endblock %}
+
+{% block custom_css %}
+
 {% endblock %}
 
 {% block content %}
-<div class="col s12 m9 l10 pad">
-    <h2>Documentation</h2>
-    <ul class="collapsible" data-collapsible="accordion">
-        <li>
-            <div class="collapsible-header">getTankId()</div>
+<div class="col s12 m12 l12 center">
+    <h1>Documentation</h1>
+    <ul class="collapsible left-align" data-collapsible="accordion">
+        <!--<li>
+            <div class="collapsible-header">getSize()</div>
             <div class="collapsible-body ">
-                <p>Permet de connaître l'identifiant de votre tank.</p>
-                <blockquote>
-                    Retourne une variable de type TankID.
-                </blockquote>
-            </div>
-        </li>
-        <li>
-            <div class="collapsible-header">getEnemyTankId()</div>
-            <div class="collapsible-body">
-                <p>Permet de connaître l'identifiant du tank ennemi.</p>
-                <blockquote>
-                    Retourne une variable de type TankID.
-                </blockquote>
-            </div>
-        </li>
-        <li>
-            <div class="collapsible-header">getCellDistance(NumCell1, NumCell2)</div>
-            <div class="collapsible-body">
-                <p>Permet de connaître la distance entre la cellule NumCell1 et la cellule NumCell2.</p>
-                <blockquote>
-                    Retourne une valeur numérique. <i>Hint: imaginez la distance entre deux points dans un repère
-                    orthonormé.</i>
-                </blockquote>
-            </div>
-        </li>
-
-        <li>
-            <div class="collapsible-header">getCellFromXY(X, Y)</div>
-            <div class="collapsible-body ">
-                <p>Permet de connaître le numéro d'une cellule à partir d'une coordonnée X et Y.</p>
-                <blockquote>
-                    Retourne une variable de type NumCell.
-                </blockquote>
-            </div>
-        </li>
-
-        <li>
-            <div class="collapsible-header">getCellPosX(NumCell)</div>
-            <div class="collapsible-body">
-                <p>Permet de connaître l'ordonnée X d'une cellule NumCell.</p>
-                <blockquote>
-                    Retourne l'abscisse d'une cellule NumCell.
-                </blockquote>
-            </div>
-        </li>
-
-        <li>
-            <div class="collapsible-header">
-                getCellPosY(NumCell)
-            </div>
-            <div class="collapsible-body">
-                <p>Permet de connaître l'ordonnée Y d'une cellule NumCell.</p>
-                <blockquote>
-                    Retourne l'ordonnée d'une cellule NumCell.
-                </blockquote>
-            </div>
-        </li>
-
-        <li>
-            <div class="collapsible-header">
-                getPosition(TankID)
-            </div>
-            <div class="collapsible-body ">
-                <p>Permet de connaître le numéro de la cellule sur laquelle se trouve le tank qui a pour identifiant
-                    TankID.</p>
-                <blockquote>
-                    Retourne une variable de type NumCell.
-                </blockquote>
-            </div>
-        </li>
-
-        <li>
-            <div class="collapsible-header">
-                getLife(TankID)
-            </div>
-            <div class="collapsible-body">
-                <p>Permet de connaître la vie restante du tank qui a pour identifiant TankID </p>
+                <p>Permet de connaître la taille de la carte.</p>
                 <blockquote>
                     Retourne une valeur numérique.
                 </blockquote>
             </div>
+        </li>-->
+        <li>
+            <div class="collapsible-header"><h5>getTankId()</h5></div>
+            <div class="collapsible-body ">
+                <p>Permet de connaître l'identifiant de votre tank.</p>
+                <p>
+                    <i>Aucun paramètre</i><br/>
+                    <i>Retourne: </i>variable de type TankID.
+                </p>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><h5>getEnemyTankId()</h5></div>
+            <div class="collapsible-body">
+                <p>Permet de connaître l'identifiant du tank ennemie.</p>
+                <p>
+                    <i>Aucun paramètre</i><br/>
+                    <i>Retourne: </i>variable de type TankID.
+                </p>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><h5>getCellDistance(cell_1, cell_2)</h5></div>
+            <div class="collapsible-body">
+                <p>Permet de connaître la distance entre deux cellules de la carte.</p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>cell_1: type NumCell</p></li>
+                    <li><p>cell_2: type NumCell</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>valeur numérique. <br/><br/><i>Indice: imaginez la distance entre deux points dans un repère
+                orthonormé.</i></p>
+            </div>
         </li>
 
         <li>
+            <div class="collapsible-header"><h5>getCellFromXY(x, y)</h5></div>
+            <div class="collapsible-body ">
+                <p>Permet de connaître le numéro d'une cellule à partir de x et y.</p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>x: valeur numérique</p></li>
+                    <li><p>y: valeur numérique</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>variable de type NumCell.</p>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><h5>getCellPosX(cell)</h5></div>
+            <div class="collapsible-body">
+                <p>Permet de connaître l'abscisse X de la cellule cell.</p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>cell: type NumCell</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>valeur numérique.</p>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><h5>getCellPosY(cell)</h5></div>
+            <div class="collapsible-body">
+                <p>Permet de connaître l'ordonnée Y de la cellule cell.</p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>cell: type NumCell</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>valeur numérique.</p>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header">
+                <h5>getPosition(id)</h5>
+            </div>
+            <div class="collapsible-body ">
+                <p>Permet de connaître le numéro de la cellule sur laquelle se trouve le tank qui a pour identifiant
+                    id.</p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>id: type TankID</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>variable de type NumCell.</p>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header">
+                <h5>getLife(id)</h5>
+            </div>
+            <div class="collapsible-body">
+                <p>Permet de connaître la vie restante du tank qui a pour identifiant id </p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>id: type TankID</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>valeur numérique.</p>
+            </div>
+        </li>
+
+        <!--<li>
             <div class="collapsible-header">
                 getPM(TankID)
             </div>
@@ -105,53 +132,70 @@ MaturePyRobot - Documentation
                     Retourne une valeur numérique.
                 </blockquote>
             </div>
-        </li>
+        </li>--->
 
         <li>
             <div class="collapsible-header">
-                getPA(TankID)
+                <h5>getPA(id)</h5>
             </div>
             <div class="collapsible-body ">
-                <p>Permet de connaître le nombre de Point d'Action actuel (ou restant) du tank d'identifiant TankID.</p>
-                <blockquote>
-                    Retounr une valeur numérique.
-                </blockquote>
+                <p>Permet de connaître le nombre de Point d'Action actuel (ou restant) du tank d'identifiant id.</p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>id: type TankID</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>valeur numérique.</p>
             </div>
         </li>
 
         <li>
             <div class="collapsible-header">
-                getRange(TankId)
+                <h5>getRange(id)</h5>
             </div>
             <div class="collapsible-body">
-                <p>Permet de connaître la portée du tank d'identifiant TankID.</p>
-                <blockquote>
-                    Retourne une valeur numérique.
-                </blockquote>
+                <p>Permet de connaître la portée du tank d'identifiant id.</p>
+                <p><i>Paramètres: </i><br/></p>
+                <ul class="browser-default">
+                    <li><p>id: type TankID</p></li>
+                </ul><br/>
+                <p><i>Retourne: </i>valeur numérique.</p>
             </div>
         </li>
 
         <li>
-            <div class="collapsible-header">moveTank(NumCell)</div>
+            <div class="collapsible-header"><h5>moveTank(cell [, n])</h5></div>
             <div class="collapsible-body">
                 <p>Fonction permettant de déplacer son tank vers une cellule NumCell.
-                    Si celle-ci n'est pas à sa portée (par rapport aux nombres de PM), le tank se déplace vers une
-                    cellule proche de celle désié.</p>
-                <blockquote>
-                    Action réitérable en fonction des paramètres courant.
-                </blockquote>
+                    <br>Si celle-ci n'est pas à sa portée, le tank se déplace vers une
+                    cellule proche de celle désiré.
+                </p>
+                <p>
+                    Action réitérable en fonction des paramètres courant.<br/><br/>
+                    <i>Paramètres: </i>
+                </p>
+                <ul class="browser-default">
+                    <li><p>cell: type NumCell</p></li>
+                    <li><p>n: valeur numérique - <i>OPTIONNEL</i></p></li>
+                </ul>
+                <p>
+                    Par défaut le nombre de points d'action (PA) utilisé est de 2 PA. <br/>
+                    Si <i>n</i> est renseigné, alors la fonction utilise <i>n</i> PA pour bouger.<br/>
+                    <br/><i>Aucune valeur de retour.</i>
+                </p>
             </div>
         </li>
 
         <li>
             <div class="collapsible-header">
-                shoot()
+                <h5>shoot()</h5>
             </div>
             <div class="collapsible-body">
                 <p>Fonction permettant de tirer sur le tank ennemi.</p>
-                <blockquote>
+                <p>
+                    <i>Aucun paramètre</i><br/>
                     Action réitérable en fonction des paramètres courant.
-                </blockquote>
+                    <br/><i>Aucune valeur de retour.</i>
+                </p>
             </div>
         </li>
     </ul>

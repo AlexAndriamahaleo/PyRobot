@@ -51,8 +51,8 @@
             dialogs: {
                 buttons: {
                     holder: "<div>{{buttons}}</div>",
-                    ok: "<button class='ok btn-flat' tabindex='1' onclick=\"window.location.href='/'\">{{ok}}</button>",
-                    cancel: "<button class='cancel btn-flat' tabindex='2' onclick=\"window.location.href='/'\">{{cancel}}</button>"
+                    ok: "<button class='ok btn-flat' tabindex='1'>{{ok}}</button>",
+                    cancel: "<button class='cancel btn-flat' tabindex='2'>{{cancel}}</button>"
                 },
                 input: "<input type='text'>",
                 message: "<p class='msg'>{{message}}</p>",

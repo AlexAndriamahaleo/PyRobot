@@ -1,5 +1,5 @@
 // Initial JS code of the project
-$(function() {
+$(function () {
     $.notify.addStyle("bootstrap_html", {
         html: "<div>\n<span data-notify-html></span>\n</div>",
         classes: {
@@ -43,18 +43,41 @@ $(function() {
 
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/" + username + "-notifications/");
-    socket.onmessage = function(message) {
+    socket.onmessage = function (message) {
         console.log(message);
         var data = JSON.parse(message.data);
-        if (data.msg_type == "notification")
-            $.notify(data.msg_content, {
-                position: "top right",
-                className: data.msg_class,
-                autoHide: true,
-                autoHideDelay: 10000,
-                hideDuration: 500,
-                style: "bootstrap_html"
-            });
+
+        console.log(data);
+        console.log(data['battle_pk']);
+
+        if (data['is_versus'] != 'yes') {
+
+            if (data.msg_type == "notification") {
+                var $toastContent;
+
+                if (data.msg_content.includes('démarrer')) {
+                    $toastContent = $('<span>SI VOUS VOYEZ CE MESSAGE, C\'EST QU\'IL Y A UNE ERREUR !!</span>').add($('<button onclick="Materialize.Toast.removeAll()" class="btn-flat act toast-action">Ok</button>'));
+                    //$toastContent[1].innerHTML = "Ok"
+                }
+                else {
+                    $toastContent = $('<span>SI VOUS VOYEZ CE MESSAGE, C\'EST QU\'IL Y A UNE ERREUR !!</span>').add($('<button class="btn-flat act toast-action" onclick="window.location.href=\'/replay/?bh_pk=' + data['battle_pk'] + '\'">Revoir</button>'))
+                    //$toastContent[1].innerHTML = "Resultats"
+                }
+
+                $toastContent[0].innerText = data.msg_content;
+
+                Materialize.toast($toastContent, 10000);
+
+                /*$.notify(data.msg_content, {
+                    position: "top right",
+                    className: data.msg_class,
+                    autoHide: true,
+                    autoHideDelay: 10000,
+                    hideDuration: 500,
+                    style: "bootstrap_html"
+                });*/
+            }
+        }
     };
 
 });

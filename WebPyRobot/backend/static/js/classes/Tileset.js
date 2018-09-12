@@ -12,7 +12,7 @@ function Tileset(url,contraint) {
 		this.referenceDuTileset.largeur = this.width / 32;
 	}
 	this.contraint = contraint;
-	this.image.src = "../static/tilesets/" + url;
+	this.image.src = "../../../../static/tilesets/" + url;
 }
 
 // Méthode de dessin du tile numéro "number" dans le contexte 2D "context" aux coordonnées xDestination et yDestination

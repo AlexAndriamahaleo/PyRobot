@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_CMD="python"
+PYTHON_CMD="python3"
 
 PYTHON_VERSION=$($PYTHON_CMD --version | cut -d\  -f 2 | cut -d. -f 1)
 if [ "$PYTHON_VERSION" != "3" ]; then
